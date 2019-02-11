@@ -2,11 +2,10 @@
 This package aims to implement omic data anlalysis using DataSHIELD infrastructure
 
 # Installation
-The following steps describe how to install the DataSHIELD training environment to test the first version of the function for methylation analysis:
+The following steps describe how to install the DataSHIELD training environment to test the first version of the function for methylation analysis. We illustrate how to perform the analysis having two machines with two different datasets:
 
 
-1. Here are the instructions on how to install the virtual box and the two training Virtual Machines:
-https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943427/Instructions+for+Windows+and+Mac+users#InstructionsforWindowsandMacusers-DownloadandinstallVirtualBox{:target="_blank"}
+1. The instructions on how to install the virtual box and the two training Virtual Machines can be found [here](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943427/Instructions+for+Windows+and+Mac+users#InstructionsforWindowsandMacusers-DownloadandinstallVirtualBox){:target="_blank"}
 
 2. Here are the instructions on how to create a new project in your Virtual machines. (For simplicity, I have called this project ‘OMICS' in my virtual machines):
 https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943489/Using+your+own+data+in+Opal#UsingyourowndatainOpal-CreatinganewOpalproject
