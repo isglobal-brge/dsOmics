@@ -19,11 +19,13 @@ for (ES_File in Data_Files) {
   ES_Data <- get(tmp_obj, tmp_env)
   rm(tmp_env)
   
+  #Data set label used in table and file names
   DataLabel <-  sub(".Rdata", "", ES_File)
   
   #----------Phenotype Dictionary and Data file----------#
   
-  pVarNum <- length(varLabels(ES_Data)) #Number of phenotype variables  
+  pVars <- sub(":", "_", varLabels(ES_Data))
+  pVarNum <- length(pVars) #Number of phenotype variables  
   ptableName <- rep(paste("pheno", DataLabel, sep = ""), pVarNum) #Set phenotype table name
   pEntType <- rep("Participant", pVarNum) #Set value for entityType
   pRepeatable <- rep(0, pVarNum) #Set value for repeatable
@@ -34,7 +36,7 @@ for (ES_File in Data_Files) {
   
   #Phenotype dictionary file data frame
   phenoDict <- data.frame(table=ptableName, 
-                          name=varLabels(ES_Data), 
+                          name=pVars, 
                           valueType=pVarTypes, 
                           entityType=pEntType,
                           referencedEntityType=character(pVarNum),
@@ -42,12 +44,14 @@ for (ES_File in Data_Files) {
                           unit=character(pVarNum),
                           repeatable=pRepeatable,
                           occuranceGroup=character(pVarNum),
-                          `label:en`= varLabels(ES_Data))
+                          `label:en`= pVars)
   
   #Creating data frame with pheno data 
   ES_PhenoData <- cbind(sample=sampleNames(ES_Data), pData(ES_Data))
   rownames(ES_PhenoData) <-  1:length(sampleNames(ES_Data))
+  colnames(ES_PhenoData) <- sub(":", "_", colnames(ES_PhenoData))
   
+  #Creating dictionary and data files
   write.xlsx2(phenoDict, paste("pheno", DataLabel, "-dictionary.xls", sep = ""), 
               sheetName = "Variables", col.names = TRUE, row.names = FALSE, append = FALSE)
   
@@ -84,6 +88,7 @@ for (ES_File in Data_Files) {
   ES_GeneExpData <- cbind(feature=featureNames(ES_Data), exprs(ES_Data))
   rownames(ES_GeneExpData) <-  1:length(featureNames(ES_Data))
   
+  #Creating dictionary and data files
   write.xlsx2(geneExpDict, paste("geneExp", DataLabel, "-dictionary.xls", sep = ""), 
               sheetName = "Variables", col.names = TRUE, row.names = FALSE, append = FALSE)
   
@@ -91,7 +96,3 @@ for (ES_File in Data_Files) {
   
   #------------------------------------------------------------#
 }
-
-#TO DO: 
-#       Remove colons from phenotype variable names
-#
