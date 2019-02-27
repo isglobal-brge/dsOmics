@@ -24,7 +24,7 @@ for (ES_File in Data_Files) {
   
   #----------Phenotype Dictionary and Data file----------#
   
-  pVars <- sub(":", "_", varLabels(ES_Data))
+  pVars <- c("sample", sub(":", "_", varLabels(ES_Data)))
   pVarNum <- length(pVars) #Number of phenotype variables  
   ptableName <- rep(paste("pheno", DataLabel, sep = ""), pVarNum) #Set phenotype table name
   pEntType <- rep("Participant", pVarNum) #Set value for entityType
@@ -37,7 +37,7 @@ for (ES_File in Data_Files) {
   #Phenotype dictionary file data frame
   phenoDict <- data.frame(table=ptableName, 
                           name=pVars, 
-                          valueType=pVarTypes, 
+                          valueType=c("text", pVarTypes), 
                           entityType=pEntType,
                           referencedEntityType=character(pVarNum),
                           mimeType=character(pVarNum),
@@ -46,14 +46,25 @@ for (ES_File in Data_Files) {
                           occuranceGroup=character(pVarNum),
                           `label:en`= pVars)
   
+  #Vector with values for categories tab in dictionary file
+  phenoCategories <- data.frame(table=character(),
+                                variable=character(),
+                                name=character(),
+                                code=character(),
+                                missing=integer(),
+                                `label:en`=character())
+  
   #Creating data frame with pheno data 
   ES_PhenoData <- cbind(sample=sampleNames(ES_Data), pData(ES_Data))
   rownames(ES_PhenoData) <-  1:length(sampleNames(ES_Data))
   colnames(ES_PhenoData) <- sub(":", "_", colnames(ES_PhenoData))
   
+  
   #Creating dictionary and data files
   write.xlsx2(phenoDict, paste("pheno", DataLabel, "-dictionary.xls", sep = ""), 
               sheetName = "Variables", col.names = TRUE, row.names = FALSE, append = FALSE)
+  write.xlsx2(phenoCategories, paste("pheno", DataLabel, "-dictionary.xls", sep = ""), 
+              sheetName = "Categories", col.names = TRUE, row.names = FALSE, append = TRUE)
   
   write.csv(ES_PhenoData, paste("pheno", DataLabel, ".csv", sep = ""))
   
@@ -84,13 +95,24 @@ for (ES_File in Data_Files) {
                             occuranceGroup=character(gExpNumRows),
                             `label:en`= c("feature", glabels))
   
+  #Data frame with values for categories tab in dictionary file
+  geneExpCategories <- data.frame(table=character(),
+                                variable=character(),
+                                name=character(),
+                                code=character(),
+                                missing=integer(),
+                                `label:en`=character())
+  
   #Creating data frame with gene expression data
   ES_GeneExpData <- cbind(feature=featureNames(ES_Data), exprs(ES_Data))
   rownames(ES_GeneExpData) <-  1:length(featureNames(ES_Data))
   
+  
   #Creating dictionary and data files
   write.xlsx2(geneExpDict, paste("geneExp", DataLabel, "-dictionary.xls", sep = ""), 
               sheetName = "Variables", col.names = TRUE, row.names = FALSE, append = FALSE)
+  write.xlsx2(geneExpCategories, paste("geneExp", DataLabel, "-dictionary.xls", sep = ""), 
+              sheetName = "Categories", col.names = TRUE, row.names = FALSE, append = TRUE)
   
   write.csv(ES_GeneExpData, paste("geneExp", DataLabel, ".csv", sep = ""))
   
