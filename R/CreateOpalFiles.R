@@ -1,83 +1,69 @@
-#Script to create phenotype and gene expression data csv files with associated xls dictionaries
+##' Creating genetic expression and phenotype dictionary and data files 
+##' 
+##' Function processes an Expression Set object or csv/txt files with
+##' genetic expression and related phenotype data to create xls dictionary
+##' and csv data files used for Opal data table creation in DataShield. 
+##' @title Creating genetic expression and phenotype dictionary and data files
+##' @param geneExpData an Expression Set object or name of genetic expression csv/txt file
+##' @param phenoFile parameter used with csv/txt files to specify name of phenotype file
+##' @param inputDIR optional parameter used with csv/txt files to specify directory containing data files
+##' @export
+##' @examples
+##' 
+##' 
+##' 
 
-library(Biobase)
-library(xlsx)
-
-#Input directory for ExpressenSet data file and output directory for csv & dictionary files
-#By default both set to working directory
-inputDIR <- getwd()
-otuputDIR <- getwd()
-
-#Getting ExpressionSet data file names
-Data_Files <- list.files(path = inputDIR, pattern = "*.Rdata")
-
-for (ES_File in Data_Files) {
+createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
   
-  #Load data from ExpressionSet file
-  tmp_env <- new.env()
-  tmp_obj <- load(paste(inputDIR, ES_File, sep = "/"), tmp_env)
-  ES_Data <- get(tmp_obj, tmp_env)
-  rm(tmp_env)
-  
-  #Data set label used in table and file names
-  DataLabel <-  sub(".Rdata", "", ES_File)
-  
-  #----------Phenotype Dictionary and Data file----------#
-  
-  pVars <- c("sample", sub(":", "_", varLabels(ES_Data)))
-  pVarNum <- length(pVars) #Number of phenotype variables  
-  ptableName <- rep(paste("pheno", DataLabel, sep = ""), pVarNum) #Set phenotype table name
-  pEntType <- rep("Participant", pVarNum) #Set value for entityType
-  pRepeatable <- rep(0, pVarNum) #Set value for repeatable
-  
-  #Determining the data type of each phenotype variable
-  pVarTypes <- 
-    unlist(lapply(lapply(pData(ES_Data), class), function(x) ifelse(x == "numeric", "integer","text")))
-  
-  #Phenotype dictionary file data frame
-  phenoDict <- data.frame(table=ptableName, 
-                          name=pVars, 
-                          valueType=c("text", pVarTypes), 
-                          entityType=pEntType,
-                          referencedEntityType=character(pVarNum),
-                          mimeType=character(pVarNum),
-                          unit=character(pVarNum),
-                          repeatable=pRepeatable,
-                          occuranceGroup=character(pVarNum),
-                          `label:en`= pVars)
-  
-  #Vector with values for categories tab in dictionary file
-  phenoCategories <- data.frame(table=character(),
-                                variable=character(),
-                                name=character(),
-                                code=character(),
-                                missing=integer(),
-                                `label:en`=character())
-  
-  #Creating data frame with pheno data 
-  ES_PhenoData <- cbind(sample=sampleNames(ES_Data), pData(ES_Data))
-  rownames(ES_PhenoData) <-  1:length(sampleNames(ES_Data))
-  colnames(ES_PhenoData) <- sub(":", "_", colnames(ES_PhenoData))
-  
-  
-  #Creating dictionary and data files
-  write.xlsx2(phenoDict, paste("pheno", DataLabel, "-dictionary.xls", sep = ""), 
-              sheetName = "Variables", col.names = TRUE, row.names = FALSE, append = FALSE)
-  write.xlsx2(phenoCategories, paste("pheno", DataLabel, "-dictionary.xls", sep = ""), 
-              sheetName = "Categories", col.names = TRUE, row.names = FALSE, append = TRUE)
-  
-  write.csv(ES_PhenoData, paste("pheno", DataLabel, ".csv", sep = ""))
-  
-  #------------------------------------------------------#
-  
+  if(class(geneExpData) == "ExpressionSet"){
+    
+    #-----Variables for creating Gene Expression Files-----#
+    SampleNum <- length(sampleNames(geneExpData)) 
+    gSamples <- sampleNames(geneExpData) 
+    
+    gDataSet <- cbind(feature=featureNames(geneExpData), exprs(geneExpData))
+    rownames(gDataSet) <-  1:length(featureNames(geneExpData))
+    
+    #-----Variables for creating Phenotype Files-----#
+    pDataSet <- cbind(samples=gSamples, pData(geneExpData))
+    rownames(pDataSet) <-  1:length(sampleNames(geneExpData))
+    pVars <- c("sample", sub(":", "_", varLabels(geneExpData)))
+    
+    
+  } else if(class(geneExpData) == "character"){
+    
+    if(grepl(".csv", geneExpData) == TRUE){
+      
+      #-----Variables for creating Gene Expression Files-----#
+      
+      #Reading in gene expression data set
+      gDataSet <- read.csv(paste(inputDIR, geneExpData, sep = "/"))
+      
+      gSamples <- colnames(gDataSet)[-1] #List of sample names
+      SampleNum <- length(gSamples) #Number of samples
+      
+      colnames(gDataSet)[1] <- "feature"
+      
+      #-----Variables for creating Phenotype Files-----#
+      
+      #Reading in phenotype data set
+      pDataSet <- read.csv(paste(inputDIR, phenoFile, sep = "/"))
+      pDataSet <- cbind(sample=gSamples, pDataSet)
+      
+      pVars <- sub(":", "_", colnames(pDataSet))
+      
+    } else if(grepl(".txt", geneExpData) == TRUE){
+      #Handling for txt files
+    }
+    
+  }
   
   #----------Gene Expression Dictionary and Data file----------#
   
-  SampleNum <- length(sampleNames(ES_Data)) #Number of samples
   gExpNumRows <- SampleNum + 1 #Number of rows in gene expression dictionary file
   
   #Set values for gene expression dictionary variables
-  gtableName <- rep(paste("geneExp", DataLabel, sep = ""), gExpNumRows) 
+  gtableName <- rep("geneExp", gExpNumRows) 
   gValueType <- rep("decimal", SampleNum)
   gEntType <- rep("Participant", gExpNumRows)
   glabels <- rep("sample", SampleNum)
@@ -85,7 +71,7 @@ for (ES_File in Data_Files) {
   
   #Gene expression dictionary file data frame
   geneExpDict <- data.frame(table=gtableName,
-                            name=c("feature", sampleNames(ES_Data)), 
+                            name=c("feature", gSamples), 
                             valueType=c("text", gValueType), 
                             entityType=gEntType,
                             referencedEntityType=character(gExpNumRows),
@@ -97,24 +83,75 @@ for (ES_File in Data_Files) {
   
   #Data frame with values for categories tab in dictionary file
   geneExpCategories <- data.frame(table=character(),
+                                  variable=character(),
+                                  name=character(),
+                                  code=character(),
+                                  missing=integer(),
+                                  `label:en`=character())
+  
+  #Creating dictionary and data files
+  write.xlsx2(geneExpDict, "geneExp-dictionary.xls", sheetName = "Variables", 
+              col.names = TRUE, row.names = FALSE, append = FALSE)
+  write.xlsx2(geneExpCategories, "geneExp-dictionary.xls", sheetName = "Categories", 
+              col.names = TRUE, row.names = FALSE, append = TRUE)
+  
+  write.csv(gDataSet, "geneExp.csv")
+  
+  #------------------------------------------------------------#
+  
+  #----------Phenotype Dictionary and Data file----------#
+  
+  pVarNum <- length(pVars) #Number of phenotype variables  
+  ptableName <- rep("pheno", pVarNum) #Set phenotype table name
+  pEntType <- rep("Participant", pVarNum) #Set value for entityType
+  pRepeatable <- rep(0, pVarNum) #Set value for repeatable
+  
+  #Function used to set the valueType for each phenotype variable
+  setPhenoVarType <- function(x){
+    if(x == 'numeric'){
+      vType = 'decimal'
+    } else if(x == 'integer'){
+      vType = 'integer'
+    } else{
+      vType = 'text'
+    }
+    return(vType)
+  }
+  
+  #Determining the data type of each phenotype variable
+  pVarTypes <- unlist(lapply(lapply(pDataSet, class), setPhenoVarType))
+  
+  #Phenotype dictionary file data frame
+  phenoDict <- data.frame(table=ptableName, 
+                          name=pVars, 
+                          valueType=pVarTypes, 
+                          entityType=pEntType,
+                          referencedEntityType=character(pVarNum),
+                          mimeType=character(pVarNum),
+                          unit=character(pVarNum),
+                          repeatable=pRepeatable,
+                          occuranceGroup=character(pVarNum),
+                          `label:en`= pVars)
+  
+  #Data frame with values for "categories" tab in dictionary file
+  phenoCategories <- data.frame(table=character(),
                                 variable=character(),
                                 name=character(),
                                 code=character(),
                                 missing=integer(),
                                 `label:en`=character())
   
-  #Creating data frame with gene expression data
-  ES_GeneExpData <- cbind(feature=featureNames(ES_Data), exprs(ES_Data))
-  rownames(ES_GeneExpData) <-  1:length(featureNames(ES_Data))
+  colnames(pDataSet) <- sub(":", "_", colnames(pDataSet))
   
   
   #Creating dictionary and data files
-  write.xlsx2(geneExpDict, paste("geneExp", DataLabel, "-dictionary.xls", sep = ""), 
-              sheetName = "Variables", col.names = TRUE, row.names = FALSE, append = FALSE)
-  write.xlsx2(geneExpCategories, paste("geneExp", DataLabel, "-dictionary.xls", sep = ""), 
-              sheetName = "Categories", col.names = TRUE, row.names = FALSE, append = TRUE)
+  write.xlsx2(phenoDict, "pheno-dictionary.xls", sheetName = "Variables", 
+              col.names = TRUE, row.names = FALSE, append = FALSE)
+  write.xlsx2(phenoCategories, "pheno-dictionary.xls", sheetName = "Categories", 
+              col.names = TRUE, row.names = FALSE, append = TRUE)
   
-  write.csv(ES_GeneExpData, paste("geneExp", DataLabel, ".csv", sep = ""))
+  write.csv(pDataSet, "pheno.csv")
   
-  #------------------------------------------------------------#
+  #------------------------------------------------------#
+  
 }
