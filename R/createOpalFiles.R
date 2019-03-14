@@ -14,6 +14,9 @@
 ##' 
 
 createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
+
+  require(Biobase)
+  require(xlsx)
   
   if(class(geneExpData) == "ExpressionSet"){
     
@@ -32,29 +35,37 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
     
   } else if(class(geneExpData) == "character"){
     
-    if(grepl(".csv", geneExpData) == TRUE){
-      
-      #-----Variables for creating Gene Expression Files-----#
+    if(grepl("\\.csv", geneExpData) == TRUE){
       
       #Reading in gene expression data set
       gDataSet <- read.csv(paste(inputDIR, geneExpData, sep = "/"))
       
-      gSamples <- colnames(gDataSet)[-1] #List of sample names
-      SampleNum <- length(gSamples) #Number of samples
-      
-      colnames(gDataSet)[1] <- "feature"
-      
-      #-----Variables for creating Phenotype Files-----#
-      
       #Reading in phenotype data set
       pDataSet <- read.csv(paste(inputDIR, phenoFile, sep = "/"))
-      pDataSet <- cbind(sample=gSamples, pDataSet)
       
-      pVars <- sub(":", "_", colnames(pDataSet))
       
-    } else if(grepl(".txt", geneExpData) == TRUE){
-      #Handling for txt files
+    } else if(grepl("\\.txt", geneExpData) == TRUE){
+      
+      #Reading in gene expression data set
+      gDataSet <- read.delim(paste(inputDIR, geneExpData, sep = "/"))
+      
+      #Reading in phenotype data set
+      pDataSet <- read.delim(paste(inputDIR, phenoFile, sep = "/"))
+    } else {
+      
+      stop("Invalid File Name Provided")
     }
+    
+    #-----Variables for creating Gene Expression Files-----#
+    
+    gSamples <- colnames(gDataSet)[-1] #List of sample names
+    SampleNum <- length(gSamples) #Number of samples
+    colnames(gDataSet)[1] <- "feature"
+    
+    #-----Variables for creating Phenotype Files-----#
+    
+    pDataSet <- cbind(sample=gSamples, pDataSet) #Data frame with phenotype data
+    pVars <- sub(":", "_", colnames(pDataSet)) #List of phenotype variable names
     
   }
   
@@ -78,16 +89,20 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
                             mimeType=character(gExpNumRows),
                             unit=character(gExpNumRows),
                             repeatable=gRepeatable,
-                            occuranceGroup=character(gExpNumRows),
-                            `label:en`= c("feature", glabels))
+                            occuranceGroup=character(gExpNumRows))
+  
+  `label:en` <- c("feature", glabels)
+  geneExpDict <- cbind(geneExpDict, `label:en`)
   
   #Data frame with values for categories tab in dictionary file
   geneExpCategories <- data.frame(table=character(),
                                   variable=character(),
                                   name=character(),
                                   code=character(),
-                                  missing=integer(),
-                                  `label:en`=character())
+                                  missing=integer())
+  
+  `label:en` <- character()
+  geneExpCategories <- cbind(geneExpCategories, `label:en`)
   
   #Creating dictionary and data files
   write.xlsx2(geneExpDict, "geneExp-dictionary.xls", sheetName = "Variables", 
@@ -130,16 +145,20 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
                           mimeType=character(pVarNum),
                           unit=character(pVarNum),
                           repeatable=pRepeatable,
-                          occuranceGroup=character(pVarNum),
-                          `label:en`= pVars)
+                          occuranceGroup=character(pVarNum))
+  
+  `label:en`<- pVars
+  phenoDict <- cbind(phenoDict, `label:en`)
   
   #Data frame with values for "categories" tab in dictionary file
   phenoCategories <- data.frame(table=character(),
                                 variable=character(),
                                 name=character(),
                                 code=character(),
-                                missing=integer(),
-                                `label:en`=character())
+                                missing=integer())
+  
+  `label:en`<-character()
+  phenoCategories <- cbind(phenoCategories, `label:en`)
   
   colnames(pDataSet) <- sub(":", "_", colnames(pDataSet))
   
