@@ -28,7 +28,7 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
     rownames(gDataSet) <-  1:length(featureNames(geneExpData))
     
     #-----Variables for creating Phenotype Files-----#
-    pDataSet <- cbind(samples=gSamples, pData(geneExpData))
+    pDataSet <- cbind(sample=gSamples, pData(geneExpData))
     rownames(pDataSet) <-  1:length(sampleNames(geneExpData))
     pVars <- c("sample", sub(":", "_", varLabels(geneExpData)))
     
