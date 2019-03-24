@@ -89,7 +89,7 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
                             mimeType=character(gExpNumRows),
                             unit=character(gExpNumRows),
                             repeatable=gRepeatable,
-                            occuranceGroup=character(gExpNumRows))
+                            occurrenceGroup=character(gExpNumRows))
   
   `label:en` <- c("feature", glabels)
   geneExpDict <- cbind(geneExpDict, `label:en`)
@@ -145,7 +145,7 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd()){
                           mimeType=character(pVarNum),
                           unit=character(pVarNum),
                           repeatable=pRepeatable,
-                          occuranceGroup=character(pVarNum))
+                          occurrenceGroup=character(pVarNum))
   
   `label:en`<- pVars
   phenoDict <- cbind(phenoDict, `label:en`)
