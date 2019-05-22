@@ -26,6 +26,8 @@ ds.lmFeature <- function(i, model, molecular.data, pheno.data, datasources){
   
   rownames(ans) <- rowNames
   
+  class(ans) <- c("dsMethy", class(ans))
+  
   return(ans)
   
 }

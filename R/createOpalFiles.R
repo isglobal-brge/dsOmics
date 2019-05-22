@@ -7,17 +7,18 @@
 ##' @param geneExpData an Expression Set object or name of genetic expression csv/txt file
 ##' @param phenoFile parameter used with csv/txt files to specify name of phenotype file
 ##' @param inputDIR optional parameter used with csv/txt files to specify directory containing data files
-##' @param estimateCellCounts optional parameter which determines whether epigenomic data is calculated and added to phenotype data file
+##' @param estimateCellCounts optional TRUE/FALSE parameter which determines whether epigenomic data is calculated and added to phenotype data file
 ##' @export
 ##' @examples
 ##' 
 ##' 
 ##' 
 
-createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimateCellCounts = FALSE){
+createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimateCellCounts = FALSE, cellTypeRef = "blood gse35069 complete"){
 
   require(Biobase)
   require(xlsx)
+  require(meffil)
   
   if(class(geneExpData) == "ExpressionSet"){
     
@@ -31,7 +32,9 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
     #-----Variables for creating Phenotype Files-----#
     pDataSet <- cbind(sample=gSamples, pData(geneExpData))
     rownames(pDataSet) <-  1:length(sampleNames(geneExpData))
-    pVars <- c("sample", sub(":", "_", varLabels(geneExpData)))
+    
+    #Removing special characters from phenotype variable names 
+    pVars <- c("sample", gsub(" |/|:", "_", varLabels(geneExpData)))
     
     #Variable for calculating epigenomic data
     cpgs <- exprs(geneExpData)
@@ -69,12 +72,37 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
     #-----Variables for creating Phenotype Files-----#
     
     pDataSet <- cbind(sample=gSamples, pDataSet) #Data frame with phenotype data
-    pVars <- sub(":", "_", colnames(pDataSet)) #List of phenotype variable names
+    pVars <- gsub(" |/|:", "_", colnames(pDataSet)) #List of phenotype variable names
     
     #Epigenomic data variables
     cpgs <- gDataSet[,-1]
     rownames(cpgs) <- gDataSet[,1]
     cpgs <- as.matrix(cpgs)
+  }
+  
+  #Calculating epigenomic variables
+  if(isTRUE(estimateCellCounts)){
+    
+    cellCounts <- tryCatch(
+      meffil.estimate.cell.counts.from.betas(cpgs, cell.type.reference = cellTypeRef, verbose = TRUE), 
+      
+      #Error handling function will return NULL to cellCounts object if an error is encountered
+      error=function(e){
+        message(paste(" ", "WARNING: Dataset provided cannot be used to estimate cell counts", 
+                      "Phenotype csv data file will be created without epigenomic variables", 
+                      "Set input argument estimateCellCounts = FALSE to avoid this warning", " ", sep="\n"))
+      })
+    
+    if(!is.null(cellCounts) ){
+      #Standardizing all epigenomic variables
+      cellCounts_scaled = scale(cellCounts)
+      colnames(cellCounts_scaled) = paste(colnames(cellCounts_scaled), "Scaled", sep="_")
+      
+      #Add epigenomic variables to phenotype data.frame
+      pDataSet <- cbind(pDataSet, cellCounts, cellCounts_scaled)
+      pVars <- append(pVars, c(colnames(cellCounts), colnames(cellCounts_scaled)))
+    }  
+    
   }
   
   #----------Gene Expression Dictionary and Data file----------#
@@ -103,13 +131,13 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
   geneExpDict <- cbind(geneExpDict, `label:en`)
   
   #Data frame with values for categories tab in dictionary file
-  geneExpCategories <- data.frame(table=character(),
-                                  variable=character(),
-                                  name=character(),
-                                  code=character(),
-                                  missing=integer())
+  geneExpCategories <- data.frame(table=NA,
+                                  variable=NA,
+                                  name=NA,
+                                  code=NA,
+                                  missing=NA)
   
-  `label:en` <- character()
+  `label:en` <- NA
   geneExpCategories <- cbind(geneExpCategories, `label:en`)
   
   #Creating dictionary and data files
@@ -144,6 +172,9 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
   #Determining the data type of each phenotype variable
   pVarTypes <- unlist(lapply(lapply(pDataSet, class), setPhenoVarType))
   
+  #Removing special characters from phenotype variable names 
+  colnames(pDataSet) <- gsub(" |/|:", "_", colnames(pDataSet))
+  
   #Phenotype dictionary file data frame
   phenoDict <- data.frame(table=ptableName, 
                           name=pVars, 
@@ -159,25 +190,14 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
   phenoDict <- cbind(phenoDict, `label:en`)
   
   #Data frame with values for "categories" tab in dictionary file
-  phenoCategories <- data.frame(table=character(),
-                                variable=character(),
-                                name=character(),
-                                code=character(),
-                                missing=integer())
+  phenoCategories <- data.frame(table=NA,
+                                variable=NA,
+                                name=NA,
+                                code=NA,
+                                missing=NA)
   
-  `label:en`<-character()
+  `label:en`<- NA
   phenoCategories <- cbind(phenoCategories, `label:en`)
-  
-  colnames(pDataSet) <- sub(":", "_", colnames(pDataSet))
-  
-  if(isTRUE(estimateCellCounts)){
-    
-    #Adding cell counts to phenotype data frame
-    cellcounts <- meffil.estimate.cell.counts.from.betas(cpgs, cell.type.reference = "blood gse35069 complete", verbose = TRUE)
-    pDataSet <- cbind(pDataSet, cellcounts)
-    
-  }
-  
   
   #Creating dictionary and data files
   write.xlsx2(phenoDict, "pheno-dictionary.xls", sheetName = "Variables", 
