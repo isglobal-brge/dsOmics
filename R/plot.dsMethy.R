@@ -28,8 +28,7 @@ plot.dsMethy <- function(x, ...){
   {
     o <- -log10(sort(x,decreasing=F))
     e <- -log10( 1:length(o)/length(o) )
-    names(o) <- names(x)
-    names(e) <- names(x)
+    names(e) <- names(o)
     plot(e,o, main=main, 
          xlab=expression(Expected~~-log[10](italic(p))),
          ylab=expression(Observed~~-log[10](italic(p))),
