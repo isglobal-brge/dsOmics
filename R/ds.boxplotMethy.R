@@ -5,22 +5,40 @@ ds.boxplotMethy <- function(cpg, phenoVar, molecular.data, pheno.data, datasourc
   cally <- paste0("returnDataByCondition(cpg=\'", cpg, "\', ", "phenoVar=\'", phenoVar, "\', " ,"molecular.data=", molecular.data, ", ", "pheno.data=", pheno.data,")")
   datashield.assign(datasources, 'methyl.data', as.symbol(cally))
   
-  #Retrieving names of phenotypic variable levels
-  phenoLevels = ds.names(x = 'methyl.data')[[1]]
+  #Retrieving names of phenotypic variable levels for each study
+  studyPhenoLevels = ds.names(x = 'methyl.data')
   
-  #Checking if a server side error was returned
-  if(any(phenoLevels %in% c("phenoLevelsError", "cpgError", "phenoVarError"))){
+  #Function which tests for errors returned from server side function in each study
+  errorCheck <- function(x){
+    return(which(c("phenoLevelsError", "cpgError", "phenoVarError") %in%  x))
+  }
+  
+  #Checking if a server side error was returned and printing corresponding message to console
+  if(any(unlist(lapply(studyPhenoLevels, errorCheck)))){
     
     errorMessages=list(paste0("The number of levels associated with the phenotypic variable exceeds what can be plot.\n", 
                            "Max number of phenotypic levels permitted = 10", sep=''),
-                    "The cpg site specified does not exist", "The phenotypic variable specified does not exist")
+                    "The cpg site specified does not exist in one or more of the studies", 
+                    "The phenotypic variable specified does not exist in one or more of the studies")
     
     message(paste(" ", "ERROR(S): ", 
-                  paste0(errorMessages[which(c("phenoLevelsError", "cpgError", "phenoVarError") %in% phenoLevels)], 
+                  paste0(errorMessages[unique((unlist(lapply(studyPhenoLevels, errorCheck))))], 
                          collapse = "\n"),
                   " ", sep="\n"))
     
   }else{
+    
+    #Checking that the phenotypic levels returned for each study match
+    for(i in 1:(length(studyPhenoLevels)-1)){
+      if(!identical(studyPhenoLevels[[i]], studyPhenoLevels[[i+1]])){
+        return(message(paste0(" ", 
+                              paste0("ERROR: ", "Phenotypic levels for variable '", phenoVar, 
+                                     "' do not match across all studies", sep = ""), 
+                              " ", sep="\n")))
+      }
+    }
+    
+    phenoLevels = studyPhenoLevels[[1]]
     
     #Creating a list to store summary data for each phenotypic level
     plotList = vector("list", length(phenoLevels))
@@ -33,11 +51,10 @@ ds.boxplotMethy <- function(cpg, phenoVar, molecular.data, pheno.data, datasourc
       ds.assign(toAssign = paste('methyl.data$', i, sep = ''), newobj = 'phenoLeveliData')
       ds.asNumeric(x='phenoLeveliData', newobj = 'numPhenoLeveliData')
       
-      #NB:ds.summary(x) returns an error if length(x) < 5
+      #NB:ds.quantileMean returns an error if length(x) < 5
       if(ds.length(x='numPhenoLeveliData') >= 5){
         
-        summaryData = ds.summary(x='numPhenoLeveliData')
-        quantData = summaryData$study1$`quantiles & mean`
+        quantData = ds.quantileMean(x='numPhenoLeveliData', type = 'combine')
         
         #Extracting relevant quantile data for boxplot
         plotList[[counter]] = list(stats = matrix(c(quantData["5%"], quantData["25%"], quantData["50%"], 
