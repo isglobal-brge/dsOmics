@@ -1,30 +1,34 @@
-ds.lmFeature <- function(i, model, molecular.data, pheno.data, datasources){
+ds.lmFeature <- function(cpgs, model, molecular.data, pheno.data, datasources, mc.cores = 1){
 
   mt <- as.formula(model)
   vars <- all.vars(mt)
   
-  ans <- matrix(0, ncol=3, nrow=length(i))
-  colnames(ans) <- c("beta", "s.e.", "p.value")
-  rowNames <- c()
-  
-  for (k in 1:length(i)){
-  
-  cally <- paste0("lmFeatureDS(i=", i[k], ", ", "model=", model, ", " ,"molecular.data=", molecular.data, ", ", "pheno.data=", pheno.data,")")
-  datashield.assign(datasources, 'data.sel', as.symbol(cally))
-  
-  dep <- paste(vars, collapse="+")
-  colnames <- ds.colnames('data.sel')
-  feature <- colnames$study1[1]
-  mm <- as.formula(paste(feature, "~", dep))
-  
-  mod <- ds.glm.o(mm, family='gaussian', data='data.sel')
-  
-  ans[k,] <- mod$coefficients[2, c(1,2,4)]
-  rowNames[k] <- feature
-  
+  lmFeatureGLM <- function(k, cpgs, model, molecular.data, pheno.data, datasources, vars){
+    
+    #Creating and executing function call which returns all methylation data related 
+    #to cpg site cpgs[k] and the phenotypic data corresponding to variables specified in 'model' formula
+    cally <- paste0("lmFeatureDS(i=", cpgs[k], ", ", "model=", model, ", " ,"molecular.data=", molecular.data, ", ", "pheno.data=", pheno.data,")")
+    datashield.assign(datasources, 'data.sel', as.symbol(cally))
+    
+    dep <- paste(vars, collapse="+")
+    colnames <- ds.colnames('data.sel')
+    feature <- colnames$study1[1]
+    mm <- as.formula(paste(feature, "~", dep))
+    
+    mod <- ds.glm.o(mm, family='gaussian', data='data.sel')
+    
+    metrics = as.data.frame(mod$coefficients[2, c(1,2,4)])
+    names(metrics) = feature
+    
+   return(metrics)
+    
   }
   
-  rownames(ans) <- rowNames
+  ans = t(as.data.frame(mclapply(1:length(cpgs), lmFeatureGLM, 
+                                 cpgs, model, molecular.data, pheno.data, datasources, vars, 
+                                 mc.cores = mc.cores))) 
+  
+  colnames(ans) <- c("beta", "s.e.", "p.value")
   
   class(ans) <- c("dsMethy", class(ans))
   
