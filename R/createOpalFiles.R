@@ -7,14 +7,19 @@
 ##' @param geneExpData an Expression Set object or name of genetic expression csv/txt file
 ##' @param phenoFile parameter used with csv/txt files to specify name of phenotype file
 ##' @param inputDIR optional parameter used with csv/txt files to specify directory containing data files
-##' @param estimateCellCounts optional TRUE/FALSE parameter which determines whether epigenomic data is calculated and added to phenotype data file
+##' @param estimateCellCounts optional TRUE/FALSE parameter which determines whether epigenomic data is calculated and added to phenotypic data file
+##' @param cellTypeRef cell type reference used to estimate cell counts
+##' @param geneExpTableName optional parameter which sets the gene expression table name in Opal
+##' @param phenoTableName optional parameter which sets the phenotype data table name in Opal
 ##' @export
 ##' @examples
 ##' 
 ##' 
 ##' 
 
-createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimateCellCounts = FALSE, cellTypeRef = "blood gse35069 complete"){
+createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimateCellCounts = FALSE, 
+                            cellTypeRef = "blood gse35069 complete", geneExpTableName = "geneExp",
+                            phenoTableName = "pheno"){
 
   require(Biobase)
   require(xlsx)
@@ -110,7 +115,7 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
   gExpNumRows <- SampleNum + 1 #Number of rows in gene expression dictionary file
   
   #Set values for gene expression dictionary variables
-  gtableName <- rep("geneExp", gExpNumRows) 
+  gtableName <- rep(geneExpTableName, gExpNumRows) 
   gValueType <- rep("decimal", SampleNum)
   gEntType <- rep("Participant", gExpNumRows)
   glabels <- rep("sample", SampleNum)
@@ -141,19 +146,19 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
   geneExpCategories <- cbind(geneExpCategories, `label:en`)
   
   #Creating dictionary and data files
-  write.xlsx2(geneExpDict, "geneExp-dictionary.xls", sheetName = "Variables", 
+  write.xlsx2(geneExpDict, paste0(geneExpTableName, "-dictionary.xls", sep=""), sheetName = "Variables", 
               col.names = TRUE, row.names = FALSE, append = FALSE)
-  write.xlsx2(geneExpCategories, "geneExp-dictionary.xls", sheetName = "Categories", 
+  write.xlsx2(geneExpCategories, paste0(geneExpTableName, "-dictionary.xls", sep=""), sheetName = "Categories", 
               col.names = TRUE, row.names = FALSE, append = TRUE)
   
-  write.csv(gDataSet, "geneExp.csv", na = "")
+  write.csv(gDataSet, paste0(geneExpTableName, ".csv", sep=""), na = "")
   
   #------------------------------------------------------------#
   
   #----------Phenotype Dictionary and Data file----------#
   
   pVarNum <- length(pVars) #Number of phenotype variables  
-  ptableName <- rep("pheno", pVarNum) #Set phenotype table name
+  ptableName <- rep(phenoTableName, pVarNum) #Set phenotype table name
   pEntType <- rep("Participant", pVarNum) #Set value for entityType
   pRepeatable <- rep(0, pVarNum) #Set value for repeatable
   
@@ -200,12 +205,12 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
   phenoCategories <- cbind(phenoCategories, `label:en`)
   
   #Creating dictionary and data files
-  write.xlsx2(phenoDict, "pheno-dictionary.xls", sheetName = "Variables", 
+  write.xlsx2(phenoDict, paste0(phenoTableName, "-dictionary.xls"), sheetName = "Variables", 
               col.names = TRUE, row.names = FALSE, append = FALSE)
-  write.xlsx2(phenoCategories, "pheno-dictionary.xls", sheetName = "Categories", 
+  write.xlsx2(phenoCategories, paste0(phenoTableName, "-dictionary.xls"), sheetName = "Categories", 
               col.names = TRUE, row.names = FALSE, append = TRUE)
   
-  write.csv(pDataSet, "pheno.csv", na = "")
+  write.csv(pDataSet, paste0(phenoTableName, ".csv"), na = "")
   
   #------------------------------------------------------#
   
