@@ -1,0 +1,17 @@
+Package: dsOmics
+Type: Package
+Title: What the package does (short line)
+Version: 0.0.1
+Date: 2019-06-29
+Authors@R: c(person("Deroshan", "Padotan", , "d.padotan@gmail.com ", role = "aut"),
+  person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
+Description: To be supplied
+Depends:
+    R (>= 3.5.0),
+    rJava
+License: Artistic-2.0
+biocViews: DNAMethylation, Microarray, Software, WholeGenome
+LazyData: true
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1
+Encoding: UTF-8

@@ -13,6 +13,7 @@ author:
   - *uab
   email: juanr.gonzalez@isglobal.org
 date: "`r Sys.Date()`"
+package: "`r pkg_ver("dsOmics")`"
 output:
   BiocStyle::html_document:
     number_sections: true
