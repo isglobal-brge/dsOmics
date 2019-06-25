@@ -13,7 +13,7 @@ author:
   - *uab
   email: juanr.gonzalez@isglobal.org
 date: "`r Sys.Date()`"
-package: "`r pkg_ver("dsOmics")`"
+package: "`r pkg_ver('dsOmics')`"
 output:
   BiocStyle::html_document:
     number_sections: true
@@ -29,10 +29,10 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-source("../createOpalFiles.R")
-source("../ds.lmFeature.R")
-source("../plot.dsMethy.R")
-source("../ds.boxplotMethy.R")
+source("../R/createOpalFiles.R")
+source("../R/ds.lmFeature.R")
+source("../R/plot.dsMethy.R")
+source("../R/ds.boxplotMethy.R")
 ```
 
 # Purpose
@@ -92,7 +92,7 @@ For more details about the contents of an ExpressionSet data object and how to u
 First we load the dataset into the R workspace and view its contents. From this we can see basic information such as the number of features and samples contained within the dataset as well as descriptive information about the phenotypic and feature data captured. 
 
 ```{r loadExpressionSetExample, message=FALSE, warning=FALSE}
-load("../../data/GSE80970.Rdata")
+load("../data/GSE80970.Rdata")
 gse80970.sel
 ```
 
@@ -123,8 +123,8 @@ knitr::include_graphics("csvFilesExamples.jpg")
 The csv/txt files can be processed by the *createOpalFiles* function by specifying them as input arguments to the function as shown below. 
 
 ```{r creatOpalFilesTestCSV, message=FALSE, warning=FALSE, eval=FALSE, eval=FALSE}
-createOpalFiles("../../data/MethylationDataExample55.csv", 
-                "../../data/SampleAnnotationExample55.csv")
+createOpalFiles("../data/MethylationDataExample55.csv", 
+                "../data/SampleAnnotationExample55.csv")
 ```
 
 The same four output files generated for the ExpressionSet case will also be created by the function when processing csv/txt files. 
