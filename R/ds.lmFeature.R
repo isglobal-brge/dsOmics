@@ -1,7 +1,23 @@
-ds.lmFeature <- function(cpgs, model, molecular.data, pheno.data, datasources, mc.cores = 1){
-
+ds.lmFeature <- function(cpgs=NULL, model, molecular.data, pheno.data, datasources, mc.cores = 1){
+  
   mt <- as.formula(model)
   vars <- all.vars(mt)
+  
+  #Verifying that the number of features is the same for all studies
+  studyCPGnums = ds.dim(molecular.data)
+  for(i in 1:(length(studyCPGnums)-1)){
+    if(!(studyCPGnums[[i]][1] == studyCPGnums[[i+1]][1])){
+      return(message(paste(" ", "ERROR: The number of features (cpg sites) do not match across all studies",
+                           " ", sep="\n")))
+    }
+  }
+  
+  #Setting the number of cpgs to loop over as the total number of 
+  #features in the studies if no indices are specified
+  if(is.null(cpgs)){
+    cpgs = 1:studyCPGnums[[1]][1]
+  }
+  
   
   lmFeatureGLM <- function(k, cpgs, model, molecular.data, pheno.data, datasources, vars){
     
@@ -20,7 +36,7 @@ ds.lmFeature <- function(cpgs, model, molecular.data, pheno.data, datasources, m
     metrics = as.data.frame(mod$coefficients[2, c(1,2,4)])
     names(metrics) = feature
     
-   return(metrics)
+    return(metrics)
     
   }
   
@@ -29,6 +45,9 @@ ds.lmFeature <- function(cpgs, model, molecular.data, pheno.data, datasources, m
                                  mc.cores = mc.cores))) 
   
   colnames(ans) <- c("beta", "s.e.", "p.value")
+  
+  #Ordering matrix by ascending p.value
+  ans = ans[order(ans[, 'p.value']), ]
   
   class(ans) <- c("dsMethy", class(ans))
   
