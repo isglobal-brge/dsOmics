@@ -186,7 +186,10 @@ In addition to specifying the gene expression and phenotypic data sets, phenotyp
  - **cpgs**: A vector of integer values which indicate the indices of specific cpg sites that should be analysed (by default all cpgs in the studies are analysed)
  - **mc.cores**: A parameter that allows the user to specify the number of CPU cores to use during parallel processing. It should be noted that this capability is only available when the function is run on a linux machine. In the case of windows machines only 1 core is allowed which the parameter defaults to.  
  
- 
+### Dependencies
+
+For *ds.lmFeature* to work the server side function ***lmFeatureDS*** must be uploaded to every Opal server storing data that will be analysed. Instructions for uploading a server side function to Opal can be found [here](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943483/How+to+upload+a+server-side+function).
+
 ### Additional Notes
 
 The function assumes that the number of CpG sites is the same between studies being co-analysed. If a difference is found in the number of CpG sites the regression analysis will not be performed and an error will be thrown. 
@@ -206,7 +209,7 @@ plot(lmFeatureOut)
 
 ## ds.boxplotMethy
 
-This function generates a boxplot summary of methylation data by phenotypic condition for a specified CpG site. If multiple studies are analysed the boxlplots provide representations of the pooled data. 
+This function generates a boxplot summary of methylation data by phenotypic condition for a specified CpG site. If multiple studies are analysed the boxplots provide representations of the pooled data. 
 
 The function takes as inputs the name of a CpG site and a phenotypic variable along with the DataSHIELD variables denoting the data to analyse and data sources. It outputs a boxplot summary of the methylation values for each level of the phenotypic variable as illustrated in the example below.  
 
@@ -223,5 +226,9 @@ ds.boxplotMethy(cpg = "cg21477232", phenoVar="casecon", molecular.data='M',
 ```{r, boxplotQuantiles, echo=FALSE,out.width="65%",fig.cap="boxplotMethy Boxplot Quantiles",fig.align='center'}
 knitr::include_graphics("boxplotExpln.jpg")
 ```
+
+### Dependencies
+
+*ds.boxplotMethy* requires that the server side function ***returnDataByCondition*** be uploaded to every Opal server storing data that will be analysed. Instructions for uploading a server side function to Opal can be found [here](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943483/How+to+upload+a+server-side+function).
 
 # References
