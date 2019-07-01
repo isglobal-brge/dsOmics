@@ -1,3 +1,22 @@
+##' Performing a linear regression analysis on pooled data from multiple studies for every CpG site
+##' 
+##' Function fits a generalized linear model to methylation data for each feature (CpG site) 
+##' in the data sets considered, using user specified phenotypic variables as covariates
+##' Outputs a matrix containing a beta value, standard error and p-value for each CpG site
+##' @title Linear regression analysis of pooled data for each CpG site in study
+##' @param cpgs an optional parameter input as a vector of integer values which indicates the indices of specific 
+##' CpG sites that should be analysed. By default all CpG sites are analysed
+##' @param model list of phenotypic variables to use as covariates in the regression analysis in the form: 
+##' "phenoVar1 ~ phenoVar2 ~ phenoVar3 ... ~ phenoVarN"
+##' @param molecular.data name of the DataSHIELD object to which the methylation data set has been assigned
+##' @param pheno.data name of the DataSHIELD object to which the phenotype data set has been assigned
+##' @param datasources Opal object or list of opal objects denoting the opal server(s) information
+##' @param mc.cores optional parameter that allows the user to specify the number of CPU cores to use during 
+##' parallel processing. Argument can only be > 1 when the function is run on a linux machine
+##' @export
+##' @examples
+##' 
+
 ds.lmFeature <- function(cpgs=NULL, model, molecular.data, pheno.data, datasources, mc.cores = 1){
   
   mt <- as.formula(model)

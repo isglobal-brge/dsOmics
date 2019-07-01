@@ -2,19 +2,18 @@
 ##' 
 ##' Function processes an Expression Set object or csv/txt files with
 ##' genetic expression and related phenotype data to create xls dictionary
-##' and csv data files used for Opal data table creation in DataShield. 
+##' and csv data files used for Opal data table creation in DataSHIELD. 
 ##' @title Creating genetic expression and phenotype dictionary and data files
 ##' @param geneExpData an Expression Set object or name of genetic expression csv/txt file
 ##' @param phenoFile parameter used with csv/txt files to specify name of phenotype file
 ##' @param inputDIR optional parameter used with csv/txt files to specify directory containing data files
-##' @param estimateCellCounts optional TRUE/FALSE parameter which determines whether epigenomic data is calculated and added to phenotypic data file
+##' @param estimateCellCounts optional TRUE/FALSE parameter which determines whether epigenomic data is calculated 
+##' and added to phenotypic data file
 ##' @param cellTypeRef cell type reference used to estimate cell counts
 ##' @param geneExpTableName optional parameter which sets the gene expression table name in Opal
 ##' @param phenoTableName optional parameter which sets the phenotype data table name in Opal
 ##' @export
 ##' @examples
-##' 
-##' 
 ##' 
 
 createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimateCellCounts = FALSE, 
