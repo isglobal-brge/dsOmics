@@ -45,12 +45,14 @@ ds.boxplotMethy <- function(cpg, phenoVar, molecular.data, pheno.data, datasourc
   }else{
     
     #Checking that the phenotypic levels returned for each study match
-    for(i in 1:(length(studyPhenoLevels)-1)){
-      if(!identical(studyPhenoLevels[[i]], studyPhenoLevels[[i+1]])){
-        return(message(paste0(" ", 
-                              paste0("ERROR: ", "Phenotypic levels for variable '", phenoVar, 
-                                     "' do not match across all studies", sep = ""), 
-                              " ", sep="\n")))
+    if(length(studyPhenoLevels)>1){
+      for(i in 1:(length(studyPhenoLevels)-1)){
+        if(!identical(studyPhenoLevels[[i]], studyPhenoLevels[[i+1]])){
+          return(message(paste0(" ", 
+                                paste0("ERROR: ", "Phenotypic levels for variable '", phenoVar, 
+                                       "' do not match across all studies", sep = ""), 
+                                " ", sep="\n")))
+        }
       }
     }
     
