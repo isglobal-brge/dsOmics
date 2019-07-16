@@ -1,6 +1,8 @@
-lmFeatureDS <- function(i, model, molecular.data, pheno.data){
+lmFeatureDS <- function(cpgIndex, model, molecular.data, pheno.data){
   
-  sel <- molecular.data$feature[i]
+  # ASSIGN FUNCTION
+  
+  sel <- molecular.data$feature[cpgIndex]
   
   mt <- as.formula(model)
   vars <- all.vars(mt)
@@ -12,4 +14,3 @@ lmFeatureDS <- function(i, model, molecular.data, pheno.data){
   return(data.sel)
   
 }
-# ASSIGN FUNCTION
