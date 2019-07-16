@@ -29,15 +29,11 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-source("../R/createOpalFiles.R")
-source("../R/ds.lmFeature.R")
-source("../R/plot.dsMethy.R")
-source("../R/ds.boxplotMethy.R")
 ```
 
 # Purpose
 
-The purpose of this package is to provide a set of functions for performing statistical analysis of epigenomic data stored on federated databases. In particular the package utilizes DataSHIELD infrastructure which is a software solution that allows for the simultaneous co-analysis of data from multiple studies (stored on different databases), without the need to physically pool data or disclose sensitive information [@wilson_datashield_2017].  
+The purpose of this package is to provide a set of functions for performing statistical analyses of epigenomic data stored on federated databases. In particular the package utilizes DataSHIELD infrastructure which is a software solution that allows for the simultaneous co-analysis of data from multiple studies (stored on different databases), without the need to physically pool data or disclose sensitive information [@wilson_datashield_2017].  
 
 At a high level DataSHIELD is set up as a client-server model where each server houses the data for a particular study. A request is made from the client to run specific functions on the remote servers where the analysis is performed. Non-sensitive and pre-approved summary statistics are returned from each study to the client where they can be combined for an overall analysis. An overview of what a single-site DataSHIELD architecture would look like is illustrated in Figure 1. 
 
@@ -66,15 +62,16 @@ library(parallel)
 library(Biobase)
 library(xlsx)
 library(meffil)
+library(dsOmics)
 ```
 
 **Notes**:
 
- - In order to install the '*xlsx*' package you must have Java installed on your machine and have pre-loaded the '*rJava*' package as well.  
+ - In order to install the `xlsx` package you must have Java installed on your machine and have pre-loaded the `rJava` package as well.  
  
- - The '*meffil*' package can be downloaded using '*devtools::install_github("perishky/meffil")*' (assumes '*devtools*' has already been loaded in R).
+ - The `meffil` package can be downloaded using `devtools::install_github("perishky/meffil")` (assumes `devtools` has already been loaded in R).
  
- - Instructions for loading the '*opal*' and DataSHIELD packages (prefix 'ds') can be found on the [DataSHIELD Wiki](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943395/DataSHIELD+training)
+ - Instructions for loading the `opal` and DataSHIELD packages (prefix 'ds') can be found on the [DataSHIELD Wiki](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943395/DataSHIELD+training)
  
  
 # Functions
@@ -96,7 +93,7 @@ load("../data/GSE80970.Rdata")
 gse80970.sel
 ```
 
-Once the data has been loaded, all that is required to create the Opal files is to pass the name of the ExpressionSet object into the *createOpalFiles* function as an input argument. 
+Once the data has been loaded, all that is required to create the Opal files is to pass the name of the ExpressionSet object into the `createOpalFiles` function as an input argument. 
 
 ```{r creatOpalFilesTestES, message=FALSE, warning=FALSE, eval=FALSE}
 createOpalFiles(gse80970.sel)
@@ -112,7 +109,7 @@ If no errors are returned check the current working directory to verify the file
 
 ### csv/txt File Example
 
-The *createOpalFiles* function is also able to handle and process epigenomic data stored in a csv or txt file. In this case the function expects a minimum of two inputs; the name of the file containing the gene expression data and the name of the file containing the phenotypic data. Both files must be in the same format (csv or txt) and correctly stuctured. 
+The `createOpalFiles` function is also able to handle and process epigenomic data stored in a csv or txt file. In this case the function expects a minimum of two inputs; the name of the file containing the gene expression data and the name of the file containing the phenotypic data. Both files must be in the same format (csv or txt) and correctly stuctured. 
 
 In both formats the gene expression file must have the samples across columns and the features of the study down the rows. The phenotype data file must have the phenotypic variables across columns. Example sections of both a gene expression and phenotype data file are illustrated in Figure 2 for the csv format. The same structure applies to txt files but with tab spaced values instead of commas. 
 
@@ -120,7 +117,7 @@ In both formats the gene expression file must have the samples across columns an
 knitr::include_graphics("csvFilesExamples.jpg")
 ```
 
-The csv/txt files can be processed by the *createOpalFiles* function by specifying them as input arguments to the function as shown below. 
+The csv/txt files can be processed by the `createOpalFiles` function by specifying them as input arguments to the function as shown below. 
 
 ```{r creatOpalFilesTestCSV, message=FALSE, warning=FALSE, eval=FALSE, eval=FALSE}
 createOpalFiles("../data/MethylationDataExample55.csv", 
@@ -141,29 +138,32 @@ In addition to specifying the ExpressionSet object or csv/txt file to be process
 
 ### Additional Notes  
 
-White space and special characters ("/" and ":") present in phenotypic variable names are replaced by "_" characters within the *createOpalFiles* function. This is done in order to make the column names of the phenotypic data tables compliant with the Opal database requirements in DataSHIELD. As a result when searching for specific phenotypic variables within the Opal data tables or referencing phenotypic variables in other functions that access the tables, this change should be taken into account.
+White space and special characters ("/" and ":") present in phenotypic variable names are replaced by "_" characters within the `createOpalFiles` function. This is done in order to make the column names of the phenotypic data tables compliant with the Opal database requirements in DataSHIELD. As a result when searching for specific phenotypic variables within the Opal data tables or referencing phenotypic variables in other functions that access the tables, this change should be taken into account.
  
-Once the input files for Opal have been created by the *createOpalFiles* function they can be uploaded as shown in the following instructions: [Using Your Own Data in Opal](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943489/Using+your+own+data+in+Opal#UsingyourowndatainOpal-CreatinganewOpalproject)
+Once the input files for Opal have been created by the `createOpalFiles` function they can be uploaded as shown in the following instructions: [Using Your Own Data in Opal](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943489/Using+your+own+data+in+Opal#UsingyourowndatainOpal-CreatinganewOpalproject)
 
 ## ds.lmFeature
 
-This function fits a generalized linear model to methylation data for each feature (CpG site) in the data sets considered, using user specified phenotypic variables as covariates. The function outputs a matrix containing a $\beta$ value, standard error and p-value for each CpG site. 
+This function fits a generalized linear model to methylation data for each feature (CpG site) in the data sets considered, with user specified phenotypic variables as covariates. For case-control studies where the correlation between methylation and a disease state is being assessed, the independent variable is the level of methylation measured and the first covariate is the binary case-control variable indicating whether or not a sample tests positive for the disease. Any additional covariates are present in the model to remove the effects of those phenotypic variables specified. The function outputs a matrix containing the $\beta$ coefficient, standard error, p-value and adjusted p-value (multiple comparisons problem correction) associated with the first covariate in the model (usually casecon) for each CpG site. 
 
-In the following example demonstrating how *ds.lmFeature* works, data has been pre-loaded into Opal tables on two seperate servers. 
+In the following example demonstrating how `ds.lmFeature` works, data has been pre-loaded into Opal tables on two seperate servers. The data sets measure differential DNA methylation in patients with Alzheimer's disease compared to control subjects and their GEO accession numbers are GSE80970 and GSE66351. It should be noted that the GSE80970 data set contains measurements for 520 CpG sites while the GSE66351 data set only captures measurements for the first 500 of those same sites. As a result, only measurements for the common 500 CpG sites were taken from each study and uploaded onto the Opal servers for analysis.
 
 First we assign names to the datasets on each server ("study1" and "study2"), login to the servers and assign the datasets to R symbols. In this case the combined gene expression data is assigned to 'M' and the phenotypic data is assigned to 'P'. 
 
 ```{r dslogin, message=FALSE, warning=FALSE}
+#Opal server, data tables and login information
 server <- c("study1", "study2")
 url <- c("http://192.168.56.100:8080", "http://192.168.56.101:8080")
-table.m <- c("OMICS.geneExp1", "OMICS.geneExp2")
+table.m <- c("OMICS.GSE80970","OMICS.GSE66351")
 logindata <- data.frame(server, url, user="administrator",
                         password="datashield_test&", table=table.m)
+
+#Logging into Opal servers and assigning data to R symbols
 opals <- datashield.login(logins=logindata, assign=TRUE, symbol='M')
 datashield.assign(opals, "P", "OMICS.pheno")
 ```
 
-Both the gene expression and phenotypic data are passed into the function as R symbols along with the phenotypic variables used as covariates in the regression (in a formula format).  
+Both the expression and phenotypic data are passed into the function as R symbols along with the phenotypic variables used as covariates in the linear regression (in a formula format).  
 ```{r dslmFeatureFullCall, eval=FALSE}
 ds.lmFeature(model='casecon ~ Sex', molecular.data='M', pheno.data='P', 
              datasources=opals)
@@ -185,10 +185,12 @@ In addition to specifying the gene expression and phenotypic data sets, phenotyp
 
  - **cpgs**: A vector of integer values which indicate the indices of specific cpg sites that should be analysed (by default all cpgs in the studies are analysed)
  - **mc.cores**: A parameter that allows the user to specify the number of CPU cores to use during parallel processing. It should be noted that this capability is only available when the function is run on a linux machine. In the case of windows machines only 1 core is allowed which the parameter defaults to.  
+ - **type.p.adj**: The method used in the multiple comparisons problem correction to compute the adjusted p-value for each CpG site. Default method is "fdr". Run `p.ajust.methods` function for full list of available methods. 
+ - **cellCountsAdjust**: TRUE/FALSE parameter which indicates whether or not the linear regression models should be adjusted for the estimated cell counts by including the variables in the models. It should be noted that this assumes that the Opal pheno tables for every study include the necessary estimated cell count data originally computed when running the `createOpalFiles` function.  
  
 ### Dependencies
 
-For *ds.lmFeature* to work the server side function ***lmFeatureDS*** must be uploaded to every Opal server storing data that will be analysed. Instructions for uploading a server side function to Opal can be found [here](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943483/How+to+upload+a+server-side+function).
+For `ds.lmFeature` to work the server side function `lmFeatureDS` must be uploaded to every Opal server storing data that will be analysed. Instructions for uploading a server side function to Opal can be found [here](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943483/How+to+upload+a+server-side+function).
 
 ### Additional Notes
 
@@ -196,9 +198,9 @@ The function assumes that the number of CpG sites is the same between studies be
 
 ## plot.dsMethy
 
-This function produces a qq-plot of the observed vs expected p-values (with confidence bands) output by the *ds.lmFeature* function. *plot.dsMethy* is an extension of the generic R *plot* function and takes as an input *ds.Methy* type objects (one of the classes assigned to the output matrices from *ds.lmFeature*).  
+This function produces a Q-Q plot of the observed vs expected p-values (with confidence bands) output by the `ds.lmFeature` function. A Q-Q plot provides a visual means of verifying that a set of data points is likely to have come from a known distribution. In this case we are assessing whether the observed p-values from the linear regressions performed deviate from a uniform distribution (expected p-values) which signifies the null hypothesis of no associations between CpG site methylations and the condition being studied. `plot.dsMethy` is an extension of the generic R `plot` function and takes as an input **ds.Methy** type objects (one of the classes assigned to the output matrices from `ds.lmFeature`).  
 
-A simple example of a qq-plot generated by the function is shown below for the first 40 CpG sites of the pre-uploaded data.
+A simple example of a Q-Q plot generated by the function is shown below for the first 40 CpG sites of the pre-uploaded data.
 
 ```{r plotMethyTest, message=FALSE, warning=FALSE}
 lmFeatureOut = ds.lmFeature(cpgs=1:40, model='casecon ~ Sex', molecular.data='M', 
@@ -213,14 +215,14 @@ This function generates a boxplot summary of methylation data by phenotypic cond
 
 The function takes as inputs the name of a CpG site and a phenotypic variable along with the DataSHIELD variables denoting the data to analyse and data sources. It outputs a boxplot summary of the methylation values for each level of the phenotypic variable as illustrated in the example below.  
 
-The data used for this example is the same as that referenced in the *ds.lmFeature* section and hence none of the initialisation commands for specifying the DataSHIELD servers and login information are shown prior to running the *ds.boxplotMethy* call. 
+The data used for this example is the same as that referenced in the `ds.lmFeature` section and hence none of the initialisation commands for specifying the DataSHIELD servers and login information are shown prior to running the `ds.boxplotMethy` call but would usually be required. 
 
 ```{r boxplotMethyTest, message=FALSE, warning=FALSE}
 ds.boxplotMethy(cpg = "cg21477232", phenoVar="casecon", molecular.data='M', 
                 pheno.data='P', datasources=opals)
 ```
 
-**NB**: Due to in-built DataSHIELD restrictions preventing individual level data from being returned to a client, boxplots generated by *ds.boxplotMethy* do not indicate the median, min or max values as typical boxplot charts would. The quantiles represented by *ds.boxplotMethy* boxplots are explained in Figure 3. 
+**NB**: Due to in-built DataSHIELD restrictions preventing individual level data from being returned to a client, boxplots generated by `ds.boxplotMethy` do not indicate the median, min or max values as typical boxplot charts would. The quantiles represented by `ds.boxplotMethy` boxplots are explained in Figure 3. 
 
 
 ```{r, boxplotQuantiles, echo=FALSE,out.width="65%",fig.cap="boxplotMethy Boxplot Quantiles",fig.align='center'}
@@ -229,6 +231,6 @@ knitr::include_graphics("boxplotExpln.jpg")
 
 ### Dependencies
 
-*ds.boxplotMethy* requires that the server side function ***returnDataByCondition*** be uploaded to every Opal server storing data that will be analysed. Instructions for uploading a server side function to Opal can be found [here](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943483/How+to+upload+a+server-side+function).
+`ds.boxplotMethy` requires that the server side function `returnDataByCondition` be uploaded to every Opal server storing data that will be analysed. Instructions for uploading a server side function to Opal can be found [here](https://data2knowledge.atlassian.net/wiki/spaces/DSDEV/pages/12943483/How+to+upload+a+server-side+function).
 
 # References

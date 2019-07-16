@@ -5,14 +5,14 @@
 \title{Linear regression analysis of pooled data for each CpG site in study}
 \usage{
 ds.lmFeature(cpgs = NULL, model, molecular.data, pheno.data, datasources,
-  mc.cores = 1)
+  mc.cores = 1, type.p.adj = "fdr", cellCountsAdjust = FALSE)
 }
 \arguments{
 \item{cpgs}{an optional parameter input as a vector of integer values which indicates the indices of specific 
 CpG sites that should be analysed. By default all CpG sites are analysed}
 
 \item{model}{list of phenotypic variables to use as covariates in the regression analysis in the form: 
-"phenoVar1 ~ phenoVar2 ~ phenoVar3 ... ~ phenoVarN"}
+"phenoVar1 ~ phenoVar2 + phenoVar3 ... + phenoVarN"}
 
 \item{molecular.data}{name of the DataSHIELD object to which the methylation data set has been assigned}
 
@@ -22,6 +22,13 @@ CpG sites that should be analysed. By default all CpG sites are analysed}
 
 \item{mc.cores}{optional parameter that allows the user to specify the number of CPU cores to use during 
 parallel processing. Argument can only be > 1 when the function is run on a linux machine}
+
+\item{type.p.adj}{multiple comparison correction method. Default 'fdr'}
+
+\item{cellCountsAdjust}{optional TRUE/FALSE parameter which indicates whether or not the linear regression
+models should be adjusted for the estimated cell counts by including the variables in the models.
+NOTE: This assumes that the Opal pheno tables for every study include the necessary estimated cell count data 
+originally computed when running the createOpalFiles function}
 }
 \description{
 Performing a linear regression analysis on pooled data from multiple studies for every CpG site
