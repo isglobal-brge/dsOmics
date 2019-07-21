@@ -84,7 +84,7 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
     cpgs <- as.matrix(cpgs)
   }
   
-  #Calculating epigenomic variables
+  #Computing cell counts
   if(isTRUE(estimateCellCounts)){
     
     cellCounts <- tryCatch(
@@ -98,11 +98,11 @@ createOpalFiles <- function(geneExpData, phenoFile, inputDIR = getwd(), estimate
       })
     
     if(!is.null(cellCounts) ){
-      #Standardizing all epigenomic variables
+      #Standardizing all cell counts
       cellCounts_scaled = scale(cellCounts)
       colnames(cellCounts_scaled) = paste(colnames(cellCounts_scaled), "Scaled", sep="_")
       
-      #Add epigenomic variables to phenotype data.frame
+      #Add cell count variables to phenotype data.frame
       pDataSet <- cbind(pDataSet, cellCounts, cellCounts_scaled)
       pVars <- append(pVars, c(colnames(cellCounts), colnames(cellCounts_scaled)))
     }  
