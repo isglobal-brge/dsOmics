@@ -54,7 +54,7 @@ returnDataByCondition <- function(cpg, phenoVar, molecular.data, pheno.data){
       #Retrieving methlyation values of each sample corresponding to specified 
       #level of phenotypic variable (only for denoted CpG site)
       methyl.data[[k]] = t(molecular.data[which(molecular.data$feature==cpg), 
-                                          names(molecular.data) %in% phenoSampleNames])
+                                          which(names(molecular.data) %in% phenoSampleNames)])
       
     }
     
