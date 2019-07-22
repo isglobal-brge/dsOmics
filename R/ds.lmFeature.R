@@ -84,7 +84,7 @@ ds.lmFeature <- function(cpgs=NULL, model, molecular.data, pheno.data, datasourc
     
     dep <- paste(vars, collapse="+")
     colnames <- ds.colnames('data.sel')
-    feature <- colnames[[1]][1]
+    feature <- colnames[[1]][2]
     mm <- as.formula(paste(feature, "~", dep))
     
     mod <- ds.glm.o(mm, family='gaussian', data='data.sel')
