@@ -15,7 +15,8 @@ createOpalFiles(geneExpData, phenoFile, inputDIR = getwd(),
 
 \item{inputDIR}{optional parameter used with csv/txt files to specify directory containing data files}
 
-\item{estimateCellCounts}{optional TRUE/FALSE parameter which determines whether epigenomic data is calculated and added to phenotypic data file}
+\item{estimateCellCounts}{optional TRUE/FALSE parameter which determines whether epigenomic data is calculated 
+and added to phenotypic data file}
 
 \item{cellTypeRef}{cell type reference used to estimate cell counts}
 
@@ -29,10 +30,8 @@ Creating genetic expression and phenotype dictionary and data files
 \details{
 Function processes an Expression Set object or csv/txt files with
 genetic expression and related phenotype data to create xls dictionary
-and csv data files used for Opal data table creation in DataShield.
+and csv data files used for Opal data table creation in DataSHIELD.
 }
 \examples{
-
-
 
 }

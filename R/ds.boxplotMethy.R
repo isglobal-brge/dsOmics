@@ -1,3 +1,19 @@
+##' Generating boxplot summary of methylation values split by phenotypic variable levels 
+##' 
+##' Function generates a boxplot summary of methylation data by phenotypic condition 
+##' for a specified CpG site. If multiple studies are analysed the boxplots provide representations
+##' of the pooled data. Within a single chart a boxplot is generated for each level of the user 
+##' specified phenotypic variable.   
+##' @title Boxplot summary of methylation values split by phenotypic variable levels
+##' @param cpg name of the CpG site the boxplot will be created for
+##' @param phenoVar phenotypic variable, each level of which a boxplot will be created for
+##' @param molecular.data name of the DataSHIELD object to which the methylation data set has been assigned
+##' @param pheno.data name of the DataSHIELD object to which the phenotype data set has been assigned
+##' @param datasources Opal object or list of opal objects denoting the opal server(s) information
+##' @export
+##' @examples
+##' 
+
 ds.boxplotMethy <- function(cpg, phenoVar, molecular.data, pheno.data, datasources){
   
   #Calling 'histDataByCondition' server side function which returns a list containing a 
@@ -29,12 +45,14 @@ ds.boxplotMethy <- function(cpg, phenoVar, molecular.data, pheno.data, datasourc
   }else{
     
     #Checking that the phenotypic levels returned for each study match
-    for(i in 1:(length(studyPhenoLevels)-1)){
-      if(!identical(studyPhenoLevels[[i]], studyPhenoLevels[[i+1]])){
-        return(message(paste0(" ", 
-                              paste0("ERROR: ", "Phenotypic levels for variable '", phenoVar, 
-                                     "' do not match across all studies", sep = ""), 
-                              " ", sep="\n")))
+    if(length(studyPhenoLevels)>1){
+      for(i in 1:(length(studyPhenoLevels)-1)){
+        if(!identical(studyPhenoLevels[[i]], studyPhenoLevels[[i+1]])){
+          return(message(paste0(" ", 
+                                paste0("ERROR: ", "Phenotypic levels for variable '", phenoVar, 
+                                       "' do not match across all studies", sep = ""), 
+                                " ", sep="\n")))
+        }
       }
     }
     

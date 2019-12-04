@@ -1,3 +1,15 @@
+##' Generating qq-plot of p-values output from linear regression analysis of methylation data 
+##' 
+##' Function produces a qq-plot of the observed vs expected p-values (with confidence bands)
+##' output by the "ds.lmFeature" function. It is an extension of the generic R "plot" function and takes as an 
+##' input "ds.Methy" type objects (one of the classes assigned to the output matrices from "ds.lmFeature")
+##' @title qq-plot of p-values output from linear regression analysis of methylation data 
+##' @param x a "ds.Methy" type object containing a column of p-values output from a regression analysis
+##' @param ... All other standard R plot arguments available
+##' @export
+##' @examples
+##' 
+
 plot.dsMethy <- function(x, ...){
   
   concBand <- function(N, alpha=0.01, ...)
