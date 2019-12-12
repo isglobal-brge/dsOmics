@@ -11,17 +11,17 @@ Description: Omic data analysis using DataSHIELD
 Depends: R (>= 3.6.1)
 Imports:
      parallel,
-     Biobase,
-     meffil
+     Biobase
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome
 LazyData: true
 VignetteBuilder: knitr
 AggregateMethods:
-    pDataDS
     featureNamesDS
 AssignMethods:
-    cellCounts
+    pDataDS,
+    exprsDS,
+    cellCounts,
     selFeature
 RoxygenNote: 6.1.1
 Encoding: UTF-8
