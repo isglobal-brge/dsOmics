@@ -40,7 +40,6 @@ feature <- "cg21477232"
 features <- c("cg21477232", "cg21477232")
 vars <- c("casecon", "Sex")
 
-lmFeature(feature, vars, "ES")
 out <- ds.lmFeature(features, model=casecon~Sex, eSets="ES")
 
 

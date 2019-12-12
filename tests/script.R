@@ -1,6 +1,8 @@
 library(DSOpal)
 library(dsBaseClient)
 library(dsOmics)
+library(parallel)
+
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "study1", url = "https://opal-test.obiba.org", user = "dsuser", password = "password", resource = "test.GSE66351", driver = "OpalDriver")
 builder$append(server = "study2", url = "https://opal-test.obiba.org", user = "dsuser", password = "password", resource = "test.GSE80970", driver = "OpalDriver")

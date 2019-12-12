@@ -6,7 +6,7 @@ lmFeature <- function(feature, vars, data, cellEstim){
       ds.cbind(c("dat", "cell.counts"), newobj="dat")
   }
     
-  mm <- as.formula(paste(feature, "~ ."))
+  mm <- as.formula(paste(feature, "~ ", paste(ds.colnames('dat')[[1]][-1], collapse="+")))
   mod <- ds.glm(mm, family='gaussian', data='dat', viewIter = FALSE)
   metrics <- as.data.frame(mod$coefficients[2, c(1,2,4)])
   names(metrics) <- feature
