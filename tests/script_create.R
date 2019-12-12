@@ -29,8 +29,9 @@ dslite.server$assignMethods()
 
 dslite.server$assignMethod("selFeature", selFeature)
 dslite.server$assignMethod("cellCounts", cellCounts)
+dslite.server$assignMethod("exprsDS", function(x) Biobase::exprs(x))
+dslite.server$assignMethod("pDataDS", function(x) Biobase::pData(x))
 
-dslite.server$aggregateMethod("pDataDS", function(x) Biobase::pData(x))
 dslite.server$aggregateMethod("featureNamesDS", function(x) Biobase::featureNames(x))
 
 
