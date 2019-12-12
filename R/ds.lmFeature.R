@@ -34,7 +34,7 @@ ds.lmFeature <- function(features=NULL, model, eSets,
     datashield.assign(conns, 'cell.counts', as.symbol(cally))
   }
   else {
-    datashield.assign(conns, "cell.counts", symbol(NA))
+    datashield.assign(conns, "cell.counts", as.symbol(NA))
   }
   
   

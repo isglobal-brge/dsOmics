@@ -3,6 +3,7 @@ library(resourcer)
 library(DSLite)
 library(dsBaseClient)
 library(dsBase)
+library(dsOmics)
 
 
 # make a DSLite server with resources inside

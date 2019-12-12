@@ -10,8 +10,14 @@ conns <- DSI::datashield.login(logins = logindata, assign = TRUE, symbol = "res"
 # R data file resource
 ds.class("res")
 
-datashield.assign.expr(conns, symbol = "D", 
-                       expr = quote(as.resource.tbl(res)))
+
+datashield.assign.expr(conns, symbol = "ES", expr = quote(as.resource.object(res)))
+
+feature <- "cg21477232"
+out <- ds.lmFeature(features, model=casecon~Sex, eSets="ES")
+
+
+datashield.logout(conns)
 
 
 model <- "casecon ~ Sex"
@@ -38,7 +44,7 @@ out <- ds.lmFeature("cg21477232", model=model, eSet.data = "D", eSet="ES")
 
 
 
-datashield.logout(conns)
+
 
 ###########
 
