@@ -1,5 +1,6 @@
 library(DSOpal)
 library(dsBaseClient)
+library(dsOmics)
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "study1", url = "https://opal-test.obiba.org", user = "dsuser", password = "password", resource = "test.GSE66351", driver = "OpalDriver")
 builder$append(server = "study2", url = "https://opal-test.obiba.org", user = "dsuser", password = "password", resource = "test.GSE80970", driver = "OpalDriver")
@@ -14,7 +15,7 @@ ds.class("res")
 datashield.assign.expr(conns, symbol = "ES", expr = quote(as.resource.object(res)))
 
 feature <- "cg21477232"
-out <- ds.lmFeature(features, model=casecon~Sex, eSets="ES")
+out <- ds.lmFeature(feature, model=casecon~Sex, eSets="ES")
 
 
 datashield.logout(conns)
