@@ -4,39 +4,37 @@
 \alias{ds.lmFeature}
 \title{Linear regression analysis of pooled data for each CpG site in study}
 \usage{
-ds.lmFeature(cpgs = NULL, model, molecular.data, pheno.data, datasources,
-  mc.cores = 1, type.p.adj = "fdr", cellCountsAdjust = FALSE)
+ds.lmFeature(features = NULL, model, eSets, type.p.adj = "fdr",
+  cellCountsAdjust = FALSE, mc.cores = 1)
 }
 \arguments{
-\item{cpgs}{an optional parameter input as a vector of integer values which indicates the indices of specific 
-CpG sites that should be analysed. By default all CpG sites are analysed}
+\item{features}{an optional parameter input as a vector of integer values which indicates the indices of specific 
+features (e.g. genes, CpGs, ...) that should be analysed. If missing all features are analysed}
 
-\item{model}{list of phenotypic variables to use as covariates in the regression analysis in the form: 
-"phenoVar1 ~ phenoVar2 + phenoVar3 ... + phenoVarN"}
-
-\item{molecular.data}{name of the DataSHIELD object to which the methylation data set has been assigned}
-
-\item{pheno.data}{name of the DataSHIELD object to which the phenotype data set has been assigned}
-
-\item{datasources}{Opal object or list of opal objects denoting the opal server(s) information}
-
-\item{mc.cores}{optional parameter that allows the user to specify the number of CPU cores to use during 
-parallel processing. Argument can only be > 1 when the function is run on a linux machine}
+\item{model}{formula indicating the condition (left side) and other covariates to be adjusted for 
+(i.e. condition ~ covar1 + ... + covar2). The fitted model is: feature ~ condition + covar1 + ... + covarN}
 
 \item{type.p.adj}{multiple comparison correction method. Default 'fdr'}
 
-\item{cellCountsAdjust}{optional TRUE/FALSE parameter which indicates whether or not the linear regression
+\item{cellCountsAdjust}{logical value which indicates whether or not the models should be
+adjusted for cell counts that are estimated using 'meffil.estimate.cell.counts.from.betas'
+function from 'meffil' package.}
+
+\item{mc.cores}{optional parameter that allows the user to specify the number of CPU cores to use during 
+parallel processing. Argument can only be > 1 when the function is run on a linux machine
 models should be adjusted for the estimated cell counts by including the variables in the models.
 NOTE: This assumes that the Opal pheno tables for every study include the necessary estimated cell count data 
 originally computed when running the createOpalFiles function}
+
+\item{eSet}{name of the DataSHIELD object to which the ExpresionSet has been assigned}
 }
 \description{
-Performing a linear regression analysis on pooled data from multiple studies for every CpG site
+Performing a linear regression analysis on pooled data from multiple studies for every feature
 }
 \details{
-Function fits a generalized linear model to methylation data for each feature (CpG site) 
-in the data sets considered, using user specified phenotypic variables as covariates
-Outputs a matrix containing a beta value, standard error and p-value for each CpG site
+The function fits a generalized linear model of a ExpressionSet for each feature (gene, CpG site, ...) 
+in the data sets considered, using user specified condition and covariates
+Outputs a matrix containing a beta value, standard error and p-value for each feature
 }
 \examples{
 

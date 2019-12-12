@@ -1,17 +1,23 @@
 Package: dsOmics
 Type: Package
 Title: What the package does (short line)
-Version: 0.0.1
-Date: 2019-06-29
-Authors@R: c(person("Deroshan", "Padotan", , "d.padotan@gmail.com ", role = "aut"),
+Version: 0.1.0
+Date: 2019-12-06
+Authors@R: c(person("Deroshan", "Padotan", , "d.padotan@gmail.com ", role = "aut"), 
+  person("Demetris", "Avraam", , "Demetris.Avraam@newcastle.ac.uk", role = "aut"),
+  person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
-Description: To be supplied
-Depends:
-    R (>= 3.5.0),
-    rJava
-License: Artistic-2.0
+Description: Omic data analysis using DataSHIELD
+Depends: R (>= 3.6.1)
+License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome
 LazyData: true
 VignetteBuilder: knitr
+AggregateMethods:
+    pDataDS
+    featureNamesDS
+AssignMethods:
+    cellCounts
+    selFeature
 RoxygenNote: 6.1.1
 Encoding: UTF-8
