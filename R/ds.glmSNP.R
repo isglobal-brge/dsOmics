@@ -45,9 +45,8 @@ ds.glmSNP <- function(snps=NULL, model, eSet,
   datashield.assign(conns, 'dd', as.symbol(cally))
   
   
-  ans <- t(as.data.frame(mclapply(snps, glmSNP, vars=vars,
-                                  data='dd',  
-                                  mc.cores = mc.cores))) 
+  ans <- t(as.data.frame(parallel::mclapply(snps, glmSNP, vars=vars,
+                                            data='dd', mc.cores = mc.cores))) 
   
   #Ordering matrix by ascending p.value
   ans <- ans[order(ans[, 'p-value']), ]

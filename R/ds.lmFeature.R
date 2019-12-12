@@ -49,9 +49,9 @@ ds.lmFeature <- function(features=NULL, model, eSets,
     features <- Reduce(intersect, ff)
   }
   
-  ans <- t(as.data.frame(mclapply(features, lmFeature, vars=vars,
-                                  data=eSets, cellEstim='cell.counts', 
-                                  mc.cores = mc.cores))) 
+  ans <- t(as.data.frame(parallel::mclapply(features, lmFeature, vars=vars,
+                                            data=eSets, cellEstim='cell.counts',
+                                            mc.cores = mc.cores))) 
 
   if (nrow(ans) > 1) {
     #Ordering matrix by ascending p.value
