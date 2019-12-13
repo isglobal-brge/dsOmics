@@ -29,8 +29,8 @@ dslite.server$assignMethods()
 
 dslite.server$assignMethod("selFeature", selFeature)
 dslite.server$assignMethod("cellCounts", cellCounts)
-dslite.server$assignMethod("exprsDS", function(x) Biobase::exprs(x))
-dslite.server$assignMethod("pDataDS", function(x) Biobase::pData(x))
+dslite.server$assignMethod("exprsDS", "Biobase::exprs")
+dslite.server$assignMethod("pDataDS", "Biobase::pData")
 
 dslite.server$aggregateMethod("featureNamesDS", function(x) Biobase::featureNames(x))
 
@@ -41,7 +41,6 @@ features <- c("cg21477232", "cg21477232")
 vars <- c("casecon", "Sex")
 
 out <- ds.lmFeature(features, model=casecon~Sex, eSets="ES")
-
 
 
 cellCounts <- function(x, cellTypeRef="blood gse35069 complete"){

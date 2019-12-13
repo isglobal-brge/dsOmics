@@ -12,7 +12,8 @@ Depends: R (>= 3.6.1),
      resourcer
 Imports:
      parallel,
-     Biobase
+     Biobase,
+     SNPRelate
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome
 LazyData: true

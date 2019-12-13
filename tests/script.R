@@ -1,7 +1,6 @@
 library(DSOpal)
 library(dsBaseClient)
 library(dsOmics)
-library(parallel)
 
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "study1", url = "https://opal-test.obiba.org", user = "dsuser", password = "password", resource = "test.GSE66351", driver = "OpalDriver")
@@ -10,8 +9,8 @@ logindata <- builder$build()
 
 # login and assign resources
 conns <- DSI::datashield.login(logins = logindata, assign = TRUE, symbol = "res")
-# R data file resource
-ds.class("res")
+
+ds.ls(conns)
 
 
 datashield.assign.expr(conns, symbol = "ES", expr = quote(as.resource.object(res)))
@@ -45,28 +44,4 @@ datashield.assign.expr(conns, symbol = "ES",
 
 out <- ds.lmFeature("cg21477232", model=model, eSet.data = "D", eSet="ES")
 
-
-
-
-
-###########
-
-library(resourcer)
-res2 <- resourcer::newResource(name = "GSE66351", url = "https://github.com/epigeny/dsOmics/raw/master/data/GSE66351.Rdata", format = "ExpressionSet")
-client <- resourcer::newResourceClient(res2)
-# coerce to a data.frame
-dim(client$asDataFrame())
-# coerce to a dplyr's tbl
-dim(client$asTbl())
-# the raw ExpressionSet object
-dim(client$getValue())
-
-datashield.logout(client)
-
-
-
-res <- resourcer::newResource(name = "exposome", 
-                              url = "https://github.com/isglobal-brge/rexposome/blob/master/data/exposome.rda", 
-                              format = "ExposomeSet")
-client <- resourcer::newResourceClient(res)
 

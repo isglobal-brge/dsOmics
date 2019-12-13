@@ -71,9 +71,10 @@ GDSFileResourceClient <- R6::R6Class(
           loadGDSFmt()
           
         }
-        
-        conn <- openfn.gds(path)
-        
+
+#     Yannick's code        
+#        conn <- openfn.gds(path)
+        conn <- snpgdsOpen(path)
         super$setConnection(conn)
         
       }
