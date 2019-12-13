@@ -8,7 +8,8 @@ Authors@R: c(person("Deroshan", "Padotan", , "d.padotan@gmail.com ", role = "aut
   person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
 Description: Omic data analysis using DataSHIELD
-Depends: R (>= 3.6.1)
+Depends: R (>= 3.6.1),
+     resourcer
 Imports:
      parallel,
      Biobase
