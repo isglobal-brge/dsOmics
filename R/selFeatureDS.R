@@ -7,6 +7,7 @@
 #' @return a data frame with samples as rows and selected features and variables as columns.
 #' @author Gonzalez, JR.
 #'
+#' @export
 
 selFeatureDS <- function(x, feature, vars){
   ans <- data.frame(x[feature, ])[, c(feature, vars)]
