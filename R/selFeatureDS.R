@@ -8,7 +8,7 @@
 #' @author Gonzalez, JR.
 #'
 
-selFeature <- function(x, feature, vars){
+selFeatureDS <- function(x, feature, vars){
   ans <- data.frame(x[feature, ])[, c(feature, vars)]
   ans
 }

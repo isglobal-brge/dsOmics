@@ -5,6 +5,8 @@
 #' @return a caracter vector uniquely identifying each feature
 #' @author Gonzalez, JR.
 #'
+#' @export
+
 featureNamesDS <- function(x){
   Biobase::featureNames(x)
 } 

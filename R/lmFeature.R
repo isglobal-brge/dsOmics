@@ -1,5 +1,5 @@
-lmFeature <- function(feature, vars, data, cellEstim, connections){
-  cally <- paste("selFeature(", data, ", feature=", deparse(feature), ", vars=", deparse(vars), ")")
+lmFeatureDS <- function(feature, vars, data, cellEstim, connections){
+  cally <- paste("selFeatureDS(", data, ", feature=", deparse(feature), ", vars=", deparse(vars), ")")
   datashield.assign(connections, 'dat', as.symbol(cally))
   
   if (!ds.isNA(cellEstim)[[1]]){
@@ -13,7 +13,7 @@ lmFeature <- function(feature, vars, data, cellEstim, connections){
   return(metrics)
 }
 
-glmSNP <- function(snp, snps, gds, covars, vars, connections, family="binomial"){
+glmSNPDS <- function(snp, snps, gds, covars, vars, connections, family="binomial"){
   i <- which(snp==snps)
   cally <- paste0("selSNP(", gds, ", i=", i, ", covars=", covars,
                   ", vars=", deparse(vars), ")")

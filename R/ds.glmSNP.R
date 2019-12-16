@@ -46,7 +46,7 @@ ds.glmSNP <- function(snps.fit=NULL, model, gds, covars, connections,
   }
   
   
-  ans <- t(as.data.frame(parallel::mclapply(snps.fit, glmSNP, 
+  ans <- t(as.data.frame(parallel::mclapply(snps.fit, glmSNPDS, 
                                             snps=snps, 
                                             covars=covars,
                                             vars=vars,

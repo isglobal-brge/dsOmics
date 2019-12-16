@@ -16,7 +16,8 @@ ds.ls(conns)
 datashield.assign.expr(conns, symbol = "ES", expr = quote(as.resource.object(res)))
 
 feature <- "cg21477232"
-out <- ds.lmFeature(feature, model=casecon~Sex, eSets="ES")
+out <- ds.lmFeature(feature, model=casecon~Sex, eSet="ES",
+                    connections=conns)
 
 
 ans <- ds.limma(model=casecon~Sex, eSet = "ES",

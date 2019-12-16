@@ -4,7 +4,9 @@
 #' @param x Object, possibly derived from eSet-class.
 #' @return a matrix features as rows, individuals/samples as columns
 #' @author Gonzalez, JR.
-#' 
+#'
+#' @export 
+ 
 exprsDS <- function(x) {
   Biobase::exprs(x)
 }
