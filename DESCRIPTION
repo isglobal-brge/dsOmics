@@ -13,7 +13,8 @@ Depends: R (>= 3.6.1),
 Imports:
      parallel,
      Biobase,
-     SNPRelate
+     SNPRelate,
+     limma
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome
 LazyData: true
