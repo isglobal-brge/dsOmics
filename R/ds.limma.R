@@ -26,7 +26,7 @@ ds.limma <- function(model, eSet, type.data="microarray",
   
   mod <- paste("~", paste(vars, collapse="+"))
   
-  cally <- paste0("limmaDS(", mod, ",", eSets, ",", sva, ")")
+  cally <- paste0("limmaDS(", mod, ",", eSet, ",", sva, ")")
   ans <- datashield.aggregate(conns, as.symbol(cally))
   
   class(ans) <- c("dsLimma", class(ans))

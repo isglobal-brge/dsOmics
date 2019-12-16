@@ -23,7 +23,7 @@
 ##' @examples
 ##' 
 
-ds.lmFeature <- function(features=NULL, model, eSets, connections=NULL,
+ds.lmFeature <- function(features=NULL, model, eSet, connections=NULL,
                          type.p.adj='fdr', cellCountsAdjust = FALSE,
                          mc.cores = 1){
   
@@ -31,11 +31,11 @@ ds.lmFeature <- function(features=NULL, model, eSets, connections=NULL,
     connections <- datashield.connections_find()
   }
   
-  nFeatures <- ds.dim(eSets)
+  nFeatures <- ds.dim(eSet)
   
   #Adding cell count variables to model if cellCountsAdjust argument has been specified
   if(isTRUE(cellCountsAdjust)){
-    cally <- paste0("cellCounts(", eSets, ")")
+    cally <- paste0("cellCounts(", eSet, ")")
     datashield.assign(connections, 'cell.counts', as.symbol(cally))
   }
   else {
@@ -50,13 +50,14 @@ ds.lmFeature <- function(features=NULL, model, eSets, connections=NULL,
   # Setting the features to loop over as the total number of 
   # features in the studies if no features are specified
   if(is.null(features)){
-    cally <- paste0("featureNamesDS(", eSets, ")")
+    cally <- paste0("featureNamesDS(", eSet, ")")
     ff <- datashield.aggregate(connections, as.symbol(cally))    
     features <- Reduce(intersect, ff)
   }
   
   ans <- t(as.data.frame(parallel::mclapply(features, lmFeature, vars=vars,
-                                            data=eSets, cellEstim='cell.counts',
+                                            data=eSet, connections=connections,
+                                            cellEstim='cell.counts',
                                             mc.cores = mc.cores))) 
 
   if (nrow(ans) > 1) {
