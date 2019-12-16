@@ -26,20 +26,21 @@ datashield.assign.expr(conns, symbol = "ES", expr = quote(as.resource.object(res
 dslite.server$assignMethods()
 
 
-dslite.server$assignMethod("selFeature", selFeature)
+dslite.server$assignMethod("selFeatureDS", selFeatureDS)
 dslite.server$assignMethod("cellCounts", cellCounts)
 dslite.server$assignMethod("exprsDS", "Biobase::exprs")
 dslite.server$assignMethod("pDataDS", "Biobase::pData")
-dslite.server$assignMethod("lmFeature", lmFeature)
-dslite.server$aggregateMethod("featureNamesDS", function(x) Biobase::featureNames(x))
+dslite.server$assignMethod("lmFeatureDS", lmFeatureDS)
+dslite.server$aggregateMethod("featureNamesDS", "Biobase::featureNames")
 
 
 
 feature <- "cg21477232"
 features <- c("cg21477232", "cg21477232")
+model <- casecon~Sex
 vars <- c("casecon", "Sex")
 
-out <- ds.lmFeature(features, model=casecon~Sex, eSets="ES")
+out <- ds.lmFeature(features, model=casecon~Sex, eSet="ES")
 
 
 cellCounts <- function(x, cellTypeRef="blood gse35069 complete"){

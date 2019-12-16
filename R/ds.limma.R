@@ -24,7 +24,9 @@ ds.limma <- function(model, eSet, type.data="microarray",
   mt <- as.formula(model)
   vars <- all.vars(mt)
   
-  mod <- paste("~", paste(vars, collapse="+"))
+  # vars[1] is to avoid non-disclosive access since only
+  # the design part is necessary (DS does not allow '~ A + B')
+  mod <- paste(vars[1], " ~", paste(vars, collapse="+"))
   
   cally <- paste0("limmaDS(", mod, ",", eSet, ",", sva, ")")
   ans <- datashield.aggregate(connections, as.symbol(cally))

@@ -56,7 +56,7 @@ ds.lmFeature <- function(features=NULL, model, eSet, connections=NULL,
   }
   
   ans <- t(as.data.frame(parallel::mclapply(features, lmFeatureDS, vars=vars,
-                                            data=eSet, connections=connections,
+                                            data=eSet,
                                             cellEstim='cell.counts',
                                             mc.cores = mc.cores))) 
 

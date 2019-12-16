@@ -5,21 +5,20 @@
 #' @param vars
 #' @param data
 #' @param cellEstim
-#' @param connections
 #' @return a vector with effect estimates, standard error and associated p-value
 #' @author Gonzalez, JR.
 #'
 #' @export 
 
-lmFeatureDS <- function(feature, vars, data, cellEstim, connections){
-  cally <- paste("selFeatureDS(", data, ", feature=", deparse(feature), ", vars=", deparse(vars), ")")
-  datashield.assign(connections, 'dat', as.symbol(cally))
+lmFeatureDS <- function(feature, vars, eSet, cellEstim){
   
-  if (!ds.isNA(cellEstim)[[1]]){
+  if (!ds.isNA(cellEstim)){
       ds.cbind(c("dat", "cell.counts"), newobj="dat")
   }
     
-  mm <- as.formula(paste(feature, "~ ", paste(ds.colnames('dat')[[1]][-1], collapse="+")))
+  dat <- data.frame(eSet[feature, ])[, c(feature, vars)]
+  mm <- as.formula(paste(feature, "~ ", 
+                         paste(colnames(dat)[-1], collapse="+")))
   mod <- ds.glm(mm, family='gaussian', data='dat', viewIter = FALSE)
   metrics <- as.data.frame(mod$coefficients[2, c(1,2,4)])
   names(metrics) <- feature
