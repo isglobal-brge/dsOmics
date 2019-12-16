@@ -5,58 +5,11 @@
 \alias{GDSFileResourceResolver}
 \title{GDS file resource resolver}
 \format{A R6 object of class GDSFileResourceResolver}
+\usage{
+GDSFileResourceResolver
+}
 \description{
 Build a GDS resource client from a resource object describing access to a 
 GDS file or a VCF file to be converted into a GDS file.
 }
-\section{Super class}{
-\code{\link[resourcer:ResourceResolver]{resourcer::ResourceResolver}} -> \code{GDSFileResourceResolver}
-}
-\section{Methods}{
-\subsection{Public methods}{
-\itemize{
-\item \href{#method-isFor}{\code{GDSFileResourceResolver$isFor()}}
-\item \href{#method-newClient}{\code{GDSFileResourceResolver$newClient()}}
-\item \href{#method-clone}{\code{GDSFileResourceResolver$clone()}}
-}
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceResolver" data-id="initialize">}\href{../../resourcer/html/ResourceResolver.html#method-initialize}{\code{resourcer::ResourceResolver$initialize()}}\out{</span>}
-}
-\out{</details>}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-isFor"></a>}}
-\subsection{Method \code{isFor()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceResolver$isFor(x)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-newClient"></a>}}
-\subsection{Method \code{newClient()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceResolver$newClient(x)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceResolver$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
-}
+\keyword{datasets}

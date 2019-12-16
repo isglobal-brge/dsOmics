@@ -1,6 +1,6 @@
 Package: dsOmics
 Type: Package
-Title: What the package does (short line)
+Title: Collection of functions to do non-disclosive omic data analysis with DataSHIELD and Bioconductor
 Version: 0.1.0
 Date: 2019-12-06
 Authors@R: c(person("Deroshan", "Padotan", , "d.padotan@gmail.com ", role = "aut"), 
@@ -19,7 +19,8 @@ biocViews: DNAMethylation, Microarray, Software, WholeGenome
 LazyData: true
 VignetteBuilder: knitr
 AggregateMethods:
-    featureNamesDS
+    featureNamesDS,
+    limmaDS
 AssignMethods:
     pDataDS,
     exprsDS,

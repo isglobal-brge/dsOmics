@@ -9,6 +9,7 @@
 ##' @param model formula indicating the condition (left side) and other covariates to be adjusted for 
 ##' (i.e. condition ~ covar1 + ... + covar2). The fitted model is: feature ~ condition + covar1 + ... + covarN
 ##' @param eSet name of the DataSHIELD object to which the ExpresionSet has been assigned
+##' @param connections ....
 ##' @param type.p.adj multiple comparison correction method. Default 'fdr' 
 ##' @param cellCountsAdjust logical value which indicates whether or not the models should be
 ##' adjusted for cell counts that are estimated using 'meffil.estimate.cell.counts.from.betas'
@@ -22,19 +23,23 @@
 ##' @examples
 ##' 
 
-ds.lmFeature <- function(features=NULL, model, eSets,
+ds.lmFeature <- function(features=NULL, model, eSets, connections=NULL,
                          type.p.adj='fdr', cellCountsAdjust = FALSE,
                          mc.cores = 1){
+  
+  if (is.null(connections)) {
+    connections <- datashield.connections_find()
+  }
   
   nFeatures <- ds.dim(eSets)
   
   #Adding cell count variables to model if cellCountsAdjust argument has been specified
   if(isTRUE(cellCountsAdjust)){
     cally <- paste0("cellCounts(", eSets, ")")
-    datashield.assign(conns, 'cell.counts', as.symbol(cally))
+    datashield.assign(connections, 'cell.counts', as.symbol(cally))
   }
   else {
-    datashield.assign(conns, "cell.counts", as.symbol(NA))
+    datashield.assign(connections, "cell.counts", as.symbol(NA))
   }
   
   
@@ -45,7 +50,8 @@ ds.lmFeature <- function(features=NULL, model, eSets,
   # Setting the features to loop over as the total number of 
   # features in the studies if no features are specified
   if(is.null(features)){
-    ff <- datashield.aggregate(conns, "featureNamesDS(ES)")
+    cally <- paste0("featureNamesDS(", eSets, ")")
+    ff <- datashield.aggregate(connections, as.symbol(cally))    
     features <- Reduce(intersect, ff)
   }
   

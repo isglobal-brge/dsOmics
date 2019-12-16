@@ -4,11 +4,12 @@
 \alias{ds.glmSNP}
 \title{Logistic regression analysis of pooled data for each SNP site in study}
 \usage{
-ds.glmSNP(snps = NULL, model, eSet, type.p.adj = "fdr", mc.cores = 1)
+ds.glmSNP(snps.fit = NULL, model, gds, covars, connections, maf = 0.05,
+  missing.rate = 0.9, type.p.adj = "fdr", mc.cores = 1)
 }
 \arguments{
-\item{snps}{an optional parameter input as a vector of integer values which indicates the names of
-SNPs (rs numbers) sites that should be analysed. If missing all SNPs are analysed}
+\item{snps.fit}{an optional parameter input as a character vector of
+SNPs (rs numbers) that should be analysed. If missing all SNPs are analysed}
 
 \item{model}{list of phenotypic variables to use as covariates in the regression analysis in the form: 
 "outcome ~ covar1 + covar2 +  ... + covarN"}

@@ -3,7 +3,6 @@ library(resourcer)
 library(DSLite)
 library(dsBaseClient)
 library(dsBase)
-library(dsOmics)
 
 
 # make a DSLite server with resources inside
@@ -31,7 +30,7 @@ dslite.server$assignMethod("selFeature", selFeature)
 dslite.server$assignMethod("cellCounts", cellCounts)
 dslite.server$assignMethod("exprsDS", "Biobase::exprs")
 dslite.server$assignMethod("pDataDS", "Biobase::pData")
-
+dslite.server$assignMethod("lmFeature", lmFeature)
 dslite.server$aggregateMethod("featureNamesDS", function(x) Biobase::featureNames(x))
 
 
@@ -82,7 +81,8 @@ vars <- all.vars(mt)
 
 data <- 'ES'
 
-lmFeature("cg21477232", vars, 'ES')
+datashield.aggregate(conns, 
+                     as.symbol("lmFeature('cg21477232', vars, 'ES')"))
 
 
 

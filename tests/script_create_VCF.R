@@ -37,8 +37,11 @@ dslite.server$getSessionData(conns[[1]]@sid, "covars")
 
 dslite.server$aggregateMethod("indexGdsnDS", "gdsfmt::index.gdsn")
 dslite.server$aggregateMethod("readGdsnDS", "gdsfmt::read.gdsn")
-dslite.server$aggregateMethod("snpgdsGetGenoDS", "SNPrelate::snpgdsGetGeno")
+dslite.server$aggregateMethod("snpgdsGetGenoDS", "SNPRelate::snpgdsGetGeno")
+dslite.server$aggregateMethod("snpgdsSelectSNPDS", "SNPRelate::snpgdsSelectSNP")
 
+out <- ds.glmSNP(model="group~sex", gds='gds', covars='covars', connections=conns)
+out2 <- ds.glmSNP("rs115743375", model="group~sex", gds='gds', covars='covars', connections=conns)
 
 cally <- "readGdsnDS(indexGdsnDS(gds, 'sample.id'))"
 ids <- datashield.aggregate(conns,  cally)
@@ -46,17 +49,26 @@ if (!identical(ids,vars[,1]))
  stop("There VCF ids are not identical to those in the first column of 'covars' ")
 
 
-cally <- "snpgdsGetGenoDS(gds, snp.id=1)"
+i <- which(snp==snps)
+cally <- paste0("snpgdsGetGenoDS(gds, snp.id=",1,")")
 datashield.aggregate(conns, as.symbol(cally))
 
-dslite.server$aggregateMethod("selSNP", function(x, snp, vars) {
-  g <- as.numeric(snpgdsGetGeno(gds.f, snp.id = snps.id[1]))
-  
-  data.frame(x[feature, ])[, c(feature, vars)]
+
+
+dslite.server$assignMethod("selSNP", function(gds, i, covars, vars) {
+  g <- as.numeric(snpgdsGetGeno(gds, snp.id = i))
+  ans <- data.frame(snp=g, covars[, vars])
+  ans
 })
 
+cally <- "selSNP(gds, i=1, covars, c('group', 'sex'))"
+datashield.assign(conns, 'dat', as.symbol(cally))
 
 
+datashield.assign(conns, 'dat', call("selSNP", 'gds', i=1, covars=covars, 
+                                     vars=vars))
+
+glmSNP()
 
 # .... R
 gds.f<-SNPRelate::snpgdsOpen("c:/tmp/gds.f.gds", readonly = FALSE)

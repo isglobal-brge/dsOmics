@@ -18,30 +18,18 @@ datashield.assign.expr(conns, symbol = "ES", expr = quote(as.resource.object(res
 feature <- "cg21477232"
 out <- ds.lmFeature(feature, model=casecon~Sex, eSets="ES")
 
-
-datashield.logout(conns)
-
-
-model <- "casecon ~ Sex"
-mt <- as.formula(model)
-vars <- all.vars(mt)
-
-dep <- paste(vars, collapse="+")
-
-feature <- "cg21477232"
-mm <- as.formula(paste(feature, "~", dep))
-mod <- ds.glm(mm, family='gaussian', data='D')
-
-lmFeature(feature, model, 'D', vars)
-
 ans <- t(as.data.frame(lapply(features, lmFeatureGLM, model=model, 
                                 eSet.data='D', vars=vars))) 
 
 
-
-datashield.assign.expr(conns, symbol = "ES", 
-                       expr = quote(as.resource.object(res)))
-
-out <- ds.lmFeature("cg21477232", model=model, eSet.data = "D", eSet="ES")
+datashield.logout(conns)
 
 
+#
+# limma
+#
+
+
+#
+# VCF
+#

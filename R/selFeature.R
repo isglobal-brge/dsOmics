@@ -6,7 +6,6 @@
 #' @param vars a character vector with the variables to be selected.
 #' @return a data frame with samples as rows and selected features and variables as columns.
 #' @author Gonzalez, JR.
-#' @export
 #'
 
 selFeature <- function(x, feature, vars){
