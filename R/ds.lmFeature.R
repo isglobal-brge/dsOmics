@@ -55,9 +55,11 @@ ds.lmFeature <- function(features=NULL, model, eSet, connections=NULL,
     features <- Reduce(intersect, ff)
   }
   
-  ans <- t(as.data.frame(parallel::mclapply(features, lmFeatureDS, vars=vars,
-                                            data=eSet,
-                                            cellEstim='cell.counts',
+  ans <- t(as.data.frame(parallel::mclapply(features, lmFeatureDS, 
+                                            vars=vars,
+                                            eSet=eSet,
+                                            cellCountsAdjust=cellCountsAdjust,
+                                            connections=connections, 
                                             mc.cores = mc.cores))) 
 
   if (nrow(ans) > 1) {

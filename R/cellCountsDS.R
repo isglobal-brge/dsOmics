@@ -9,7 +9,7 @@
 #' @export
 #'
 
-cellCounts <- function(x, cellTypeRef="blood gse35069 complete"){
+cellCountsDS <- function(x, cellTypeRef="blood gse35069 complete"){
   xx <- Biobase::exprs(x)
   ans <- try( meffil::meffil.estimate.cell.counts.from.betas(xx,
                                                       cell.type.reference = cellTypeRef, verbose = FALSE), TRUE)

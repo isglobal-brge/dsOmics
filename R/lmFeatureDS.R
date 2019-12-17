@@ -10,17 +10,21 @@
 #'
 #' @export 
 
-lmFeatureDS <- function(feature, vars, eSet, cellEstim){
+lmFeatureDS <- function(feature, vars, eSet, cellCountsAdjust,
+                        connections){
   
-  if (!ds.isNA(cellEstim)){
-      ds.cbind(c("dat", "cell.counts"), newobj="dat")
+  cally <- paste0("selFeatureDS(", eSet, ",", deparse(feature), ",", 
+                  deparse(vars), ")")  
+  datashield.assign(connections, 'dat', as.symbol(cally))
+                      
+  if (isTRUE(cellCountsAdjust)){
+    ds.cbind(c('dat', 'cell.counts'), newobj='dat')
   }
-    
-  dat <- data.frame(eSet[feature, ])[, c(feature, vars)]
-  mm <- as.formula(paste(feature, "~ ", 
-                         paste(colnames(dat)[-1], collapse="+")))
+  
+  mm <- stats::as.formula(paste(feature, "~ ", 
+                         paste(ds.colnames('dat')[[1]][-1], collapse="+")))
   mod <- ds.glm(mm, family='gaussian', data='dat', viewIter = FALSE)
-  metrics <- as.data.frame(mod$coefficients[2, c(1,2,4)])
+  metrics <- base::as.data.frame(mod$coefficients[2, c(1,2,4)])
   names(metrics) <- feature
   return(metrics)
 }

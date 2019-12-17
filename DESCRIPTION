@@ -23,9 +23,7 @@ AggregateMethods:
     featureNamesDS,
     limmaDS
 AssignMethods:
-    pDataDS,
-    exprsDS,
-    cellCounts,
+    cellCountsDS,
     selFeatureDS
 RoxygenNote: 6.1.1
 Encoding: UTF-8

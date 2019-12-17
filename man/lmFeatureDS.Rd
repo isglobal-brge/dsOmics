@@ -4,7 +4,7 @@
 \alias{lmFeatureDS}
 \title{Fits a LM to assess association between the features (outcome) and grouping variable (e.g case/control, condition, ...)}
 \usage{
-lmFeatureDS(feature, vars, data, cellEstim, connections)
+lmFeatureDS(feature, vars, eSet, cellCountsAdjust, connections)
 }
 \value{
 a vector with effect estimates, standard error and associated p-value

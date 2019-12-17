@@ -26,10 +26,13 @@ datashield.assign.expr(conns, symbol = "ES", expr = quote(as.resource.object(res
 dslite.server$assignMethods()
 
 
-dslite.server$assignMethod("selFeatureDS", selFeatureDS)
-dslite.server$assignMethod("cellCounts", cellCounts)
+
+
 dslite.server$assignMethod("exprsDS", "Biobase::exprs")
 dslite.server$assignMethod("pDataDS", "Biobase::pData")
+
+dslite.server$assignMethod("selFeatureDS", selFeatureDS)
+dslite.server$assignMethod("cellCountsDS", cellCountsDS)
 dslite.server$assignMethod("lmFeatureDS", lmFeatureDS)
 dslite.server$aggregateMethod("featureNamesDS", "Biobase::featureNames")
 
