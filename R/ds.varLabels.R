@@ -10,7 +10,7 @@
 ##' @examples
 ##' 
 
-ds.featureData <- function(object, connections=NULL){
+ds.varLabels <- function(object, connections=NULL){
   
   if (is.null(connections)) {
     connections <- datashield.connections_find()
