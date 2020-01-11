@@ -19,6 +19,7 @@ LazyData: true
 VignetteBuilder: knitr
 AggregateMethods:
     featureNamesDS,
+    varLabelsDS,
     featureDataDS,
     limmaDS
 AssignMethods:
