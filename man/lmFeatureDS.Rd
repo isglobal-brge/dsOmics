@@ -6,6 +6,9 @@
 \usage{
 lmFeatureDS(feature, vars, eSet, cellCountsAdjust, connections)
 }
+\arguments{
+\item{connections}{}
+}
 \value{
 a vector with effect estimates, standard error and associated p-value
 }

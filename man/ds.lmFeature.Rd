@@ -20,9 +20,9 @@ features (e.g. genes, CpGs, ...) that should be analysed. If missing all feature
 
 \item{type.p.adj}{multiple comparison correction method. Default 'fdr'}
 
-\item{cellCountsAdjust}{logical value which indicates whether or not the models should be
+\item{cellCountsAdjust}{logical value which indicates whether models should be
 adjusted for cell counts that are estimated using 'meffil.estimate.cell.counts.from.betas'
-function from 'meffil' package.}
+function from \code{meffil} package.}
 
 \item{mc.cores}{optional parameter that allows the user to specify the number of CPU cores to use during 
 parallel processing. Argument can only be > 1 when the function is run on a linux machine
