@@ -145,7 +145,7 @@ The tab **+Add package** ca be used to install a new package. The figure depicts
 ```{r installPackagesOpal2, echo=FALSE, fig.cap="Description how `dsOmics` package was intalled into the test opal server", out.width = '90%', fig.align='center'}
 knitr::include_graphics("fig/add_packages_opal_2.png")
 ```
-## Required R Packages
+## Required R Packages in the client site (e.g. local machine)
 
 In order to use the functions contained within this package the following R packages must be installed and loaded. 
 
@@ -181,7 +181,7 @@ devtools::install_github("isglobal-brge/dsOmics", dependencies = TRUE)
 The `dsOmics` package allows different types of analyses .... 
 
 - **create a nice figure**
-- ** give a list **
+- **give a list**
 
 
 
