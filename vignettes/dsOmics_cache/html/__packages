@@ -1,0 +1,11 @@
+base
+BiocStyle
+R6
+httr
+resourcer
+progress
+DSI
+opalr
+DSOpal
+dsBaseClient
+dsOmics

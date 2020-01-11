@@ -1,13 +1,11 @@
 Package: dsOmics
 Type: Package
 Title: Collection of functions to do non-disclosive omic data analysis with DataSHIELD and Bioconductor
-Version: 0.1.0
-Date: 2019-12-06
-Authors@R: c(person("Deroshan", "Padotan", , "d.padotan@gmail.com ", role = "aut"), 
-  person("Demetris", "Avraam", , "Demetris.Avraam@newcastle.ac.uk", role = "aut"),
-  person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
+Version: 0.2.0
+Date: 2020-01-11
+Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
-Description: Omic data analysis using DataSHIELD
+Description: To be supplied
 Depends: R (>= 3.6.1),
      resourcer
 Imports:
@@ -16,14 +14,16 @@ Imports:
      SNPRelate,
      limma
 License: MIT
-biocViews: DNAMethylation, Microarray, Software, WholeGenome
+biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
 VignetteBuilder: knitr
 AggregateMethods:
     featureNamesDS,
+    featureDataDS,
     limmaDS
 AssignMethods:
+    selFeatureDS,
     cellCountsDS,
-    selFeatureDS
+    svaDS
 RoxygenNote: 6.1.1
 Encoding: UTF-8

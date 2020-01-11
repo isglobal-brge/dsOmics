@@ -4,7 +4,7 @@
 \alias{plot.dsLmFeature}
 \title{Generate a QQ-plot of p-values output from any omic data analysis}
 \usage{
-\method{plot}{dsLmFeature}(x, ...)
+plot.dsLmFeature(x, ...)
 }
 \arguments{
 \item{x}{a "ds.dsLmFeature" type object containing a column of p-values output from a regression analysis}

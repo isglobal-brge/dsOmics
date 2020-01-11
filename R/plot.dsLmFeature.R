@@ -3,7 +3,7 @@
 ##' @description The function produces a QQ-plot of the observed vs expected p-values (with confidence bands)
 ##' @param x a "ds.dsLmFeature" type object containing a column of p-values output from a regression analysis
 ##' @param ... All other standard R plot arguments available
-##' @export
+##' @S3method plot dsLmFeature
 ##' @examples
 ##' 
 

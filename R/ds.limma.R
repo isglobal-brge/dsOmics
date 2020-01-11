@@ -24,6 +24,20 @@ ds.limma <- function(model, eSet, type.data="microarray",
   mt <- as.formula(model)
   vars <- all.vars(mt)
   
+  
+  # Compute SVA if sva argument has been specified
+  if(isTRUE(sva)){
+    cally <- paste0("svaDS(", deparse(vars), ",", eSet, ")")
+    datashield.assign(connections, 'sva', as.symbol(cally))
+    check.sva <- ds.dim("sva")
+    if (any(sapply(check.sva, is.null)))
+      stop("There is any problem with SVA estimation in at least one study")
+  }
+  else {
+    datashield.assign(connections, "sva", as.symbol(NA))
+  }
+  
+  
   # vars[1] is to avoid non-disclosive access since only
   # the design part is necessary (DS does not allow '~ A + B')
   mod <- paste(vars[1], " ~", paste(vars, collapse="+"))

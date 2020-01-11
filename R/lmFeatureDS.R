@@ -5,6 +5,9 @@
 #' @param vars
 #' @param data
 #' @param cellEstim
+#' @param sva
+#' @param connections
+#' 
 #' @return a vector with effect estimates, standard error and associated p-value
 #' @author Gonzalez, JR.
 #'
@@ -20,6 +23,7 @@ lmFeatureDS <- function(feature, vars, eSet, cellCountsAdjust,
   if (isTRUE(cellCountsAdjust)){
     ds.cbind(c('dat', 'cell.counts'), newobj='dat')
   }
+  
   
   mm <- stats::as.formula(paste(feature, "~ ", 
                          paste(ds.colnames('dat')[[1]][-1], collapse="+")))

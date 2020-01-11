@@ -11,7 +11,10 @@
 limmaDS <- function(model, eSet, sva){
   design <- stats::model.matrix(stats::as.formula(model), 
                                 data=Biobase::pData(eSet))
-  ee <- Biobase::exprs(eSet)
+  if (isTRUE(sva)){
+    ds.cbind(c('design', 'sva'), newobj='design')
+  }
+  
   fit <- limma::lmFit(eSet, design)
   fit <- limma::eBayes(fit)
   ans <- limma::topTable(fit, n=Inf)

@@ -11,9 +11,9 @@
 ##' @param eSet name of the DataSHIELD object to which the ExpresionSet has been assigned
 ##' @param connections ....
 ##' @param type.p.adj multiple comparison correction method. Default 'fdr' 
-##' @param cellCountsAdjust logical value which indicates whether or not the models should be
+##' @param cellCountsAdjust logical value which indicates whether models should be
 ##' adjusted for cell counts that are estimated using 'meffil.estimate.cell.counts.from.betas'
-##' function from 'meffil' package.
+##' function from \code{meffil} package.
 ##' @param mc.cores optional parameter that allows the user to specify the number of CPU cores to use during 
 ##' parallel processing. Argument can only be > 1 when the function is run on a linux machine
 ##' models should be adjusted for the estimated cell counts by including the variables in the models.
@@ -31,19 +31,19 @@ ds.lmFeature <- function(features=NULL, model, eSet, connections=NULL,
     connections <- datashield.connections_find()
   }
   
-  nFeatures <- ds.dim(eSet)
-  
-  #Adding cell count variables to model if cellCountsAdjust argument has been specified
+  # Compute cell-types if cellCountsAdjust argument has been specified
   if(isTRUE(cellCountsAdjust)){
-    cally <- paste0("cellCounts(", eSet, ")")
+    cally <- paste0("cellCountsDS(", eSet, ")")
     datashield.assign(connections, 'cell.counts', as.symbol(cally))
+    check.cell <- ds.dim("cell.counts")
+    if (any(sapply(check.cell, is.null)))
+      stop("There is any problem with cell-type estimation in at least one study")
   }
   else {
     datashield.assign(connections, "cell.counts", as.symbol(NA))
   }
   
   
-
   mt <- as.formula(model)
   vars <- all.vars(mt)
   
