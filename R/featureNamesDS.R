@@ -7,5 +7,10 @@
 #' @export
 
 featureNamesDS <- function(x){
-  Biobase::featureNames(x)
+  if(inherits(x, "ExpresionSet"))
+    Biobase::featureNames(x)
+  else if (inherits(x, "RangedSummarizedExperiment"))
+    SummarizedExperiment::assayNames(x)
+  else
+    stop("implements the proper method")
 } 
