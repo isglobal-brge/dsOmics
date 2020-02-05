@@ -9,10 +9,9 @@ Description: DataSHIELD server site Omic functions.
 Depends: R (>= 3.6.1),
      resourcer
 Imports:
-     parallel,
      Biobase,
      SNPRelate,
-     limma
+     SummarizedExperiment
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
