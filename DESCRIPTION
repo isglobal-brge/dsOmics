@@ -1,11 +1,11 @@
 Package: dsOmics
 Type: Package
-Title: Collection of functions to do non-disclosive omic data analysis with DataSHIELD and Bioconductor
-Version: 0.2.0
-Date: 2020-01-11
+Title: DataSHIELD server site Omic functions.
+Version: 0.3.0
+Date: 2020-02-05
 Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
-Description: To be supplied
+Description: DataSHIELD server site Omic functions.
 Depends: R (>= 3.6.1),
      resourcer
 Imports:
