@@ -10,7 +10,7 @@
 #' @export 
 limmaDS <- function(model, Set, sva){
   
-  if(inherits(Set, "ExpresionSet"))
+  if(inherits(Set, "ExpressionSet"))
     exprsData <- Biobase::pData(x)
   else if (inherits(x, "RangedSummarizedExperiment"))
     exprsData <- SummarizedExperiment::colData(x)
