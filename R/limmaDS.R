@@ -11,9 +11,9 @@
 limmaDS <- function(model, Set, sva){
   
   if(inherits(Set, "ExpressionSet"))
-    exprsData <- Biobase::pData(x)
-  else if (inherits(x, "RangedSummarizedExperiment"))
-    exprsData <- SummarizedExperiment::colData(x)
+    exprsData <- Biobase::pData(Set)
+  else if (inherits(Set, "RangedSummarizedExperiment"))
+    exprsData <- SummarizedExperiment::colData(Set)
   else
     stop("Set must be a 'eSet' or 'rse' object")
   
