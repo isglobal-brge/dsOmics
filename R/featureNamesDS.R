@@ -7,7 +7,7 @@
 #' @export
 
 featureNamesDS <- function(x){
-  if(inherits(x, "ExpresionSet"))
+  if(inherits(x, "ExpressionSet"))
     return(Biobase::featureNames(x))
   else if (inherits(x, "RangedSummarizedExperiment"))
     return(dimnames(x)[[1]])
