@@ -8,9 +8,9 @@
 
 featureNamesDS <- function(x){
   if(inherits(x, "ExpresionSet"))
-    Biobase::featureNames(x)
+    return(Biobase::featureNames(x))
   else if (inherits(x, "RangedSummarizedExperiment"))
-    SummarizedExperiment::assayNames(x)
+    return(dimnames(x)[[1]])
   else
     stop("implements the proper method")
 } 

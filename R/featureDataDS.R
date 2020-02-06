@@ -8,5 +8,10 @@
 #' @export
 #' 
 featureDataDS <- function(x){
-  Biobase::featureData(x)
+  if(inherits(x, "ExpresionSet"))
+    return(Biobase::featureData(x))
+  else if (inherits(x, "RangedSummarizedExperiment"))
+    return(colnames(SummarizedExperiment::colData(x)))
+  else
+    stop("implements the proper method")
 } 
