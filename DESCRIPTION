@@ -11,8 +11,7 @@ Depends: R (>= 3.6.1),
 Imports:
      Biobase,
      SNPRelate,
-     SummarizedExperiment,
-     MEAL
+     SummarizedExperiment
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
