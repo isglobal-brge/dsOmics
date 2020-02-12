@@ -8,7 +8,7 @@
 #' @author Gonzalez, JR.
 #'
 #' @export 
-limmaDS <- function(model, Set, sva){
+limmaDS_old <- function(model, Set, sva){
   
   if(inherits(Set, "ExpressionSet"))
     exprsData <- Biobase::pData(Set)
