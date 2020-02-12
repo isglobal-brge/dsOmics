@@ -11,6 +11,6 @@
 #' 
 limmaDS <- function(model, Set, sva){
   res <- MEAL::runPipeline(set = Set, model = model, sva=sva)
-  ans <- getProbeResults(res)
+  ans <- MEAL::getProbeResults(res)
   return(ans)
 }
