@@ -9,7 +9,7 @@
 #'
 #' @export 
 #' 
-limmaDS <- function(model, Set, sva){
+limmaDS_old <- function(model, Set, sva){
   res <- runDiffMeanAnalysis(set = Set, model = model, sva=sva)
   ans <- getProbeResults(res)
   return(ans)
