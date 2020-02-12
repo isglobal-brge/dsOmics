@@ -16,6 +16,6 @@ limmaDS <- function(Set, variable_names, covariable_names, sva){
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
-  ans <- MEAL::getProbeResults(res, fNames=c(""))
+  ans <- MEAL::getProbeResults(res, fNames=NULL)
   return(ans)
 }
