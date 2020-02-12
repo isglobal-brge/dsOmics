@@ -8,23 +8,9 @@
 #' @author Gonzalez, JR.
 #'
 #' @export 
+#' 
 limmaDS <- function(model, Set, sva){
-  
-  if(inherits(Set, "ExpressionSet"))
-    exprsData <- Biobase::pData(Set)
-  else if (inherits(Set, "RangedSummarizedExperiment"))
-    exprsData <- SummarizedExperiment::colData(Set)
-  else
-    stop("Set must be a 'eSet' or 'rse' object")
-  
-  design <- stats::model.matrix(stats::as.formula(model), 
-                                data=exprsData)
-  if (isTRUE(sva)){
-    ds.cbind(c('design', 'sva'), newobj='design')
-  }
-  
-  fit <- limma::lmFit(Set, design)
-  fit <- limma::eBayes(fit)
-  ans <- limma::topTable(fit, n=Inf)
+  res <- runDiffMeanAnalysis(set = Set, model = model, sva=sva)
+  ans <- getProbeResults(res)
   return(ans)
 }
