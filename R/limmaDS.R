@@ -10,7 +10,7 @@
 #' @export 
 #' 
 limmaDS <- function(model, Set, sva){
-  res <- MEAL::runDiffMeanAnalysis(set = Set, model = model, sva=sva)
+  res <- MEAL::runPipeline(set = Set, model = model, sva=sva)
   ans <- getProbeResults(res)
   return(ans)
 }
