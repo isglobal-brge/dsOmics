@@ -11,11 +11,11 @@
 #'
 #' @export 
 #' 
-limmaDS <- function(Set, variable_names, covariable_names, sva){
+limmaDS <- function(Set, variable_names, covariable_names, sva, fNames=NULL){
   res <- MEAL::runPipeline(set = Set, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
-  ans <- MEAL::getProbeResults(res, fNames=NULL)
+  ans <- MEAL::getProbeResults(res, fNames=fNames)
   return(ans)
 }
