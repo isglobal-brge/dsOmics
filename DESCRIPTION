@@ -21,10 +21,15 @@ AggregateMethods:
     featureNamesDS,
     varLabelsDS,
     featureDataDS,
-    limmaDS
+    limmaDS,
+    indexGdsnDS,
+    readGdsnDS,
+    snpgdsGetGenoDS,
+    snpgdsSelectSNPDS
 AssignMethods:
     selFeatureDS,
     cellCountsDS,
-    svaDS
+    svaDS,
+    selSNPDS
 RoxygenNote: 6.1.1
 Encoding: UTF-8

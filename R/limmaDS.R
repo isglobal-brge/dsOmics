@@ -1,17 +1,17 @@
 #'
 #' @title Differential expression analysis using limma
-#' @description To be supplied
-#' @param Set
-#' @param variable_names
-#' @param covariable_names
-#' @param sva
-#' @param annotCols
+#' @description Performs differential expression analysis using LIMMA
+#' @param Set either a \code{ExpressionSet} or a \code{RangedSummarizedExperiment}
+#' @param variable_names grouping variable used to perform differential expression analysis
+#' @param covariable_names name of variables used in the adjusted models
+#' @param sva should differential expression analysis be adjusted by SVA?
+#' @param annotCols variables from the annotation data used in the output
 #' @return a matrix with genes ordered by p-value
 #' @author Gonzalez, JR.
 #'
 #' @export 
 #' 
-limmaDS <- function(Set, variable_names, covariable_names, type, sva, fNames=NULL){
+limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=NULL){
   
   if (type==2){
     if(inherits(Set, "ExpressionSet")){
@@ -35,6 +35,6 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, fNames=NUL
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
-  ans <- MEAL::getProbeResults(res, fNames=fNames)
+  ans <- MEAL::getProbeResults(res, fNames=annotCols)
   return(ans)
 }

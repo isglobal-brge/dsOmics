@@ -4,13 +4,25 @@
 \alias{limmaDS}
 \title{Differential expression analysis using limma}
 \usage{
-limmaDS(model, eSet, sva)
+limmaDS(Set, variable_names, covariable_names, type, sva,
+  annotCols = NULL)
+}
+\arguments{
+\item{Set}{either a \code{ExpressionSet} or a \code{RangedSummarizedExperiment}}
+
+\item{variable_names}{grouping variable used to perform differential expression analysis}
+
+\item{covariable_names}{name of variables used in the adjusted models}
+
+\item{sva}{should differential expression analysis be adjusted by SVA?}
+
+\item{annotCols}{variables from the annotation data used in the output}
 }
 \value{
 a matrix with genes ordered by p-value
 }
 \description{
-To be supplied
+Performs differential expression analysis using LIMMA
 }
 \author{
 Gonzalez, JR.

@@ -40,7 +40,7 @@ GDSFileResourceClient <- R6::R6Class(
         } else {
           private$loadGDSFmt()
         }
-        conn <- openfn.gds(path)
+        conn <- snpgdsOpen(path)
         super$setConnection(conn)
       }
       conn
