@@ -40,7 +40,8 @@ GDSFileResourceClient <- R6::R6Class(
         } else {
           private$loadGDSFmt()
         }
-        conn <- snpgdsOpen(path)
+        private$loadGWASTools()
+        conn <- GWASTools::GdsGenotypeReader(path)
         super$setConnection(conn)
       }
       conn
@@ -52,7 +53,7 @@ GDSFileResourceClient <- R6::R6Class(
       super$close()
       conn <- super$getConnection()
       if (!is.null(conn)) {
-        closefn.gds(conn)
+        GWASTools::close(conn)
         if (!is.null(private$.gds.file.tmp) && file.exists(private$.gds.file.tmp)) {
           # house keeping
           ignore <- tryCatch(file.remove(private$.gds.file.tmp), error = function(e) {})
@@ -72,7 +73,15 @@ GDSFileResourceClient <- R6::R6Class(
         if (!require("BiocManager")) {
           install.packages("BiocManager", repos = "https://cloud.r-project.org", dependencies = TRUE)
         }
-        BiocManager::install("gdsfmt")
+        BiocManager::install("gdsfmt", ask = FALSE)
+      }
+    },
+    loadGWASTools = function() {
+      if (!require("GWASTools")) {
+        if (!require("BiocManager")) {
+          install.packages("BiocManager", repos = "https://cloud.r-project.org", dependencies = TRUE)
+        }
+        BiocManager::install("GWASTools", ask = FALSE)
       }
     }
   )
