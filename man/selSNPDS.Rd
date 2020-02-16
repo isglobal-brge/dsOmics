@@ -4,7 +4,7 @@
 \alias{selSNPDS}
 \title{Subset the information of a given SNP in a GDS object.}
 \usage{
-selSNPDS(gds, i, covars, vars)
+selSNPDS(gds, i, covars)
 }
 \arguments{
 \item{gds}{the GDS object}
@@ -12,8 +12,6 @@ selSNPDS(gds, i, covars, vars)
 \item{i}{the position of the SNP (e.g. column) in the SNP-matrix}
 
 \item{covars}{the data.frame with the covariates}
-
-\item{vars}{the name of the variables to be subset}
 }
 \value{
 a data frame with samples as rows and selected SNP and variables as columns.

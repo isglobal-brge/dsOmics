@@ -11,6 +11,8 @@ Depends: R (>= 3.6.1),
 Imports:
      Biobase,
      SNPRelate,
+     GENESIS, 
+     GWASTools,
      SummarizedExperiment,
      MEAL
 License: MIT
@@ -30,6 +32,7 @@ AssignMethods:
     selFeatureDS,
     cellCountsDS,
     svaDS,
+    GenotypeDataDS,
     selSNPDS
 RoxygenNote: 6.1.1
 Encoding: UTF-8

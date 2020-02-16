@@ -2,6 +2,7 @@
 
 export(GDSFileResourceClient)
 export(GDSFileResourceResolver)
+export(GenotypeDataDS)
 export(cellCountsDS)
 export(featureDataDS)
 export(featureNamesDS)
