@@ -10,10 +10,9 @@
 #' @export
 
 GenotypeDataDS <- function(x, covars, columId, ...){
-  g <- GWASTools::GdsGenotypeReader(x)
   names(covars)[columnId] <- "scanID"
   scanAnnot <- GWASTools::ScanAnnotationDataFrame(covars)
-  geno <- GenotypeData(g, scanAnnot = scanAnnot)
+  geno <- GenotypeData(x, scanAnnot = scanAnnot)
   close(g)
   geno
 }
