@@ -4,8 +4,8 @@
 \alias{GWASDS}
 \title{Genome-wide association analysis (GWAS)}
 \usage{
-GWASDS(genoData, outcome, covars = NULL, family = "binomial",
-  snpBlock = 10000, ...)
+GWASDS(genoData, outcome, covars = NULL, family = "binomial", snpBlock,
+  ...)
 }
 \arguments{
 \item{genoData}{a \code{GenotypeData} object which is a container for storing genotype data
@@ -22,7 +22,7 @@ covariate is the intercept term}
 for case/control studies. Quantitative traits can be analyzed by using "gaussian". Other values are accepted.}
 
 \item{snpBlock}{an integer specifying the number of SNPs in an iteration block. See \code{GenotypeIterator} 
-function in GENESIS package.}
+function in GWASTools package.}
 
 \item{...}{other arguments of \code{fitNullModel} function in GENESIS package}
 }

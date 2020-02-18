@@ -23,16 +23,13 @@ VignetteBuilder: knitr
 AggregateMethods:
     featureNamesDS,
     varLabelsDS,
-    featureDataDS,
+    featureDataDS, 
     limmaDS,
     getVariable=GWASTools::getVariable,
     GWASDS,
-    snpgdsGetGenoDS,
-    snpgdsSelectSNPDS
 AssignMethods:
     selFeatureDS,
     cellCountsDS,
-    svaDS,
     GenotypeDataDS,
     selSNPDS
 RoxygenNote: 6.1.1
