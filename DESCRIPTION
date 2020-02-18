@@ -15,8 +15,7 @@ Imports:
      GENESIS, 
      GWASTools,
      SummarizedExperiment,
-     MEAL,
-     meffil
+     MEAL
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
