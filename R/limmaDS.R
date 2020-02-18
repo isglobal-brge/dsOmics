@@ -22,6 +22,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=
       Set.counts <- SummarizedExperiment::assay(Set)
       pheno <- SummarizedExperiment::colData(Set)
     }
+    covariable_names <- unlist(strsplit(covariable_names, split=","))
     ff <- paste("~", paste(c(variable_names, covariable_names), collapse="+")) 
     design <- model.matrix(formula(ff), data=pheno)
     v <- limma::voom(Set.counts, design = design)$E

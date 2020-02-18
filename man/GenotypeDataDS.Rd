@@ -4,17 +4,17 @@
 \alias{GenotypeDataDS}
 \title{Class GenotypeData.}
 \usage{
-GenotypeDataDS(x, covars, ...)
+GenotypeDataDS(x, covars, columnId)
 }
 \arguments{
-\item{x}{an eSet-class object having beta values in the experimental data.}
+\item{x}{..}
 
-\item{feature}{a character vector indicanting the selected feature.}
+\item{columnId}{...}
 
-\item{vars}{a character vector with the variables to be selected.}
+\item{covar}{...}
 }
 \value{
-a data frame with samples as rows and selected features and variables as columns.
+...
 }
 \description{
 Container for storing genotype data from a GWAS together with the metadata associated with the subjects (e.g. phenotypes and covariates) and SNPs involved in the study. This is a wrapper of \code{GenotypeData} function from GWASTools package.

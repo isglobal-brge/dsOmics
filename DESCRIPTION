@@ -7,14 +7,16 @@ Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "a
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
 Description: DataSHIELD server site Omic functions.
 Depends: R (>= 3.6.1),
-     resourcer
+     resourcer,
+     tidyverse
 Imports:
      Biobase,
      SNPRelate,
      GENESIS, 
      GWASTools,
      SummarizedExperiment,
-     MEAL
+     MEAL,
+     meffil
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
@@ -24,8 +26,8 @@ AggregateMethods:
     varLabelsDS,
     featureDataDS,
     limmaDS,
-    indexGdsnDS,
-    readGdsnDS,
+    getVariable=GWASTools::getVariable,
+    GWASDS,
     snpgdsGetGenoDS,
     snpgdsSelectSNPDS
 AssignMethods:
