@@ -36,6 +36,6 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
-  ans <- MEAL::getProbeResults(res, fNames=annotCols)
+  ans <- dplyr::as_tibble(MEAL::getProbeResults(res, fNames=annotCols))
   return(ans)
 }
