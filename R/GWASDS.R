@@ -18,7 +18,6 @@
 #' 
 #' @author Gonzalez, JR.
 #'
-#' @import tidyverse
 #' @import dplyr
 #' @export 
 #' 
