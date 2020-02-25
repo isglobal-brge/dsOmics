@@ -10,6 +10,7 @@
 #' @author Gonzalez, JR.
 #'
 #' @import tidyverse
+#' @import dplyr
 #' @export 
 #' 
 limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=NULL){
