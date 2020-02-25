@@ -1,4 +1,4 @@
-#' @title Retrieve feature names from eSets.
+#' @title Retrieve names of annotation from eSets.
 #' @description This function is similar to the Biobase function \code{featureNames}.
 #' @param x Object, possibly derived from eSet-class or AnnotatedDataFrame.
 #' @return a caracter vector uniquely identifying each feature
@@ -6,11 +6,11 @@
 #'
 #' @export
 
-varLabelsDS <- function(x){
+fvarLabelsDS <- function(x){
   if(inherits(x, "ExpressionSet"))
     return(Biobase::varLabels(x))
   else if (inherits(x, "RangedSummarizedExperiment"))
-    return(colnames(SummarizedExperiment::colData(x)))
+    stop("implements the proper method")
   else
     stop("implements the proper method")
 } 

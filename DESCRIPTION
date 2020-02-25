@@ -23,6 +23,7 @@ VignetteBuilder: knitr
 AggregateMethods:
     featureNamesDS,
     varLabelsDS,
+    fvarLabelsDS,
     featureDataDS, 
     limmaDS,
     getVariable=GWASTools::getVariable,
