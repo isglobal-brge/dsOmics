@@ -32,7 +32,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=
       SummarizedExperiment::assay(Set) <- v
   }
   
-  if (!is.nullP(annotCols)){
+  if (!is.null(annotCols)){
     annotCols <- unlist(strsplit(annotCols, split=","))
   }
     
