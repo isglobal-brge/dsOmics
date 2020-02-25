@@ -18,6 +18,7 @@
 #' 
 #' @author Gonzalez, JR.
 #'
+#' @import tidyverse
 #' @export 
 #' 
 GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, ...){
