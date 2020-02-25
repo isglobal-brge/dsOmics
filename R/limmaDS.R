@@ -31,6 +31,10 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=
     else if (inherits(Set, "RangedSummarizedExperiment"))
       SummarizedExperiment::assay(Set) <- v
   }
+  
+  if (!is.nullP(annotCols)){
+    annotCols <- unlist(strsplit(annotCols, split=","))
+  }
     
   res <- MEAL::runPipeline(set = Set, 
                            variable_names = variable_names,
