@@ -40,6 +40,8 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
-  ans <- dplyr::as_tibble(MEAL::getProbeResults(res, fNames=annotCols), rownames="feature")
+  temp <- MEAL::getProbeResults(res, fNames=annotCols)
+  ans <- dplyr::as_tibble(temp) %>% add_column(.before=1, id=rownames(temp)) %>%
+    select(id, tail(names(.), length(annotCols)), everything())
   return(ans)
 }
