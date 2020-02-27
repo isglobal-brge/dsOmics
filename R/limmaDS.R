@@ -14,6 +14,12 @@
 #' 
 limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=NULL){
   
+  if (!is.null(covariable_names))
+    covariable_names <- unlist(strsplit(covariable_names, split=","))
+  if (!is.null(annotCols))
+    annotCols <- unlist(strsplit(annotCols, split=","))
+ 
+  
   if (type==2){
     if(inherits(Set, "ExpressionSet")){
       Set.counts <- Biobase::exprs(Set)
@@ -23,8 +29,6 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=
       Set.counts <- SummarizedExperiment::assay(Set)
       pheno <- SummarizedExperiment::colData(Set)
     }
-    if (!is.null(covariable_names))
-      covariable_names <- unlist(strsplit(covariable_names, split=","))
     ff <- paste("~", paste(c(variable_names, covariable_names), collapse="+")) 
     design <- model.matrix(formula(ff), data=pheno)
     v <- limma::voom(Set.counts, design = design)$E
