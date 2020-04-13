@@ -1,0 +1,13 @@
+AggregateMethods:
+   featureNamesDS,
+   varLabelsDS,
+   fvarLabelsDS,
+   featureDataDS, 
+   limmaDS,
+   getVariable=GWASTools::getVariable,
+   GWASDS,
+AssignMethods:
+   selFeatureDS,
+   cellCountsDS,
+   GenotypeDataDS,
+   selSNPDS

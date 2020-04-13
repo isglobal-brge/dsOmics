@@ -20,18 +20,5 @@ License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
 VignetteBuilder: knitr
-AggregateMethods:
-    featureNamesDS,
-    varLabelsDS,
-    fvarLabelsDS,
-    featureDataDS, 
-    limmaDS,
-    getVariable=GWASTools::getVariable,
-    GWASDS,
-AssignMethods:
-    selFeatureDS,
-    cellCountsDS,
-    GenotypeDataDS,
-    selSNPDS
 RoxygenNote: 6.1.1
 Encoding: UTF-8
