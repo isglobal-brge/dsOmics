@@ -8,7 +8,7 @@
 #' @import readr
 #' @export 
 #' 
-plinkDS <- function(client, plink.command,   ...){
+plinkDS <- function(client, plink.command){
   
   plink.command <- unlist(strsplit(plink.command, " "))
   plink.command <- c(plink.command, "--noweb", "--out")
