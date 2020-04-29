@@ -19,19 +19,24 @@ plinkDS <- function(client, plink.command,   ...){
   
   client$downloadFile(paste0(tempDir, '/out.*'))  
   
-  outs <<- client$exec('ls', tempDir)$output
-  outs <- outs[grep(base.out, outs)]
-  outs <- outs[-grep(".hh|.log|.nof", outs)]
+  outs <- client$exec('ls', tempDir)$output
+  outs <- outs[-grep(".hh$|.log$|.nof$", outs)]
   
-  nn <- sapply(strsplit(outs, "\\."), "[", 2)
-  results <- list()
-  for (i in 1:length(outs)){
-    results[[i]] <- readr::read_table(outs[i])
+  if (length(outs)==0){
+    ans <- plink$error
   }
-  names(results) <- nn
+  
+  else{
+    nn <- sapply(strsplit(outs, "\\."), "[", 2)
+    results <- list()
+    for (i in 1:length(outs)){
+      results[[i]] <- readr::read_table(outs[i])
+    }
+    names(results) <- nn
+    ans <- list(results=results, plink.out = plink)
+  }
   
   client$removeTempDir()
   
-  ans <- list(results=results, plink.out = plink)
   return(ans)
 }
