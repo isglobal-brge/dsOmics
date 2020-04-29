@@ -6,6 +6,7 @@ AggregateMethods:
    limmaDS,
    getVariable=GWASTools::getVariable,
    GWASDS,
+   plinkDS
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
