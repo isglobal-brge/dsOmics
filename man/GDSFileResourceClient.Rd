@@ -4,12 +4,88 @@
 \name{GDSFileResourceClient}
 \alias{GDSFileResourceClient}
 \title{GDS file resource client}
-\format{A R6 object of class GDSFileResourceClient}
-\usage{
-GDSFileResourceClient
+\format{
+A R6 object of class GDSFileResourceClient
 }
 \description{
 Build a GDS handler from a resource object describing access to a 
 GDS file or a VCF file to be converted into a GDS file.
 }
-\keyword{datasets}
+\section{Super classes}{
+\code{\link[resourcer:ResourceClient]{resourcer::ResourceClient}} -> \code{\link[resourcer:FileResourceClient]{resourcer::FileResourceClient}} -> \code{GDSFileResourceClient}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{GDSFileResourceClient$new()}}
+\item \href{#method-getConnection}{\code{GDSFileResourceClient$getConnection()}}
+\item \href{#method-getValue}{\code{GDSFileResourceClient$getValue()}}
+\item \href{#method-close}{\code{GDSFileResourceClient$close()}}
+\item \href{#method-clone}{\code{GDSFileResourceClient$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="asDataFrame">}\href{../../resourcer/html/ResourceClient.html#method-asDataFrame}{\code{resourcer::ResourceClient$asDataFrame()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="asTbl">}\href{../../resourcer/html/ResourceClient.html#method-asTbl}{\code{resourcer::ResourceClient$asTbl()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="exec">}\href{../../resourcer/html/ResourceClient.html#method-exec}{\code{resourcer::ResourceClient$exec()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="getResource">}\href{../../resourcer/html/ResourceClient.html#method-getResource}{\code{resourcer::ResourceClient$getResource()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="FileResourceClient" data-id="downloadFile">}\href{../../resourcer/html/FileResourceClient.html#method-downloadFile}{\code{resourcer::FileResourceClient$downloadFile()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$new(resource)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getConnection"></a>}}
+\if{latex}{\out{\hypertarget{method-getConnection}{}}}
+\subsection{Method \code{getConnection()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$getConnection()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getValue"></a>}}
+\if{latex}{\out{\hypertarget{method-getValue}{}}}
+\subsection{Method \code{getValue()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$getValue()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-close"></a>}}
+\if{latex}{\out{\hypertarget{method-close}{}}}
+\subsection{Method \code{close()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$close()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

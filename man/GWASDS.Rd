@@ -4,8 +4,7 @@
 \alias{GWASDS}
 \title{Genome-wide association analysis (GWAS)}
 \usage{
-GWASDS(genoData, outcome, covars = NULL, family = "binomial", snpBlock,
-  ...)
+GWASDS(genoData, outcome, covars = NULL, family = "binomial", snpBlock, ...)
 }
 \arguments{
 \item{genoData}{a \code{GenotypeData} object which is a container for storing genotype data
