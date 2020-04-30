@@ -12,7 +12,8 @@
 #' 
 plinkDS <- function(client, ...){
   
-  dots <- list(...)
+  dots<<- list(...)
+  
   
   dashedNames <- unlist(lapply(names(dots), function(n) {
     paste0("--", n)
@@ -47,6 +48,7 @@ plinkDS <- function(client, ...){
   }
   
   client$removeTempDir()
+  client$close()
   
   return(ans)
 }
