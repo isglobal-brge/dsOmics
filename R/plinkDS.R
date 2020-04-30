@@ -2,15 +2,25 @@
 #' 
 #' @description Performs GWAS using PLINK using shell command lines
 #' 
-#' @param 
+#' @param client ...
+#' @param ... 
+#' 
 #' @author Gonzalez, JR.
 #'
 #' @import readr
 #' @export 
 #' 
-plinkDS <- function(client, plink.command){
+plinkDS <- function(client, ...){
   
+  dots <- list(...)
+  
+  dashedNames <- unlist(lapply(names(dots), function(n) {
+    paste0("--", n)
+  }))
+
+  plink.command <- gsub("-- ", "--", paste(dashedNames, dots, collapse = " ", sep=" "))
   plink.command <- unlist(strsplit(plink.command, " "))
+  
   plink.command <- c(plink.command, "--noweb", "--out")
   tempDir <- client$tempDir()
   command <- c(plink.command, paste0(tempDir, '/out'))
