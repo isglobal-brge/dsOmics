@@ -35,15 +35,17 @@ plinkDS <- function(client, ...){
   
   if (length(outs)==0){
     ans <- plink$error
-  }  else if (length(out)==1) {
+  }
+  else {
+    if (length(out)==1) {
       results <- readr::read_table(outs)
-  }   else {
-    results <- c("There are more than 1 table as output")
+      }
+    else {
+      results <- c("There are more than 1 table as output")
+    }
+    ans <- list(results=results, plink.out = plink)
   }
     
-   ans <- list(results=results, plink.out = plink)
-  }
-  
   client$removeTempDir()
   client$close()
   
