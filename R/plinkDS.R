@@ -35,16 +35,13 @@ plinkDS <- function(client, ...){
   
   if (length(outs)==0){
     ans <- plink$error
+  }  else if (length(out)==1) {
+      results <- readr::read_table(outs)
+  }   else {
+    results <- c("There are more than 1 table as output")
   }
-  
-  else{
-    nn <- sapply(strsplit(outs, "\\."), "[", 2)
-    results <- list()
-    for (i in 1:length(outs)){
-      results[[i]] <- readr::read_table(outs[i])
-    }
-    names(results) <- nn
-    ans <- list(results=results, plink.out = plink)
+    
+   ans <- list(results=results, plink.out = plink)
   }
   
   client$removeTempDir()
