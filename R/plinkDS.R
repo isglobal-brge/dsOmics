@@ -37,7 +37,7 @@ plinkDS <- function(client, ...){
     ans <- plink$error
   }
   else {
-    if (length(out)==1) {
+    if (length(outs)==1) {
       results <- readr::read_table(outs)
       }
     else {
