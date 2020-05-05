@@ -6,14 +6,19 @@
       "name": "gds-format",
       "title": "GDS format",
       "description": "Data are in Genomic Data Structure format (GDS)."
+    },
+    {
+      "name": "bioc",
+      "title": "Bioconductor",
+      "description": "Data formats and processing tools are provided by [Bioconductor](https://bioconductor.org/)."
     }
   ],
   "forms": [
     {
       "name": "gridfs-gds-file",
       "title": "GDS data file - MongoDB GridFS",
-      "description": "File resource in Genomic Data Structure format (GDS) format or in a format that can be converted to GDS. The file will be downloaded from the GridFS file store of a MongoDB server.",
-      "tags": ["gridfs", "data-file", "gds-format"],
+      "description": "File resource in Genomic Data Structure (GDS) format or in a format that can be converted to GDS. The file will be downloaded from the GridFS file store of a MongoDB server.",
+      "tags": ["gridfs", "data-file", "gds-format", "bioc"],
       "parameters": {
         "$schema": "http://json-schema.org/schema#",
         "type": "array",
@@ -47,11 +52,11 @@
             "key": "format",
             "type": "string",
             "title": "Format",
-            "description": "Omic data format.",
+            "description": "Genomic Data Structure (GDS) format or in a format that can be converted to GDS.",
             "enum": [
               {
                 "key": "GDS",
-                "title": "GDS (Genomic Data Structure format)"
+                "title": "GDS"
               },
               {
                 "key": "VCF2GDS",
@@ -88,8 +93,8 @@
     {
       "name": "http-gds-file",
       "title": "GDS data file - HTTP",
-      "description": "File resource in Genomic Data Structure format (GDS) format or in a format that can be converted to GDS. The file will be downloaded from a HTTP server.",
-      "tags": ["http", "data-file", "gds-format"],
+      "description": "File resource in Genomic Data Structure (GDS) format or in a format that can be converted to GDS. The file will be downloaded from a HTTP server.",
+      "tags": ["http", "data-file", "gds-format", "bioc"],
       "parameters": {
         "$schema": "http://json-schema.org/schema#",
         "type": "array",
@@ -104,11 +109,11 @@
             "key": "format",
             "type": "string",
             "title": "Format",
-            "description": "Omic data format.",
+            "description": "Genomic Data Structure (GDS) format or in a format that can be converted to GDS.",
             "enum": [
               {
                 "key": "GDS",
-                "title": "GDS (Genomic Data Structure format)"
+                "title": "GDS"
               },
               {
                 "key": "VCF2GDS",
@@ -145,8 +150,8 @@
     {
       "name": "local-gds-file",
       "title": "GDS data file - local",
-      "description": "File resource in Genomic Data Structure format (GDS) format or in a format that can be converted to GDS. The file is located in the R server file system.",
-      "tags": ["local", "data-file", "gds-format"],
+      "description": "File resource in Genomic Data Structure (GDS) format or in a format that can be converted to GDS. The file is located in the R server file system.",
+      "tags": ["local", "data-file", "gds-format", "bioc"],
       "parameters": {
         "$schema": "http://json-schema.org/schema#",
         "type": "array",
@@ -161,11 +166,11 @@
             "key": "format",
             "type": "string",
             "title": "Format",
-            "description": "Omic data format.",
+            "description": "Genomic Data Structure (GDS) format or in a format that can be converted to GDS.",
             "enum": [
               {
                 "key": "GDS",
-                "title": "GDS (Genomic Data Structure format)"
+                "title": "GDS"
               },
               {
                 "key": "VCF2GDS",
@@ -186,8 +191,8 @@
     {
       "name": "opal-gds-file",
       "title": "GDS data file - Opal",
-      "description": "File resource in Genomic Data Structure format (GDS) format or in a format that can be converted to GDS. The file will be downloaded from the file store of a Opal server.",
-      "tags": ["opal", "data-file", "gds-format"],
+      "description": "File resource in Genomic Data Structure (GDS) format or in a format that can be converted to GDS. The file will be downloaded from the file store of a Opal server.",
+      "tags": ["opal", "data-file", "gds-format", "bioc"],
       "parameters": {
         "$schema": "http://json-schema.org/schema#",
         "type": "array",
@@ -208,11 +213,11 @@
             "key": "format",
             "type": "string",
             "title": "Format",
-            "description": "Omic data format.",
+            "description": "Genomic Data Structure (GDS) format or in a format that can be converted to GDS.",
             "enum": [
               {
                 "key": "GDS",
-                "title": "GDS (Genomic Data Structure format)"
+                "title": "GDS"
               },
               {
                 "key": "VCF2GDS",
@@ -246,8 +251,8 @@
     {
       "name": "scp-gds-file",
       "title": "GDS data file - SSH",
-      "description": "File resource in Genomic Data Structure format (GDS) format or in a format that can be converted to GDS. The file will be downloaded from a server accessible through SSH.",
-      "tags": ["ssh", "data-file", "gds-format"],
+      "description": "File resource in Genomic Data Structure (GDS) format or in a format that can be converted to GDS. The file will be downloaded from a server accessible through SSH.",
+      "tags": ["ssh", "data-file", "gds-format", "bioc"],
       "parameters": {
         "$schema": "http://json-schema.org/schema#",
         "type": "array",
@@ -275,11 +280,11 @@
             "key": "format",
             "type": "string",
             "title": "Format",
-            "description": "Omic data format.",
+            "description": "Genomic Data Structure (GDS) format or in a format that can be converted to GDS.",
             "enum": [
               {
                 "key": "GDS",
-                "title": "GDS (Genomic Data Structure format)"
+                "title": "GDS"
               },
               {
                 "key": "VCF2GDS",
