@@ -42,8 +42,10 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
     annotCols <- unlist(strsplit(annotCols, split=","))
   }
   
-  if(!is.null(contrasts) & !is.null(levels))
+  if(!is.null(contrasts))
   {
+    
+    colnames(design)<-levels
     contrasts<-limma::makeContrasts(contrasts = contrasts,levels = levels)
   }
     
