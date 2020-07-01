@@ -44,14 +44,14 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
   
   if(!is.null(contrasts) & !is.null(levels))
   {
-    contrast<-limma::makeContrasts(contrasts = contrasts,levels = levels)
+    contrasts<-limma::makeContrasts(contrasts = contrasts,levels = levels)
   }
     
   res <- MEAL::runPipeline(set = Set, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
-  temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrast)
+  temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
   ans <- as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     select(id, tail(names(.), length(annotCols)), everything())
   return(ans)
