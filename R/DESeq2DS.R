@@ -1,14 +1,14 @@
 #'
 #' @title Differential expression analysis on the server-side
-#' @description Performs the Differential expression analysis based on the Negative Binomial distribution on the server-side
-#' @details This function perform a differential expression analysis 
-#' for \code{Count matrix}, \code{htseq-count} and \code{SummarizedExperiment} input 
+#' @description Performs the DGE based on
+#'  the Negative Binomial distribution 
+#' @details This function perform a DGE analysis 
+#' for \code{SummarizedExperiment} input 
 #' @param vars variables for the model
-#' @param set The data file 
+#' @param set \code{SummarizedExperiment} object
 #' @param test "Wald" or "LRT"
 #' @param fitType "parametric", "local", or "mean"
 #' @param sfType "ratio", "poscounts", or "iterate"
-#' @param betaPrior TRUE or FALSE
 #' @param reduced test="LRT"
 #' @param contrast model matrix contrast
 #' 
@@ -16,7 +16,7 @@
 #' @export
 #'
 
-DESeq2DS<-function(vars, set,test, fitType, sfType, betaPrior, reduced, contrast)
+DESeq2DS<-function(vars, set,test, fitType, sfType, reduced, contrast)
 {  
   set<-eval(parse(text=set))
 
@@ -33,11 +33,11 @@ DESeq2DS<-function(vars, set,test, fitType, sfType, betaPrior, reduced, contrast
 
   if(is.null(reduced))
     {
-    dds<-DESeq2::DESeq(dds,test = test, fitType = fitType, sfType = sfType, betaPrior = betaPrior)  
+    dds<-DESeq2::DESeq(dds,test = test, fitType = fitType, sfType = sfType)  
   }else{
     reduced <- unlist(strsplit(reduced, split=","))
     reduced <- paste("~", paste(c(reduced), collapse="+"))
-    dds<-DESeq2::DESeq(dds,test = test, fitType = fitType, sfType = sfType, betaPrior = betaPrior, reduced = stats::formula(reduced)) 
+    dds<-DESeq2::DESeq(dds,test = test, fitType = fitType, sfType = sfType, reduced = stats::formula(reduced)) 
   }
    
   if(is.null(contrast)){
