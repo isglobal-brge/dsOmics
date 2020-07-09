@@ -52,4 +52,4 @@ DESeq2DS<-function(vars, set,test, fitType, sfType, betaPrior, reduced, contrast
 }
 
 #AGGREGATE FUNCTION
-# DESeq2DS
+#DESeq2DS
