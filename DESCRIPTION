@@ -15,7 +15,9 @@ Imports:
      GENESIS, 
      GWASTools,
      SummarizedExperiment,
-     MEAL
+     MEAL,
+     knitr,
+     DESeq2
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true

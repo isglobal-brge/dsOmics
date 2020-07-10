@@ -8,11 +8,12 @@
 #' @param annotCols variables from the annotation data used in the output
 #' @return a matrix with genes ordered by p-value
 #' @author Gonzalez, JR.
-#'
-#' @import dplyr
+#' 
 #' @export 
 #' 
-limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=NULL){
+limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, levels, coef, sva, annotCols=NULL){
+  
+   Set<-eval(parse(text=Set))
   
   if (!is.null(covariable_names))
     covariable_names <- unlist(strsplit(covariable_names, split=","))
@@ -41,12 +42,22 @@ limmaDS <- function(Set, variable_names, covariable_names, type, sva, annotCols=
   if (!is.null(annotCols)){
     annotCols <- unlist(strsplit(annotCols, split=","))
   }
+  
+  if(!is.null(contrasts)) 
+  { 
+    if(levels != "design"){
+     levels <- unlist(strsplit(levels, split=",")) 
+     colnames(design)<-levels 
+    }
+    contrasts <- unlist(strsplit(contrasts, split=","))
+    contrasts<-limma::makeContrasts(contrasts = contrasts,levels = levels)
+  }
     
   res <- MEAL::runPipeline(set = Set, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
-  temp <- MEAL::getProbeResults(res, fNames=annotCols)
+  temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
   ans <- as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     select(id, tail(names(.), length(annotCols)), everything())
   return(ans)
