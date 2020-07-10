@@ -9,6 +9,7 @@
 #' @return a matrix with genes ordered by p-value
 #' @author Gonzalez, JR.
 #' 
+#' @import dplyr
 #' @export 
 #' 
 limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, levels, coef, sva, annotCols=NULL){
@@ -58,7 +59,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
                            covariable_names = covariable_names,
                            sva=sva)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
-  ans <- as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
+  ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     select(id, tail(names(.), length(annotCols)), everything())
   return(ans)
 }
