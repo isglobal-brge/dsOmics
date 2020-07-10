@@ -7,6 +7,8 @@
 #' 
 #' @author Gonzalez, JR.
 #'
+#' @import readr
+#' 
 #' @export 
 #' 
 plinkDS <- function(client, ...){
