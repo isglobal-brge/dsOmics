@@ -8,7 +8,8 @@ Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "a
 Description: DataSHIELD server site Omic functions.
 Depends: R (>= 3.6.1),
      resourcer,
-     tidyverse
+     tidyverse,
+     magrittr
 Imports:
      Biobase,
      SNPRelate,

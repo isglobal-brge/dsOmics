@@ -1,6 +1,6 @@
-#' @title Genome-wide association analysis (GWAS)
+#' @title Genome-wide association analysis (GWAS) on the server-side
 #' 
-#' @description Performs GWAS using GENESIS
+#' @description Performs GWAS using \code{GENESIS} Bioconductor package
 #' @param genoData a \code{GenotypeData} object which is a container for storing genotype data
 #' from a GWAS toghether with the metadata associated with the subjects (i.e. phenotypes and/or covariates)
 #' and SNPs

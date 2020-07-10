@@ -4,12 +4,12 @@
 \alias{DESeq2DS}
 \title{Differential expression analysis on the server-side}
 \usage{
-DESeq2DS(vars, set, test, fitType, sfType, betaPrior, reduced, contrast)
+DESeq2DS(vars, set, test, fitType, sfType, reduced, contrast)
 }
 \arguments{
 \item{vars}{variables for the model}
 
-\item{set}{The data file}
+\item{set}{\code{SummarizedExperiment} object}
 
 \item{test}{"Wald" or "LRT"}
 
@@ -17,18 +17,17 @@ DESeq2DS(vars, set, test, fitType, sfType, betaPrior, reduced, contrast)
 
 \item{sfType}{"ratio", "poscounts", or "iterate"}
 
-\item{betaPrior}{TRUE or FALSE}
-
 \item{reduced}{test="LRT"}
 
 \item{contrast}{model matrix contrast}
 }
 \description{
-Performs the Differential expression analysis based on the Negative Binomial distribution on the server-side
+Performs the DGE based on
+ the Negative Binomial distribution
 }
 \details{
-This function perform a differential expression analysis 
-for \code{Count matrix}, \code{htseq-count} and \code{SummarizedExperiment} input
+This function perform a DGE analysis 
+for \code{SummarizedExperiment} input
 }
 \author{
 L. Abarrategui for DataSHILED development team

@@ -2,7 +2,7 @@
 % Please edit documentation in R/limmaDS.R
 \name{limmaDS}
 \alias{limmaDS}
-\title{Differential expression analysis using limma}
+\title{Differential expression analysis using limma on the server-side}
 \usage{
 limmaDS(
   Set,

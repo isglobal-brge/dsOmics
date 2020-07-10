@@ -2,7 +2,7 @@
 % Please edit documentation in R/GWASDS.R
 \name{GWASDS}
 \alias{GWASDS}
-\title{Genome-wide association analysis (GWAS)}
+\title{Genome-wide association analysis (GWAS) on the server-side}
 \usage{
 GWASDS(genoData, outcome, covars = NULL, family = "binomial", snpBlock, ...)
 }
@@ -29,7 +29,7 @@ function in GWASTools package.}
 a matrix with SNPs ordered by p-values
 }
 \description{
-Performs GWAS using GENESIS
+Performs GWAS using \code{GENESIS} Bioconductor package
 }
 \author{
 Gonzalez, JR.
