@@ -83,7 +83,7 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, 
     {
     fit <- edgeR::glmQLFTest(fit, coef = coef)
     }else{
-    fit <- edgeR::glmQLFTest(fit,coef = coef, contrast = contrasts)
+    fit <- edgeR::glmQLFTest(fit,coef = coef, contrast = contrast)
     }
   }
   
@@ -94,7 +94,7 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, 
    if (is.null(contrast)){
      fit <- edgeR::glmLRT(fit,coef=coef) 
    }else{
-     fit <- edgeR::glmLRT(fit,coef=coef,contrast = contrasts) 
+     fit <- edgeR::glmLRT(fit,coef=coef,contrast = contrast) 
    }
     
   }
