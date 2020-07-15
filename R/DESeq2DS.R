@@ -27,26 +27,23 @@ DESeq2DS<-function(vars, set,test, fitType, sfType, reduced, contrast)
    #convert data into DESeqDataSet
      dds <- DESeq2::DESeqDataSet(se = set, 
                                  design = stats::formula(ff))
-     
-
   
-
   if(is.null(reduced))
     {
     dds<-DESeq2::DESeq(dds,test = test, fitType = fitType, sfType = sfType)  
   }else{
     reduced <- unlist(strsplit(reduced, split=","))
     reduced <- paste("~", paste(c(reduced), collapse="+"))
-    dds<-DESeq2::DESeq(dds,test = test, fitType = fitType, sfType = sfType, reduced = stats::formula(reduced)) 
+    dds <- DESeq2::DESeq(dds,test = test, fitType = fitType,
+                         sfType = sfType, reduced = stats::formula(reduced)) 
   }
    
   if(is.null(contrast)){
-  res<-DESeq2::results(dds) 
-  }else{
-  contrast<-unlist(strsplit(contrast, split=","))
-  res<-DESeq2::results(dds, contrast = contrast) 
+    res <- DESeq2::results(dds) 
+  } else{
+    contrast<-unlist(strsplit(contrast, split=","))
+    res <- DESeq2::results(dds, contrast = contrast) 
   }
-    
 
   return(res)
 }

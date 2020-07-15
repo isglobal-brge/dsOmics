@@ -1,5 +1,5 @@
 #'
-#' @title Differential expression analysis using limma
+#' @title Differential expression analysis using limma on the server-side
 #' @description Performs differential expression analysis using LIMMA
 #' @param Set either a \code{ExpressionSet} or a \code{RangedSummarizedExperiment}
 #' @param variable_names grouping variable used to perform differential expression analysis
