@@ -11,16 +11,99 @@
 #' @export
 #'
 
-edgeRDS<-function(vars, set)
+edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, test, coef)
 { 
   set<-eval(parse(text=set))
   
+  counts<-SummarizedExperiment::assays(set)$counts
+  pheno <- SummarizedExperiment::colData(set)
+  
+  #Group variable
+  group<- paste("set",variable_names[1],sep = "$")
+  group<-eval(parse(text=group))
+  
   #design formula
-  vars <- unlist(strsplit(vars, split=","))
-  ff <- paste("~", paste(c(vars), collapse="+"))
+  variable_names <- unlist(strsplit(variable_names, split=","))
+  ff <- paste("~", paste(c(intercept,variable_names), collapse="+"))
+  design <- model.matrix(stats::formula(ff), data = pheno)
+
+  #Create DGEList object
+  DGEList.object<-edgeR::DGEList(counts = counts, 
+                                 samples= pheno, group = group)
+  
+  #Filtering
+  keep <- filterByExpr(DGEList.object)
+  DGEList.object<- DGEList.object[keep,,keep.lib.sizes=FALSE]
+  
+  #Normalization
+  DGEList.object <- calcNormFactors(DGEList.object)
   
   
-  return(res)
+  
+  #estimate the dispersion
+  if(dispersion==1)
+  {
+   #common and tagwise dispersions
+   DGEList.object <- edgeR::estimateDisp(y = DGEList.object,
+                                         design = design)
+  }
+  
+  if(dispersion==2)
+  {
+    #common dispersions
+    DGEList.object  <- edgeR::estimateCommonDisp(y = DGEList.object,
+                                                 design = design)
+    
+  }
+  if(dispersion==3)
+  {
+    #tagwise dispersions
+    DGEList.object <- edgeR::estimateTagwiseDisp(y = DGEList.object,
+                                                 design = design)
+    
+    
+  }
+  
+  if(!is.null(contrast)) 
+  { 
+    if(levels != "design"){
+      levels <- unlist(strsplit(levels, split=",")) 
+      colnames(design)<-levels 
+    }
+    contrast <- unlist(strsplit(contrast, split=","))
+    contrast <-limma::makeContrasts(contrast = contrast,levels = levels)
+  }
+  
+  
+  if(test==1)
+  #Quasi-likelihood F-test
+  {
+    fit <- edgeR::glmQLFit(DGEList.object,design)
+    if(is.null(contrast))
+    {
+    fit <- edgeR::glmQLFTest(fit, coef = coef)
+    }else{
+    fit <- edgeR::glmQLFTest(fit,coef = coef, contrast = contrasts)
+    }
+  }
+  
+ if (test==2)
+ #Likelihood ratio test
+  {
+   fit <- edgeR::glmFit(DGEList.object,design)
+   if (is.null(contrast)){
+     fit <- edgeR::glmLRT(fit,coef=coef) 
+   }else{
+     fit <- edgeR::glmLRT(fit,coef=coef,contrast = contrasts) 
+   }
+    
+  }
+  
+  #Result table
+  results<-edgeR::topTags(fit)
+  
+  
+  return(results)
 }
 
 #AGGREGATE FUNCTION

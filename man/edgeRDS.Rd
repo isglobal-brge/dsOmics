@@ -4,7 +4,16 @@
 \alias{edgeRDS}
 \title{Differential expression analysis on the server-side}
 \usage{
-edgeRDS(vars, set)
+edgeRDS(
+  set,
+  variable_names,
+  intercept,
+  dispersion,
+  contrast,
+  levels,
+  test,
+  coef
+)
 }
 \description{
 Performs the DGE based on
