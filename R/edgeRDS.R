@@ -71,7 +71,7 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, 
       colnames(design)<-levels 
     }
     contrast <- unlist(strsplit(contrast, split=","))
-    contrast <-limma::makeContrasts(contrast = contrast,levels = levels)
+    contrast <-limma::makeContrasts(contrasts = contrast,levels = levels)
   }
   
   
