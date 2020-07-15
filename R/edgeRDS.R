@@ -32,11 +32,11 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, 
                                  samples= pheno, group = group)
   
   #Filtering
-  keep <- filterByExpr(DGEList.object)
+  keep <- edgeR::filterByExpr(DGEList.object)
   DGEList.object<- DGEList.object[keep,,keep.lib.sizes=FALSE]
   
   #Normalization
-  DGEList.object <- calcNormFactors(DGEList.object)
+  DGEList.object <- edgeR::calcNormFactors(DGEList.object)
   
   
   
