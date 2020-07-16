@@ -48,7 +48,7 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, 
                                          design = design)
   }
   
-  if(dispersion==2)
+  if(dispersion==2 | dispersion==3)
   {
     #common dispersions
     DGEList.object  <- edgeR::estimateCommonDisp(y = DGEList.object,
