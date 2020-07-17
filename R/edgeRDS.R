@@ -11,7 +11,7 @@
 #' @export
 #'
 
-edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, test, coef)
+edgeRDS<-function(set, variable_names, intercept, dispersion, normalization, contrast, levels, test, coef)
 { 
   set<-eval(parse(text=set))
   
@@ -36,7 +36,8 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, 
   DGEList.object<- DGEList.object[keep,,keep.lib.sizes=FALSE]
   
   #Normalization
-  DGEList.object <- edgeR::calcNormFactors(DGEList.object)
+  DGEList.object <- edgeR::calcNormFactors(object = DGEList.object,
+                                           method = normalization)
   
   
   
@@ -63,6 +64,8 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, contrast, levels, 
     
     
   }
+  
+  return(class(contrast))
   
   if(!is.null(contrast)) 
   { 

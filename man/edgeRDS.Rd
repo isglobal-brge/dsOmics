@@ -9,6 +9,7 @@ edgeRDS(
   variable_names,
   intercept,
   dispersion,
+  normalization,
   contrast,
   levels,
   test,
