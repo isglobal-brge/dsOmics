@@ -65,17 +65,23 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, normalization, con
     
   }
   
-  return(class(contrast))
+  
   
   if(!is.null(contrast)) 
   { 
+    contrast.numeric<-as.numeric(contrast)
+    if(is.null(contrast.numeric)){
     if(levels != "design"){
       levels <- unlist(strsplit(levels, split=",")) 
       colnames(design)<-levels 
     }
     contrast <- unlist(strsplit(contrast, split=","))
     contrast <-limma::makeContrasts(contrasts = contrast,levels = levels)
+    }else{
+      contrast<-contrast.numeric
+    }
   }
+  
   
   
   if(test==1)
@@ -104,7 +110,7 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, normalization, con
   
   #Result table
   results<-edgeR::topTags(fit)
-  
+  results<-results$table
   
   return(results)
 }
