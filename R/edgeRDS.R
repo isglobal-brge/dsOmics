@@ -1,11 +1,23 @@
 #'
 #' @title Differential expression analysis on the server-side
-#' @description Performs the DGE based on
-#'  the negative binomial distribution as a model for count variability,
-#'  including empirical Bayes methods, exact tests, 
-#'  and generalized linear models.
-#' @details This function perform a DGE analysis 
-#' for \code{SummarizedExperiment} input 
+#' @description Performs a differential expression analysis based on
+#'  the negative binomial distribution. 
+#' @details This function performs a differential expression analysis 
+#' for \code{SummarizedExperiment} input using functions from 
+#' \code{edgeR} Bioconductor's package. 
+#' 
+#' 
+#' \code{edgeRDS} is a server-side aggregate function called by \code{ds.edgeR}.
+#' 
+#' @param set \code{RangedSummarizedExperiment} object
+#' @param variable_names grouping variables used to perform differential expression analysis
+#' @param intercept model intercept 
+#' @param dispersion type of dispersion to estimate
+#' @param normalization normalization method 
+#' @param contrast character or numeric vector specifying the contrast
+#' @param levels character or factor vector specifying the names of the contrast parameters 
+#' @param test test for differential expression analysis 
+#' @param coef a character or an integer indicating the coefficient to be tested equal to zero 
 #' 
 #' @author L. Abarrategui for DataSHILED development team
 #' @export

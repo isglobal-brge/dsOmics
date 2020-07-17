@@ -16,15 +16,36 @@ edgeRDS(
   coef
 )
 }
+\arguments{
+\item{set}{\code{RangedSummarizedExperiment} object}
+
+\item{variable_names}{grouping variables used to perform differential expression analysis}
+
+\item{intercept}{model intercept}
+
+\item{dispersion}{type of dispersion to estimate}
+
+\item{normalization}{normalization method}
+
+\item{contrast}{character or numeric vector specifying the contrast}
+
+\item{levels}{character or factor vector specifying the names of the contrast parameters}
+
+\item{test}{test for differential expression analysis}
+
+\item{coef}{a character or an integer indicating the coefficient to be tested equal to zero}
+}
 \description{
-Performs the DGE based on
- the negative binomial distribution as a model for count variability,
- including empirical Bayes methods, exact tests, 
- and generalized linear models.
+Performs a differential expression analysis based on
+ the negative binomial distribution.
 }
 \details{
-This function perform a DGE analysis 
-for \code{SummarizedExperiment} input
+This function performs a differential expression analysis 
+for \code{SummarizedExperiment} input using functions from 
+\code{edgeR} Bioconductor's package. 
+
+
+\code{edgeRDS} is a server-side aggregate function called by \code{ds.edgeR}.
 }
 \author{
 L. Abarrategui for DataSHILED development team
