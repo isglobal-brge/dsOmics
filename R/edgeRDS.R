@@ -83,14 +83,14 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, normalization, con
   { 
     contrast <- unlist(strsplit(contrast, split=","))
     contrast.numeric<-as.numeric(contrast)
-    if(is.null(contrast.numeric))
+    if(is.na(contrast.numeric))
       {
        if(levels != "design")
          {
           levels <- unlist(strsplit(levels, split=",")) 
           colnames(design)<-levels 
           }
-    contrast <-limma::makeContrasts(contrasts = contrast,levels = levels)
+      contrast <-limma::makeContrasts(contrasts = contrast,levels = levels)
        }else{
       contrast<-contrast.numeric
     }
