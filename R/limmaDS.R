@@ -27,7 +27,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
       Set.counts <- Biobase::exprs(Set)
       pheno <- Biobase::pData(Set)
     }
-    else if (inherits(Set, "RangedSummarizedExperiment")){
+    else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment"))){
       Set.counts <- SummarizedExperiment::assay(Set)
       pheno <- SummarizedExperiment::colData(Set)
     }
@@ -36,7 +36,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
     v <- limma::voom(Set.counts, design = design)$E
     if(inherits(Set, "ExpressionSet"))
       Biobase::exprs(Set) <- v
-    else if (inherits(Set, "RangedSummarizedExperiment"))
+    else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment")))
       SummarizedExperiment::assay(Set) <- v
   }
   
