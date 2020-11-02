@@ -11,8 +11,8 @@ alleleFrequencyDS <- function(genoData, sexcol, male, female){
   
   if(inherits(genoData, "GenotypeData")){
     genoData@scanAnnot@sexCol <- sexcol
-    genoData@scanAnnot@data$Gender[genoData@scanAnnot@data$Gender == male] <- "M"
-    genoData@scanAnnot@data$Gender[genoData@scanAnnot@data$Gender == female] <- "F"
+    genoData@scanAnnot@data$Gender[genoData@scanAnnot@data[sexcol] == male] <- "M"
+    genoData@scanAnnot@data$Gender[genoData@scanAnnot@data[sexcol] == female] <- "F"
     
     return(alleleFrequency(genoData, verbose = FALSE))
   }
