@@ -1,4 +1,6 @@
 AggregateMethods:
+   alleleFrequencyDS,
+   exactHWEDS,
    featureNamesDS,
    varLabelsDS,
    fvarLabelsDS,
@@ -7,6 +9,7 @@ AggregateMethods:
    getVariable=GWASTools::getVariable,
    GWASDS,
    plinkDS,
+   PCASNPSDS,
    DESeq2DS
 AssignMethods:
    selFeatureDS,
