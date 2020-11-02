@@ -2,26 +2,47 @@
 % Please edit documentation in R/exactHWEDS.R
 \name{exactHWEDS}
 \alias{exactHWEDS}
-\title{Title}
+\title{Hardy-Weinberg Equilibrium testing}
 \usage{
-exactHWEDS(genoData, geno.counts, snpStart, snpEnd, block.size, permute)
+exactHWEDS(
+  genoData,
+  sexcol,
+  male,
+  female,
+  geno.counts,
+  snpStart,
+  snpEnd,
+  block.size,
+  permute
+)
 }
 \arguments{
 \item{genoData}{}
 
-\item{geno.counts}{}
+\item{sexcol}{\code{character} Name of the sex column on the covariates file used to create the 
+\code{\link{GenotypeData}} object}
 
-\item{snpStart}{}
+\item{male}{\code{character} Name of the male indicator of the sex column on the covariates file used to create the 
+\code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{male} than \code{Male})}
 
-\item{snpEnd}{}
+\item{female}{\code{character} Name of the female indicator of the sex column on the covariates file used to create the 
+\code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{female} than \code{Female})}
 
-\item{block.size}{}
+\item{geno.counts}{\code{bool} if \code{TRUE}, genotype counts are returned in the output data.frame}
 
-\item{permute}{}
+\item{snpStart}{\code{numeric} index of the first SNP to analyze, defaults to first SNP (\code{NULL})}
+
+\item{snpEnd}{\code{numeric} index of the last SNP to analyze, defaults to last SNP (\code{NULL})}
+
+\item{block.size}{\code{numeric}  number of SNPs to read in at once}
+
+\item{permute}{\code{bool} logical indicator for whether to permute alleles before calculations}
 }
 \value{
 
 }
 \description{
-Title
+This function performs exact Hardy-Weinberg Equilibrium testing (using Fisher's Test) 
+over a selection of SNPs. It also counts genotype, calculates allele frequencies, 
+and calculates inbreeding coefficients.
 }
