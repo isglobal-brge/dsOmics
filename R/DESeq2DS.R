@@ -12,6 +12,8 @@
 #' @param reduced test="LRT"
 #' @param contrast model matrix contrast
 #' 
+#' @import dplyr
+#' 
 #' @author L. Abarrategui for DataSHILED development team
 #' @export
 #'
@@ -45,7 +47,7 @@ DESeq2DS<-function(vars, set,test, fitType, sfType, reduced, contrast)
     res <- DESeq2::results(dds, contrast = contrast) 
   }
 
-  return(res)
+  return(as_tibble(res))
 }
 
 #AGGREGATE FUNCTION

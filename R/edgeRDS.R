@@ -19,6 +19,8 @@
 #' @param test test for differential expression analysis 
 #' @param coef a character or an integer indicating the coefficient to be tested equal to zero 
 #' 
+#' @import dplyr
+#' 
 #' @author L. Abarrategui for DataSHILED development team
 #' @export
 #'
@@ -126,7 +128,7 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, normalization, con
   results<-edgeR::topTags(fit)
   results<-results$table
   
-  return(results)
+  return(as_tibble(results))
 }
 
 #AGGREGATE FUNCTION

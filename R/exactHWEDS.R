@@ -20,6 +20,8 @@
 #' @return
 #' @export
 #'
+#' @import dplyr
+#'
 #' @examples
 exactHWEDS <- function(genoData, sexcol, male, female, geno.counts, snpStart, snpEnd, block.size, permute){
   
@@ -34,7 +36,7 @@ exactHWEDS <- function(genoData, sexcol, male, female, geno.counts, snpStart, sn
                     block.size = block.size, 
                     verbose = FALSE,
                     permute = permute)
-    return(ans)
+    return(as_tibble(ans))
   }
   else{
     stop(paste0("Object of incorrect type [", class(genoData), "] exactHWE requires object of type GenotypeData"))
