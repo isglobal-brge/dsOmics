@@ -14,6 +14,8 @@
 #' frequencies of the A allele. Sample size for males, females, and all is returned as "n.M", "n.F", and "n", respectively.
 #'  "MAF" is the minor allele frequency over all scans.
 #' @export
+#' 
+#' @import dplyr
 
 alleleFrequencyDS <- function(genoData, sexcol, male, female){
   
@@ -21,8 +23,8 @@ alleleFrequencyDS <- function(genoData, sexcol, male, female){
     genoData@scanAnnot@sexCol <- sexcol
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == male] <- "M"
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == female] <- "F"
-    
-    return(GWASTools::alleleFrequency(genoData, verbose = FALSE))
+    ans <- GWASTools::alleleFrequency(genoData, verbose = FALSE)
+    return(as_tibble(ans))
   }
   else(stop(paste0("Object of incorrect type [", class(genoData), "] alleleFrequency requires object of type GenotypeData")))
 }
