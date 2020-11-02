@@ -15,8 +15,8 @@ exactHWEDS <- function(genoData, sexcol, male, female, geno.counts, snpStart, sn
   
   if(inherits(genoData, "GenotypeData")){
     genoData@scanAnnot@sexCol <- sexcol
-    genoData@scanAnnot@data$Gender[genoData@scanAnnot@data$Gender == male] <- "M"
-    genoData@scanAnnot@data$Gender[genoData@scanAnnot@data$Gender == female] <- "F"
+    genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == male] <- "M"
+    genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == female] <- "F"
     
     ans <- exactHWE(genoData = genoData, 
                     geno.counts = geno.counts,
