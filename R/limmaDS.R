@@ -27,7 +27,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
       Set.counts <- Biobase::exprs(Set)
       pheno <- Biobase::pData(Set)
     }
-    else if (inherits(Set, "RangedSummarizedExperiment")){
+    else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment"))){
       Set.counts <- SummarizedExperiment::assay(Set)
       pheno <- SummarizedExperiment::colData(Set)
     }
@@ -36,7 +36,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
     v <- limma::voom(Set.counts, design = design)$E
     if(inherits(Set, "ExpressionSet"))
       Biobase::exprs(Set) <- v
-    else if (inherits(Set, "RangedSummarizedExperiment"))
+    else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment")))
       SummarizedExperiment::assay(Set) <- v
   }
   
@@ -59,7 +59,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
                            covariable_names = covariable_names,
                            sva=sva)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
-  ans <- as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
+  ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     select(id, tail(names(.), length(annotCols)), everything())
   return(ans)
 }

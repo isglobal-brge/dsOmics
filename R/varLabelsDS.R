@@ -9,7 +9,7 @@
 varLabelsDS <- function(x){
   if(inherits(x, "ExpressionSet"))
     return(Biobase::varLabels(x))
-  else if (inherits(x, "RangedSummarizedExperiment"))
+  else if (inherits(x, c("SummarizedExperiment","RangedSummarizedExperiment")))
     return(colnames(SummarizedExperiment::colData(x)))
   else
     stop("implements the proper method")

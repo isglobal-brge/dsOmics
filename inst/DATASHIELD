@@ -9,6 +9,8 @@ AggregateMethods:
    getVariable=GWASTools::getVariable,
    GWASDS,
    plinkDS,
+   DESeq2DS,
+   edgeRDS
    PCASNPSDS,
    DESeq2DS
 AssignMethods:

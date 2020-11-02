@@ -19,7 +19,8 @@ Imports:
      SummarizedExperiment,
      MEAL,
      knitr,
-     DESeq2
+     DESeq2,
+     edgeR
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
