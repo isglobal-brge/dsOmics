@@ -1,4 +1,6 @@
 AggregateMethods:
+   alleleFrequencyDS,
+   exactHWEDS,
    featureNamesDS,
    varLabelsDS,
    fvarLabelsDS,
@@ -9,6 +11,8 @@ AggregateMethods:
    plinkDS,
    DESeq2DS,
    edgeRDS
+   PCASNPSDS,
+   DESeq2DS
 AssignMethods:
    selFeatureDS,
    cellCountsDS,

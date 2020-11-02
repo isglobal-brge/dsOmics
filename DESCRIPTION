@@ -15,6 +15,7 @@ Imports:
      SNPRelate,
      GENESIS, 
      GWASTools,
+     GenomicRanges,
      SummarizedExperiment,
      MEAL,
      knitr,
