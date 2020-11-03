@@ -22,5 +22,5 @@ PCASNPSDS <- function(gds, prune, ld.threshold){
                     EV1 = pca$eigenvect[,1], # the first eigenvector
                     EV2 = pca$eigenvect[,2], # the second eigenvector
                     stringsAsFactors = FALSE)
-  plot(tab$EV2, tab$EV1, xlab="eigenvector 2", ylab="eigenvector 1")
+  return(tab)
 }
