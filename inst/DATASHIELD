@@ -18,4 +18,5 @@ AssignMethods:
    selFeatureDS,
    cellCountsDS,
    GenotypeDataDS,
-   selSNPDS
+   selSNPDS,
+   getSNPSbyGenDS

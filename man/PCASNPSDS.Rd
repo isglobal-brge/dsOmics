@@ -2,18 +2,20 @@
 % Please edit documentation in R/PCASNPSDS.R
 \name{PCASNPSDS}
 \alias{PCASNPSDS}
-\title{Title}
+\title{Principal Component Analysis (PCA) on SNP genotype data}
 \usage{
 PCASNPSDS(gds, prune, ld.threshold)
 }
 \arguments{
-\item{gds}{}
+\item{gds}{\code{GDS} object}
 
-\item{ld.threshold}{}
+\item{prune}{\code{bool} \code{TRUE} to prune the GDS file using \code{SNPRelate::snpgdsLDpruning}}
+
+\item{ld.threshold}{Threshold for the pruning (see \code{\link{snpgdsLDpruning}})}
 }
 \value{
-
+\code{data frame} with the IDs and principal component points to be plotted.
 }
 \description{
-Title
+Principal Component Analysis (PCA) on SNP genotype data
 }
