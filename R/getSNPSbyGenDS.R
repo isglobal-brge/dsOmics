@@ -16,8 +16,8 @@ getSNPSbyGenDS <- function(gds, old_assign, ...){
   
   dots <- unlist(list(...))
   
-  df <- AnnotationDbi::select(org.Hs.eg.db, keys = dots, columns = c("SYMBOL", "ENTREZID"), keytype = "SYMBOL")
-  gr <- GenomicFeatures::genes(TxDb.Hsapiens.UCSC.hg19.knownGene, filter=list(gene_id=df$ENTREZID))
+  df <- AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db, keys = dots, columns = c("SYMBOL", "ENTREZID"), keytype = "SYMBOL")
+  gr <- GenomicFeatures::genes(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene, filter=list(gene_id=df$ENTREZID))
   seqlevelsStyle(gr) <- "NCBI"
   
   snp.ranges <- NULL
