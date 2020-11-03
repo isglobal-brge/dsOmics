@@ -27,6 +27,10 @@ getSNPSbyGenDS <- function(gds, old_assign, ...){
   
   snp.ids <- GWASTools::getSnpID(gds)[GWASTools::getPosition(gds) %in% snp.ranges]
   
+  if(isEmpty(snp.ids)){
+    stop("Queried gene(s) not found on the GDS file")
+  }
+  
   new_gds <- tempfile(fileext = ".gds")
   GWASTools::close(gds)
   GWASTools::gdsSubset(gds@filename, new_gds, snp.include = snp.ids, allow.fork = TRUE)
