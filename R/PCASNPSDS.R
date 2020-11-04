@@ -1,12 +1,12 @@
-#' Title
+#' @title Principal Component Analysis (PCA) on SNP genotype data
 #'
-#' @param gds 
-#' @param ld.threshold 
+#' @param gds \code{GDS} object
+#' @param prune \code{bool} \code{TRUE} to prune the GDS file using \code{SNPRelate::snpgdsLDpruning}
+#' @param ld.threshold Threshold for the pruning (see \code{\link{snpgdsLDpruning}})
 #'
-#' @return
+#' @return \code{data frame} with the IDs and principal component points to be plotted.
 #' @export
-#'
-#' @examples
+
 PCASNPSDS <- function(gds, prune, ld.threshold){
   gdsPCA <- SNPRelate::snpgdsOpen(gds@filename, allow.duplicate = TRUE)
   if(prune){
@@ -22,5 +22,5 @@ PCASNPSDS <- function(gds, prune, ld.threshold){
                     EV1 = pca$eigenvect[,1], # the first eigenvector
                     EV2 = pca$eigenvect[,2], # the second eigenvector
                     stringsAsFactors = FALSE)
-  plot(tab$EV2, tab$EV1, xlab="eigenvector 2", ylab="eigenvector 1")
+  return(tab)
 }

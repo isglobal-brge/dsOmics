@@ -18,8 +18,14 @@
 #' @import dplyr
 
 alleleFrequencyDS <- function(genoData, sexcol, male, female){
-  
   if(inherits(genoData, "GenotypeData")){
+    if(sexcol %in% colnames(genoData@scanAnnot@data) == FALSE){
+      stop(paste0("Selected sexcol [", sexcol, "] can't be found on the GenotypeData"))
+    }
+    if(!all(c(male, female) %in% unique(genoData@scanAnnot@data[,sexcol]))){
+      stop(paste0("Incorrect male or female identifier [", male, "/", female,
+                  "]. Available gender identifiers: ", paste0(unique(genoData@scanAnnot@data[,sexcol]), collapse = "/")))
+    }
     genoData@scanAnnot@sexCol <- sexcol
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == male] <- "M"
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == female] <- "F"

@@ -9,15 +9,14 @@ exactHWEDS(
   sexcol,
   male,
   female,
+  chromosome,
   geno.counts,
-  snpStart,
-  snpEnd,
   block.size,
   permute
 )
 }
 \arguments{
-\item{genoData}{}
+\item{genoData}{\code{GenotypeData} object}
 
 \item{sexcol}{\code{character} Name of the sex column on the covariates file used to create the 
 \code{\link{GenotypeData}} object}
@@ -28,11 +27,9 @@ exactHWEDS(
 \item{female}{\code{character} Name of the female indicator of the sex column on the covariates file used to create the 
 \code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{female} than \code{Female})}
 
+\item{chromosome}{\code{character} Chromosome to study. \code{"all"} to study all available chromosomes}
+
 \item{geno.counts}{\code{bool} if \code{TRUE}, genotype counts are returned in the output data.frame}
-
-\item{snpStart}{\code{numeric} index of the first SNP to analyze, defaults to first SNP (\code{NULL})}
-
-\item{snpEnd}{\code{numeric} index of the last SNP to analyze, defaults to last SNP (\code{NULL})}
 
 \item{block.size}{\code{numeric}  number of SNPs to read in at once}
 

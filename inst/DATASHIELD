@@ -7,14 +7,16 @@ AggregateMethods:
    featureDataDS, 
    limmaDS,
    getVariable=GWASTools::getVariable,
+   getChromosomeNamesDS,
    GWASDS,
    plinkDS,
    DESeq2DS,
-   edgeRDS
+   edgeRDS,
    PCASNPSDS,
    DESeq2DS
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
    GenotypeDataDS,
-   selSNPDS
+   selSNPDS,
+   getSNPSbyGenDS
