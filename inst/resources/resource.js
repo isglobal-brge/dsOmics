@@ -37,7 +37,7 @@ var dsOmics = {
               "description": "Remote host name or IP address of the GA4GH enabled server."
             },
             {
-              "key": "sample_id",
+              "key": "sample",
               "type": "string",
               "title": "Sample ID",
               "description": "."
@@ -62,7 +62,7 @@ var dsOmics = {
             }
           ],
           "required": [
-            "host", "sample_id", "reference", "start", "end"
+            "host", "sample", "reference", "start", "end"
           ]
         },
         "credentials": {
@@ -447,11 +447,21 @@ var dsOmics = {
             secret: credentials.password
         }
     };
+    
+    var toHttpGA4GH = function(name, params, credentials){
+      return {
+            name: name,
+            url: params.host + "/variants/" + params.sample + "?format=VCF&referenceName=" + params.reference + "&start=" + params.start + "$end=" + params.end,
+            format: "GA4GH-htsget",
+            secret: credentials.token
+        };
+    };
 
     //
     // Resource factory functions by resource form type
     //
     var toResourceFactories = {
+      "ga4gh-htsget": toHttpGA4GH,
       "gridfs-gds-file": toGridfsResource,
       "http-gds-file": toHttpResource,
       "local-gds-file": toLocalResource,
