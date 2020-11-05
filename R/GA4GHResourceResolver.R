@@ -13,7 +13,7 @@ GA4GHResourceResolver <- R6::R6Class(
   public = list(
     isFor = function(x) {
       if (super$isFor(x)) {
-        !is.null(findFileResourceGetter(x)) && toupper(x$format) %in% c("GA4GH")
+        !is.null(findFileResourceGetter(x)) && toupper(x$format) %in% c("GA4GH-htsget")
       } else {
         FALSE
       }
