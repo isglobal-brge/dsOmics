@@ -452,7 +452,7 @@ var dsOmics = {
       return {
             name: name,
             url: params.host + "/variants/" + params.sample + "?format=VCF&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end,
-            format: "GA4GH-htsget",
+            format: "GA4GH",
             secret: credentials.token
         };
     };
