@@ -1,12 +1,12 @@
-#' Title
+#' @title Subset GDS with gene(s)
 #'
-#' @param gds 
-#' @param ... 
+#' @param gds \code{GdsGenotypeReader} GDS object
+#' @param old_assign \code{bool} Internal variable used to re-read an old gds, use at your own risk.
+#' @param ... \code{character} Genes to subset the GDS
 #'
-#' @return
+#' @return GDS object
 #' @export
-#'
-#' @examples
+
 getSNPSbyGenDS <- function(gds, old_assign, ...){
 
   if(old_assign){
