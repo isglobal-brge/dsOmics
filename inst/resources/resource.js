@@ -13,9 +13,72 @@ var dsOmics = {
         "name": "bioc",
         "title": "Bioconductor",
         "description": "Data formats and processing tools are provided by [Bioconductor](https://bioconductor.org/)."
+      },
+      {
+        "name": "ga4gh",
+        "title": "GA4GH htsget",
+        "description": "Database with support of the GA4GH htsget protocol."
       }
     ],
     "types": [
+      {
+        "name": "ga4gh-htsget",
+        "title": "GA4GH htsget database",
+        "description": "Database with the [htsget protocol](http://samtools.github.io/hts-specs/htsget.html) from GA4GH implemented.",
+        "tags": ["ga4gh"],
+        "parameters": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "items": [
+            {
+              "key": "host",
+              "type": "string",
+              "title": "Host",
+              "description": "Remote host name or IP address of the GA4GH enabled server."
+            },
+            {
+              "key": "sample",
+              "type": "string",
+              "title": "Sample ID",
+              "description": "."
+            },
+            {
+              "key": "reference",
+              "type": "integer",
+              "title": "Reference",
+              "description": "."
+            },
+            {
+              "key": "start",
+              "type": "integer",
+              "title": "Start",
+              "description": "."
+            },
+            {
+              "key": "end",
+              "type": "integer",
+              "title": "end",
+              "description": "."
+            }
+          ],
+          "required": [
+            "host", "sample", "reference", "start", "end"
+          ]
+        },
+        "credentials": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "description": "Credentials are optional.",
+          "items": [
+            {
+              "key": "token",
+              "type": "string",
+              "title": "Token",
+              "description": "Authentication token"
+            }
+          ]
+        }
+      },
       {
         "name": "gridfs-gds-file",
         "title": "GDS data file - MongoDB GridFS",
@@ -384,11 +447,21 @@ var dsOmics = {
             secret: credentials.password
         }
     };
+    
+    var toHttpGA4GH = function(name, params, credentials){
+      return {
+            name: name,
+            url: params.host + "/variants/" + params.sample + "?format=VCF&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end,
+            format: "GA4GH",
+            secret: credentials.token
+        };
+    };
 
     //
     // Resource factory functions by resource form type
     //
     var toResourceFactories = {
+      "ga4gh-htsget": toHttpGA4GH,
       "gridfs-gds-file": toGridfsResource,
       "http-gds-file": toHttpResource,
       "local-gds-file": toLocalResource,
