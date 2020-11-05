@@ -451,7 +451,7 @@ var dsOmics = {
     var toHttpGA4GH = function(name, params, credentials){
       return {
             name: name,
-            url: params.host + "/variants/" + params.sample + "?format=VCF&referenceName=" + params.reference + "&start=" + params.start + "$end=" + params.end,
+            url: params.host + "/variants/" + params.sample + "?format=VCF&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end,
             format: "GA4GH-htsget",
             secret: credentials.token
         };
