@@ -2,18 +2,20 @@
 % Please edit documentation in R/getSNPSbyGenDS.R
 \name{getSNPSbyGenDS}
 \alias{getSNPSbyGenDS}
-\title{Title}
+\title{Subset GDS with gene(s)}
 \usage{
-getSNPSbyGenDS(gds, ...)
+getSNPSbyGenDS(gds, old_assign, ...)
 }
 \arguments{
-\item{gds}{}
+\item{gds}{\code{GdsGenotypeReader} GDS object}
 
-\item{...}{}
+\item{old_assign}{\code{bool} Internal variable used to re-read an old gds, use at your own risk.}
+
+\item{...}{\code{character} Genes to subset the GDS}
 }
 \value{
-
+GDS object
 }
 \description{
-Title
+Subset GDS with gene(s)
 }
