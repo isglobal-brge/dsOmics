@@ -20,7 +20,7 @@ GA4GHResourceClient <- R6::R6Class(
         path <- super$downloadFile()
         resource <- super$getResource()
         format <- resource$format
-        if ("GA4GH" == toupper(format)) {
+        if ("GA4GH-htsget" == toupper(format)) {
           private$loadSNPRelate()
           private$loadRhtsget()
           private$loadGenomicRanges()
