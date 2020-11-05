@@ -22,6 +22,64 @@ var dsOmics = {
     ],
     "types": [
       {
+        "name": "ga4gh-htsget",
+        "title": "GA4GH htsget database",
+        "description": "Database with the [htsget protocol](http://samtools.github.io/hts-specs/htsget.html) from GA4GH implemented.",
+        "tags": ["ga4gh"],
+        "parameters": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "items": [
+            {
+              "key": "host",
+              "type": "string",
+              "title": "Host",
+              "description": "Remote host name or IP address of the GA4GH enabled server."
+            },
+            {
+              "key": "sample_id",
+              "type": "string",
+              "title": "Sample ID",
+              "description": "."
+            },
+            {
+              "key": "reference",
+              "type": "integer",
+              "title": "Reference",
+              "description": "."
+            },
+            {
+              "key": "start",
+              "type": "integer",
+              "title": "Start",
+              "description": "."
+            },
+            {
+              "key": "end",
+              "type": "integer",
+              "title": "end",
+              "description": "."
+            }
+          ],
+          "required": [
+            "host", "sample_id", "reference", "start", "end"
+          ]
+        },
+        "credentials": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "description": "Credentials are optional.",
+          "items": [
+            {
+              "key": "token",
+              "type": "string",
+              "title": "Token",
+              "description": "Authentication token"
+            }
+          ]
+        }
+      },
+      {
         "name": "gridfs-gds-file",
         "title": "GDS data file - MongoDB GridFS",
         "description": "File resource in Genomic Data Structure (GDS) format or in a format that can be converted to GDS. The file will be downloaded from the GridFS file store of a MongoDB server.",
