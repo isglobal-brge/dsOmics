@@ -13,6 +13,11 @@ var dsOmics = {
         "name": "bioc",
         "title": "Bioconductor",
         "description": "Data formats and processing tools are provided by [Bioconductor](https://bioconductor.org/)."
+      },
+      {
+        "name": "ga4gh",
+        "title": "GA4GH htsget",
+        "description": "Database with support of the GA4GH htsget protocol."
       }
     ],
     "types": [
