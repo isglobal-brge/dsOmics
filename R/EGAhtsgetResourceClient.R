@@ -48,6 +48,7 @@ EGAhtsgetResourceClient <- R6::R6Class(
           private$.gds.file.tmp <- tempfile(fileext = ".gds")
           token <- htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
                                     resource$identity, resource$secret)
+          url <- super$parseURL()
           private$.gr <- GenomicRanges::GRanges(paste0(url$query$referenceName, ":", url$query$start, "-", url$query$end))
           private$.sample_id <- substr(url$path, start = 24, stop = nchar(url$path))
           bam <- htsget_reads(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets", 
