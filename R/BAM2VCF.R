@@ -1,3 +1,13 @@
+#' @title Variant discovery on a BAM file
+#' 
+#' @description Discover variants of a BAM file and write them in a VCF file
+#'
+#' @param bam \code{character} Path to the BAM file
+#' @param grange \code{GRange} GRange of the BAM file to search for variants
+#' @param destination \code{character} Path to the VCF file
+#'
+#' @export
+
 BAM2VCF <- function(bam, grange, destination){
   seqlevelsStyle(seqlevels(grange)) <- "UCSC"
   gen <- Biostrings::DNAStringSet(

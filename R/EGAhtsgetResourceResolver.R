@@ -1,10 +1,10 @@
-#' GDS file resource resolver
+#' EGA htsget resource resolver
 #'
-#' Build a GDS resource client from a resource object describing access to a 
-#' GDS file or a VCF file to be converted into a GDS file.
+#' Build a EGA htsget resource client from a resource object describing access to a 
+#' EGA valid credentials, pointing to a VCF or BAM file to be converted into a GDS file.
 #'
 #' @docType class
-#' @format A R6 object of class GDSFileResourceResolver
+#' @format A R6 object of class EGAhtsgetResourceResolver
 #' @import resourcer
 #' @export
 EGAhtsgetResourceResolver <- R6::R6Class(
