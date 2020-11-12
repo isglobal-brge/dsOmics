@@ -28,7 +28,7 @@ BAM2VCF <- function(bam, grange, destination){
   called.variants <- VariantTools::callVariants(qa.variants)
   Biobase::sampleNames(called.variants) <- "sample"
   mcols(called.variants) <- NULL
-  vcf <-  SeqArray::asVCF(called.variants)
+  vcf <-  VariantAnnotation::asVCF(called.variants)
   VariantAnnotation::writeVcf(vcf, destination)
   
 }
