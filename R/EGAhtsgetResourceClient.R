@@ -39,7 +39,7 @@ EGAhtsgetResourceClient <- R6::R6Class(
           SNPRelate::snpgdsVCF2GDS(private$.vcf.file.tmp, private$.gds.file.tmp)
           SNPRelate::snpgdsSummary(private$.gds.file.tmp)
         }
-        else if("EGAhtsgetBAM" == toupper(format)){
+        else if("EGAhtsgetBAM" == format){
           private$loadgmapR()
           private$loadVariantTools()
           private$loadRhtsget()
