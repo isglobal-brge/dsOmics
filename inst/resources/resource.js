@@ -556,7 +556,7 @@ var dsOmics = {
     var toHttpEGA = function(name, params, credentials){
       return{
         name: name,
-        url: "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets/" + params.file + "&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end,
+        url: "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets/" + params.file + "?&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end,
         identity: credentials.user,
         secret: credentials.pass,
         format: params.format
