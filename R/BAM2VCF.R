@@ -22,13 +22,13 @@ BAM2VCF <- function(bam, grange, destination){
   tally.param <- VariantTools::TallyVariantsParam(
                                     refgenome, high_base_quality = 23L,
                                     indels = TRUE)
-  BPPARAM <- MulticoreParam(workers = detectCores())
-  raw.variants <- tallyVariants(bam, param = tally.param, BPPARAM = BPPARAM)
-  qa.variants <- qaVariants(raw.variants)
-  called.variants <- callVariants(qa.variants)
-  sampleNames(called.variants) <- "sample"
+  BPPARAM <- BiocParallel::MulticoreParam(workers = parallel::detectCores())
+  raw.variants <- VariantTools::tallyVariants(bam, param = tally.param, BPPARAM = BPPARAM)
+  qa.variants <- VariantTools::qaVariants(raw.variants)
+  called.variants <- VariantTools::callVariants(qa.variants)
+  Biobase::sampleNames(called.variants) <- "sample"
   mcols(called.variants) <- NULL
-  vcf <- asVCF(called.variants)
-  writeVcf(vcf, destination)
+  vcf <-  SeqArray::asVCF(called.variants)
+  VariantAnnotation::writeVcf(vcf, destination)
   
 }
