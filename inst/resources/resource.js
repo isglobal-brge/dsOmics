@@ -122,25 +122,25 @@ var dsOmics = {
               "key": "sample",
               "type": "string",
               "title": "Sample ID",
-              "description": "."
+              "description": "Name of the sample."
             },
             {
               "key": "reference",
               "type": "string",
               "title": "Reference",
-              "description": "."
+              "description": "Chromosome to retrieve (1/chr1 depending on file encoding)"
             },
             {
               "key": "start",
               "type": "integer",
               "title": "Start",
-              "description": "."
+              "description": "The start position of the range on the reference."
             },
             {
               "key": "end",
               "type": "integer",
               "title": "end",
-              "description": "."
+              "description": "The end position of the range on the reference."
             },
             {
               "key": "format",
