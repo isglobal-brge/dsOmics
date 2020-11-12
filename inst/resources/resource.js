@@ -26,7 +26,6 @@ var dsOmics = {
       }
     ],
     "types": [
-      /*
       {
         "name": "ega-htsget",
         "title": "EGA htsget data access",
@@ -104,7 +103,6 @@ var dsOmics = {
           ]
         }
       },
-      */
       {
         "name": "ga4gh-htsget",
         "title": "GA4GH htsget database",
@@ -143,7 +141,7 @@ var dsOmics = {
               "type": "integer",
               "title": "end",
               "description": "."
-            } /* ,
+            },
             {
               "key": "format",
               "type": "string",
@@ -159,7 +157,7 @@ var dsOmics = {
                   "title": "BAM (Binary version of a SAM)"
                 }
               ]
-            } */
+            }
           ],
           "required": [
             "host", "sample", "reference", "start", "end"
