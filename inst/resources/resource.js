@@ -18,9 +18,91 @@ var dsOmics = {
         "name": "ga4gh",
         "title": "GA4GH htsget",
         "description": "Database with support of the GA4GH htsget protocol."
+      },
+      {
+        "name": "ega",
+        "title": "EGA database",
+        "description": "Access to EGA with the GA4GH htsget protocol."
       }
     ],
     "types": [
+      {
+        "name": "ega-htsget",
+        "title": "EGA htsget data access",
+        "description": "Access using the GA4GH htsget API the EGA archive",
+        "tags": ["ega"],
+        "parameters": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "items": [
+            {
+              "key": "file",
+              "type": "string",
+              "title": "File ID",
+              "description": "Name of the file to be retrieved from EGA."
+            },
+            {
+              "key": "reference",
+              "type": "string",
+              "title": "Reference",
+              "description": "Chromosome to retrieve (1/chr1 depending on file encoding)"
+            },
+            {
+              "key": "start",
+              "type": "integer",
+              "title": "Start",
+              "description": "The start position of the range on the reference."
+            },
+            {
+              "key": "end",
+              "type": "integer",
+              "title": "end",
+              "description": "The end position of the range on the reference."
+            },
+            {
+              "key": "format",
+              "type": "string",
+              "title": "Format",
+              "description": "Available file extensions that can be converted to Genomic Data Structure (GDS) format.",
+              "enum": [
+                {
+                  "key": "EGAhtsgetVCF",
+                  "title": "VCF (Variant Call Format)"
+                },
+                {
+                  "key": "EGAhtsgetBAM",
+                  "title": "BAM (Binary version of a SAM)"
+                }
+              ]
+            }
+          ],
+          "required": [
+            "file", "reference", "start", "end"
+          ]
+        },
+        "credentials": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "description": "Credentials to access EGA.",
+          "items": [
+            {
+              "key": "user",
+              "type": "string",
+              "title": "User",
+              "description": "Authentication username to EGA"
+            },
+            {
+              "key": "pass",
+              "type": "string",
+              "title": "Password",
+              "description": "Authentication password to EGA"
+            }
+          ],
+          "required": [
+            "user", "pass"
+          ]
+        }
+      },
       {
         "name": "ga4gh-htsget",
         "title": "GA4GH htsget database",
@@ -44,7 +126,7 @@ var dsOmics = {
             },
             {
               "key": "reference",
-              "type": "integer",
+              "type": "string",
               "title": "Reference",
               "description": "."
             },
@@ -59,23 +141,26 @@ var dsOmics = {
               "type": "integer",
               "title": "end",
               "description": "."
+            },
+            {
+              "key": "format",
+              "type": "string",
+              "title": "Format",
+              "description": "Available file extensions that can be converted to Genomic Data Structure (GDS) format.",
+              "enum": [
+                {
+                  "key": "GA4GHVCF",
+                  "title": "VCF (Variant Call Format)"
+                },
+                {
+                  "key": "GA4GHBAM",
+                  "title": "BAM (Binary version of a SAM)"
+                }
+              ]
             }
           ],
           "required": [
             "host", "sample", "reference", "start", "end"
-          ]
-        },
-        "credentials": {
-          "$schema": "http://json-schema.org/schema#",
-          "type": "array",
-          "description": "Credentials are optional.",
-          "items": [
-            {
-              "key": "token",
-              "type": "string",
-              "title": "Token",
-              "description": "Authentication token"
-            }
           ]
         }
       },
@@ -445,16 +530,32 @@ var dsOmics = {
             format: params.format,
             identity: credentials.username,
             secret: credentials.password
-        }
+        };
     };
     
-    var toHttpGA4GH = function(name, params, credentials){
+    var toHttpGA4GH = function(name, params){
+      if(params.format == "GA4GHVCF"){
+        url_complete = params.host + "/variants/" + params.sample + "?format=VCF&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end;
+      }
+      else{
+        url_complete = params.host + "/reads/" + params.sample + "?format=BAM&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end;
+      }
       return {
             name: name,
-            url: params.host + "/variants/" + params.sample + "?format=VCF&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end,
-            format: "GA4GH",
+            url: url_complete,
+            format: params.format,
             secret: credentials.token
         };
+    };
+    
+    var toHttpEGA = function(name, params, credentials){
+      return{
+        name: name,
+      url: "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets/" + params.file + "&referenceName=" + params.reference + "&start=" + params.start + "&end=" + params.end,
+      identity: credentials.user,
+      secret: credentials.pass,
+      format: params.format
+      };
     };
 
     //
@@ -462,6 +563,7 @@ var dsOmics = {
     //
     var toResourceFactories = {
       "ga4gh-htsget": toHttpGA4GH,
+      "ega-htsget": toHttpEGA,
       "gridfs-gds-file": toGridfsResource,
       "http-gds-file": toHttpResource,
       "local-gds-file": toLocalResource,

@@ -7,20 +7,20 @@
 #' @format A R6 object of class GDSFileResourceResolver
 #' @import resourcer
 #' @export
-GA4GHResourceResolver <- R6::R6Class(
-  "GA4GHResourceResolver",
+EGAhtsgetResourceResolver <- R6::R6Class(
+  "EGAhtsgetResourceResolver",
   inherit = ResourceResolver,
   public = list(
     isFor = function(x) {
       if (super$isFor(x)) {
-        !is.null(findFileResourceGetter(x)) && toupper(x$format) %in% c("GA4GHVCF", "GA4GHBAM")
+        !is.null(findFileResourceGetter(x)) && x$format %in% c("EGAhtsgetBAM", "EGAhtsgetVCF")
       } else {
         FALSE
       }
     },
     newClient = function(x) {
       if (self$isFor(x)) {
-        GA4GHResourceClient$new(x)
+        EGAhtsgetResourceClient$new(x)
       } else {
         NULL
       }
