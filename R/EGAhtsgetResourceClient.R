@@ -27,7 +27,7 @@ EGAhtsgetResourceClient <- R6::R6Class(
           private$.vcf.file.tmp <- tempfile(fileext = ".vcf")
           private$.gds.file.tmp <- tempfile(fileext = ".gds")
           url <- super$parseURL()
-          token <- htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
+          token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
                                     resource$identity, resource$secret)
           method <- "biallelic.only"
           snpfirstdim <- FALSE
@@ -46,7 +46,7 @@ EGAhtsgetResourceClient <- R6::R6Class(
           private$.vcf.file.tmp <- tempfile(fileext = ".vcf")
           private$.bam.file.tmp <- tempfile(fileext = ".bam")
           private$.gds.file.tmp <- tempfile(fileext = ".gds")
-          token <- htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
+          token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
                                     resource$identity, resource$secret)
           url <- super$parseURL()
           private$.gr <- GenomicRanges::GRanges(paste0(url$query$referenceName, ":", url$query$start, "-", url$query$end))
@@ -66,9 +66,9 @@ EGAhtsgetResourceClient <- R6::R6Class(
         else {
           NULL
         }
-        # private$loadGWASTools()
-        # conn <- GWASTools::GdsGenotypeReader(private$.gds.file.tmp)
-        # super$setConnection(conn)
+        private$loadGWASTools()
+        conn <- GWASTools::GdsGenotypeReader(private$.gds.file.tmp)
+        super$setConnection(conn)
       }
       conn
     },
@@ -76,15 +76,15 @@ EGAhtsgetResourceClient <- R6::R6Class(
       self$getConnection()
     },
     close = function() {
-      # super$close()
-      # conn <- super$getConnection()
-      # if (!is.null(conn)) {
-      #   GWASTools::close(conn)
-      #   if (!is.null(private$.gds.file.tmp) && file.exists(private$.gds.file.tmp)) {
-      #     # house keeping
-      #     ignore <- tryCatch(file.remove(private$.gds.file.tmp), error = function(e) {})
-      #   }
-      # }
+      super$close()
+      conn <- super$getConnection()
+      if (!is.null(conn)) {
+        GWASTools::close(conn)
+        if (!is.null(private$.gds.file.tmp) && file.exists(private$.gds.file.tmp)) {
+          # house keeping
+          ignore <- tryCatch(file.remove(private$.gds.file.tmp), error = function(e) {})
+        }
+      }
     }
   ),
   private = list(
