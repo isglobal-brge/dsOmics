@@ -26,6 +26,7 @@ var dsOmics = {
       }
     ],
     "types": [
+      /*
       {
         "name": "ega-htsget",
         "title": "EGA htsget data access",
@@ -77,7 +78,7 @@ var dsOmics = {
             }
           ],
           "required": [
-            "file", "reference", "start", "end"
+            "file", "reference", "start", "end", "format"
           ]
         },
         "credentials": {
@@ -103,6 +104,7 @@ var dsOmics = {
           ]
         }
       },
+      */
       {
         "name": "ga4gh-htsget",
         "title": "GA4GH htsget database",
@@ -512,7 +514,7 @@ var dsOmics = {
             format: params.format,
             identity: null,
             secret: credentials.token
-        }
+        };
     };
 
     var toScpResource = function(name, params, credentials) {
