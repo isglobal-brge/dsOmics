@@ -57,7 +57,7 @@ EGAhtsgetResourceClient <- R6::R6Class(
           indexedFile <- Rsamtools::indexBam(sortedFile)
           bam <- Rsamtools::BamFile(sortedFile)
 
-          BAM2VCF(bam, gr, private$.vcf.file.tmp)
+          BAM2VCF(bam, private$.gr, private$.vcf.file.tmp)
           method <- "biallelic.only"
           snpfirstdim <- FALSE
           SNPRelate::snpgdsVCF2GDS(private$.vcf.file.tmp, private$.gds.file.tmp, method = method, snpfirstdim = snpfirstdim)
