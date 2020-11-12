@@ -162,6 +162,10 @@ var dsOmics = {
           "required": [
             "host", "sample", "reference", "start", "end"
           ]
+        },
+        "credentials": {
+          "$schema": "http://json-schema.org/schema#",
+          "description": "No credentials required: the file must be accessible from the R server."
         }
       },
       {
