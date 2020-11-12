@@ -95,6 +95,7 @@ var dsOmics = {
               "key": "pass",
               "type": "string",
               "title": "Password",
+              "format": "password",
               "description": "Authentication password to EGA"
             }
           ],
