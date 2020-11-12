@@ -3,13 +3,13 @@
 \docType{class}
 \name{EGAhtsgetResourceClient}
 \alias{EGAhtsgetResourceClient}
-\title{GDS file resource client}
+\title{EGA htsget resource client}
 \format{
-A R6 object of class GDSFileResourceClient
+A R6 object of class EGAhtsgetResourceClient
 }
 \description{
 Build a GDS handler from a resource object describing access to a 
-GDS file or a VCF file to be converted into a GDS file.
+EGA valid credentials, pointing to a VCF or BAM file to be converted into a GDS file.
 }
 \section{Super classes}{
 \code{\link[resourcer:ResourceClient]{resourcer::ResourceClient}} -> \code{\link[resourcer:FileResourceClient]{resourcer::FileResourceClient}} -> \code{EGAhtsgetResourceClient}

@@ -3,13 +3,13 @@
 \docType{class}
 \name{GA4GHResourceResolver}
 \alias{GA4GHResourceResolver}
-\title{GDS file resource resolver}
+\title{GA4GH htsget server resource resolver}
 \format{
-A R6 object of class GDSFileResourceResolver
+A R6 object of class GA4GHResourceResolver
 }
 \description{
-Build a GDS resource client from a resource object describing access to a 
-GDS file or a VCF file to be converted into a GDS file.
+Build a GA4GH resource client from a resource object describing access to a 
+GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into a GDS file.
 }
 \section{Super class}{
 \code{\link[resourcer:ResourceResolver]{resourcer::ResourceResolver}} -> \code{GA4GHResourceResolver}
