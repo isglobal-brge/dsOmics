@@ -44,7 +44,7 @@ var dsOmics = {
             {
               "key": "reference",
               "type": "string",
-              "title": "Reference",
+              "title": "Chromosome",
               "description": "Chromosome to retrieve (1/chr1 depending on file encoding)"
             },
             {
@@ -56,7 +56,7 @@ var dsOmics = {
             {
               "key": "end",
               "type": "integer",
-              "title": "end",
+              "title": "End",
               "description": "The end position of the range on the reference."
             },
             {
@@ -122,13 +122,13 @@ var dsOmics = {
             {
               "key": "sample",
               "type": "string",
-              "title": "Sample ID",
-              "description": "Name of the sample."
+              "title": "File ID",
+              "description": "Name of the file."
             },
             {
               "key": "reference",
               "type": "string",
-              "title": "Reference",
+              "title": "Chromosome",
               "description": "Chromosome to retrieve (1/chr1 depending on file encoding)"
             },
             {
@@ -140,7 +140,7 @@ var dsOmics = {
             {
               "key": "end",
               "type": "integer",
-              "title": "end",
+              "title": "End",
               "description": "The end position of the range on the reference."
             },
             {

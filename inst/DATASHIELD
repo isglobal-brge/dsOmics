@@ -19,4 +19,5 @@ AssignMethods:
    cellCountsDS,
    GenotypeDataDS,
    selSNPDS,
-   getSNPSbyGenDS
+   getSNPSbyGenDS,
+   cbind_unsafeDS
