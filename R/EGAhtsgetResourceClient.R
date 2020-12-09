@@ -1,14 +1,14 @@
-#' GA4GH htsget server resource client
+#' EGA htsget resource client
 #'
 #' Build a GDS handler from a resource object describing access to a 
-#' GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into a GDS file.
+#' EGA valid credentials, pointing to a VCF or BAM file to be converted into a GDS file.
 #'
 #' @docType class
-#' @format A R6 object of class GA4GHResourceClient
+#' @format A R6 object of class EGAhtsgetResourceClient
 #' @import resourcer
 #' @export
-GA4GHResourceClient <- R6::R6Class(
-  "GA4GHResourceClient",
+EGAhtsgetResourceClient <- R6::R6Class(
+  "EGAhtsgetResourceClient",
   inherit = FileResourceClient,
   public = list(
     initialize = function(resource) {
@@ -17,10 +17,9 @@ GA4GHResourceClient <- R6::R6Class(
     getConnection = function() {
       conn <- super$getConnection()
       if (is.null(conn)) {
-        # path <- super$downloadFile()
         resource <- super$getResource()
         format <- resource$format
-        if ("GA4GHVCF" == toupper(format)) {
+        if ("EGAhtsgetVCF" == format) {
           private$loadSNPRelate()
           private$loadRhtsget()
           private$loadGenomicRanges()
@@ -28,34 +27,40 @@ GA4GHResourceClient <- R6::R6Class(
           private$.vcf.file.tmp <- tempfile(fileext = ".vcf")
           private$.gds.file.tmp <- tempfile(fileext = ".gds")
           url <- super$parseURL()
+          token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
+                                    resource$identity, resource$secret)
           method <- "biallelic.only"
           snpfirstdim <- FALSE
           private$.gr <- GenomicRanges::GRanges(paste0(url$query$referenceName, ":", url$query$start, "-", url$query$end))
-          private$.sample_id <- substr(url$path, start = 10, stop = nchar(url$path))
-          Rhtsget::htsget_variants(private$.gr, private$.sample_id, url$hostname, destination = private$.vcf.file.tmp)
+          private$.sample_id <- substr(url$path, start = 24, stop = nchar(url$path))
+          Rhtsget::htsget_variants(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets", 
+                                   token, destination = private$.vcf.file.tmp)
           # VariantAnnotation::readVcf(private$.vcf.file.tmp)
           SNPRelate::snpgdsVCF2GDS(private$.vcf.file.tmp, private$.gds.file.tmp)
-          # SNPRelate::snpgdsSummary(private$.gds.file.tmp)
-          
+          SNPRelate::snpgdsSummary(private$.gds.file.tmp)
         }
-        else if("GA4GHBAM" == toupper(format)){
+        else if("EGAhtsgetBAM" == format){
           private$loadgmapR()
           private$loadVariantTools()
           private$loadRhtsget()
           private$.vcf.file.tmp <- tempfile(fileext = ".vcf")
           private$.bam.file.tmp <- tempfile(fileext = ".bam")
           private$.gds.file.tmp <- tempfile(fileext = ".gds")
+          token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
+                                    resource$identity, resource$secret)
           url <- super$parseURL()
           private$.gr <- GenomicRanges::GRanges(paste0(url$query$referenceName, ":", url$query$start, "-", url$query$end))
-          private$.sample_id <- substr(url$path, start = 7, stop = nchar(url$path))
-          bam <- htsget_reads(private$.gr, private$.sample_id, url$hostname, ega = FALSE, destination = private$.bam.file.tmp)
+          private$.sample_id <- substr(url$path, start = 24, stop = nchar(url$path))
+          bam <- htsget_reads(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets", 
+                              ega = TRUE, token, destination = private$.bam.file.tmp)
           sortedFile <- Rsamtools::sortBam(file = bam, destination = paste0(gsub('.{3}$', '', bam), "sorted"), byQname = FALSE)
           indexedFile <- Rsamtools::indexBam(sortedFile)
           bam <- Rsamtools::BamFile(sortedFile)
+
           BAM2VCF(bam, private$.gr, private$.vcf.file.tmp)
           method <- "biallelic.only"
           snpfirstdim <- FALSE
-          SNPRelate::snpgdsVCF2GDS_R(private$.vcf.file.tmp, private$.gds.file.tmp, method = method, snpfirstdim = snpfirstdim)
+          SNPRelate::snpgdsVCF2GDS(private$.vcf.file.tmp, private$.gds.file.tmp, method = method, snpfirstdim = snpfirstdim)
           SNPRelate::snpgdsSummary(private$.gds.file.tmp)
         }
         else {
@@ -112,7 +117,7 @@ GA4GHResourceClient <- R6::R6Class(
     },
     loadRhtsget = function() {
       if (!require("Rhtsget")) {
-      devtools::install_github("ESCRI11/Rhtsget")
+        devtools::install_github("ESCRI11/Rhtsget")
       }
     },
     loadGWASTools = function() {
