@@ -20,4 +20,4 @@ AssignMethods:
    GenotypeDataDS,
    selSNPDS,
    getSNPSbyGenDS,
-   cbind_unsafeDS
+   addPhenoDataDS
