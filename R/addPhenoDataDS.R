@@ -3,12 +3,15 @@
 #' @param x \code{ExpressionSet} ExpressionSet to which add phenotype information
 #' @param pheno \code{data.frame} Table with the new phenotypes
 #' @param identifier \code{character} Name of the ID column on the phenotypes data.frame
+#' @param complete_cases \code{bool} If \code{TRUE} only the matching individuals 
+#' between the ExpressionSet and the phenotypes table will be included on the resulting ExpressionSet. If 
+#' \code{FALSE} all the individuals on the input ExpressionSet will be on the output ExpressionSet
 #'
 #' @return
 #' @export
 #'
 #' @examples
-addPhenoDataDS <- function(x, pheno, identifier){
+addPhenoDataDS <- function(x, pheno, identifier, complete_cases){
   
   if(!(any(identifier %in% colnames(pheno)))){
     stop("Identifier [", identifier, "] is not on the phenotypes table")
@@ -27,7 +30,15 @@ addPhenoDataDS <- function(x, pheno, identifier){
   new_pheno <- pheno[common_individuals,]
   og_pheno <- cbind(og_pheno, og_individuals_id = og_individuals)
   
-  new_pheno <- dplyr::left_join(og_pheno, new_pheno, by = c("og_individuals_id" = identifier))
+  if(complete_cases == TRUE){
+    new_pheno <- dplyr::right_join(og_pheno, new_pheno, by = c("og_individuals_id" = identifier))
+    assay_data <- Biobase::exprs(x)[,colnames(Biobase::exprs(x)) %in% new_individuals]
+  }
+  else{
+    new_pheno <- dplyr::left_join(og_pheno, new_pheno, by = c("og_individuals_id" = identifier))
+    assay_data <- Biobase::exprs(x)
+  }
+  
   rownames(new_pheno) <- new_pheno$og_individuals_id
   new_pheno$og_individuals_id <- NULL
   
@@ -38,7 +49,7 @@ addPhenoDataDS <- function(x, pheno, identifier){
   
   new_pheno <- new("AnnotatedDataFrame", data=new_pheno, varMetadata=og_pheno_md)
   
-  eset <- Biobase::ExpressionSet(assayData = Biobase::exprs(x),
+  eset <- Biobase::ExpressionSet(assayData = assay_data,
                                  phenoData = new_pheno,
                                  featureData = Biobase::featureData(x),
                                  annotation = Biobase::annotation(x))
