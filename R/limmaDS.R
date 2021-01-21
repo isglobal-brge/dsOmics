@@ -21,6 +21,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
   if (!is.null(annotCols))
     annotCols <- unlist(strsplit(annotCols, split=","))
  
+  weights <- NULL
   
   if (type==2){
     if(inherits(Set, "ExpressionSet")){
@@ -34,6 +35,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
     ff <- paste("~", paste(c(variable_names, covariable_names), collapse="+")) 
     design <- model.matrix(formula(ff), data=pheno)
     v <- limma::voom(Set.counts, design = design)$E
+    weights <- v$weights
     if(inherits(Set, "ExpressionSet"))
       Biobase::exprs(Set) <- v
     else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment")))
@@ -54,7 +56,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
     contrasts<-limma::makeContrasts(contrasts = contrasts,levels = levels)
   }
     
-  res <- MEAL::runPipeline(set = Set, 
+  res <- MEAL::runPipeline(set = Set, weights = weights, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva)
