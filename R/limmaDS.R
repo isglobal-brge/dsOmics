@@ -34,12 +34,13 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
     }
     ff <- paste("~", paste(c(variable_names, covariable_names), collapse="+")) 
     design <- model.matrix(formula(ff), data=pheno)
-    v <- limma::voom(Set.counts, design = design)$E
+    v <- limma::voom(Set.counts, design = design)
+    E <- v$E
     weights <- v$weights
     if(inherits(Set, "ExpressionSet"))
-      Biobase::exprs(Set) <- v
+      Biobase::exprs(Set) <- E
     else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment")))
-      SummarizedExperiment::assay(Set) <- v
+      SummarizedExperiment::assay(Set) <- E
   }
   
   if (!is.null(annotCols)){
