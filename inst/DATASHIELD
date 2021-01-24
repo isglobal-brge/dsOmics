@@ -7,6 +7,7 @@ AggregateMethods:
    featureDataDS,
    nSamplesDS,
    nFeaturesDS,
+   tablePhenoDS,
    limmaDS,
    getVariable=GWASTools::getVariable,
    getChromosomeNamesDS,
