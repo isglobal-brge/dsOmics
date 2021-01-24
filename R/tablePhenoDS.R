@@ -7,8 +7,5 @@
 #' @export
 
 tablePhenoDS <- function(x){
-  if(inherits(x, c("ExpressionSet", "SummarizedExperiment","RangedSummarizedExperiment")))
-    return(table(x))
-  else
-    stop("implements the proper method")
+  return(table(x))
 } 
