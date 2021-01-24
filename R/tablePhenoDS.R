@@ -6,7 +6,7 @@
 #'
 #' @export
 
-nSamplesDS <- function(x){
+tablePhenoDS <- function(x){
   if(inherits(x, c("ExpressionSet", "SummarizedExperiment","RangedSummarizedExperiment")))
     return(table(x))
   else
