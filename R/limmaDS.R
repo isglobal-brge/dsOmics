@@ -6,6 +6,8 @@
 #' @param covariable_names name of variables used in the adjusted models
 #' @param sva should differential expression analysis be adjusted by SVA?
 #' @param annotCols variables from the annotation data used in the output
+#' @param method String indicating the method used in the regression: "ls" or 
+#' "robust". (Default: "ls")
 #' @return a matrix with genes ordered by p-value
 #' @author Gonzalez, JR.
 #' 
