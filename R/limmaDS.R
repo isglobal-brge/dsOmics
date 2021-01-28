@@ -12,7 +12,8 @@
 #' @import dplyr
 #' @export 
 #' 
-limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, levels, coef, sva, annotCols=NULL){
+limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, 
+                    levels, coef, sva, annotCols=NULL, method){
   
    Set<-eval(parse(text=Set))
   
@@ -57,7 +58,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
   res <- MEAL::runPipeline(set = Set, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
-                           sva=sva)
+                           sva=sva, method = method)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
   ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     select(id, tail(names(.), length(annotCols)), everything())
