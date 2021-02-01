@@ -19,7 +19,7 @@ snptestDS <- function(client, ...){
   arguments <- c(arguments, "-o", paste0(tempDir, "/ex.out"))
   
   # snptest execution command
-  snptest.command <- "snptest_v2.5.2"
+  snptest.command <- "snptest"
   
   # Run snptest
   snptest <- client$exec(snptest.command, arguments)
@@ -40,7 +40,7 @@ snptestDS <- function(client, ...){
     else {
       results <- c("There are more than 1 table as output")
     }
-    ans <- list(results=results, plink.out = snptest)
+    ans <- list(results=results, snptest.out = snptest)
   }
   
   client$removeTempDir()
