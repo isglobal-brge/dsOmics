@@ -13,7 +13,8 @@ AggregateMethods:
    DESeq2DS,
    edgeRDS,
    PCASNPSDS,
-   DESeq2DS
+   DESeq2DS,
+   snptestDS
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
