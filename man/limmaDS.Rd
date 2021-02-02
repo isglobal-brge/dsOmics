@@ -24,6 +24,14 @@ limmaDS(
 
 \item{covariable_names}{name of variables used in the adjusted models}
 
+\item{type}{...}
+
+\item{contrasts}{...}
+
+\item{levels}{...}
+
+\item{coef}{...}
+
 \item{sva}{should differential expression analysis be adjusted by SVA?}
 
 \item{annotCols}{variables from the annotation data used in the output}

@@ -7,9 +7,9 @@
 selSNPDS(genoData, i)
 }
 \arguments{
-\item{i}{the position of the SNP (e.g. column) in the SNP-matrix}
+\item{genoData}{the GDS object}
 
-\item{gds}{the GDS object}
+\item{i}{the position of the SNP (e.g. column) in the SNP-matrix}
 }
 \value{
 a data frame with samples as rows and selected SNP and variables as columns.

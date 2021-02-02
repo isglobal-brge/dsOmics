@@ -9,9 +9,9 @@ GenotypeDataDS(x, covars, columnId)
 \arguments{
 \item{x}{..}
 
-\item{columnId}{...}
+\item{covars}{...}
 
-\item{covar}{...}
+\item{columnId}{...}
 }
 \value{
 ...
