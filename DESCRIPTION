@@ -20,7 +20,9 @@ Imports:
      MEAL,
      knitr,
      DESeq2,
-     edgeR
+     edgeR,
+     dplyr,
+     readr
 License: MIT
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
