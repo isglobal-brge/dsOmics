@@ -6,13 +6,16 @@
 #' @param covariable_names name of variables used in the adjusted models
 #' @param sva should differential expression analysis be adjusted by SVA?
 #' @param annotCols variables from the annotation data used in the output
+#' @param method String indicating the method used in the regression: "ls" or 
+#' "robust". (Default: "ls")
 #' @return a matrix with genes ordered by p-value
 #' @author Gonzalez, JR.
 #' 
 #' @import dplyr
 #' @export 
 #' 
-limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, levels, coef, sva, annotCols=NULL){
+limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, 
+                    levels, coef, sva, annotCols=NULL, method){
   
    Set<-eval(parse(text=Set))
   
@@ -60,7 +63,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, leve
   res <- MEAL::runPipeline(set = Set, weights = weights, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
-                           sva=sva)
+                           sva=sva, method = method)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
   ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     select(id, tail(names(.), length(annotCols)), everything())

@@ -13,7 +13,8 @@ limmaDS(
   levels,
   coef,
   sva,
-  annotCols = NULL
+  annotCols = NULL,
+  method
 )
 }
 \arguments{
@@ -26,6 +27,9 @@ limmaDS(
 \item{sva}{should differential expression analysis be adjusted by SVA?}
 
 \item{annotCols}{variables from the annotation data used in the output}
+
+\item{method}{String indicating the method used in the regression: "ls" or 
+"robust". (Default: "ls")}
 }
 \value{
 a matrix with genes ordered by p-value
