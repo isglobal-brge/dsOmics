@@ -1,12 +1,12 @@
 Package: dsOmics
 Type: Package
-Title: DataSHIELD server site Omic functions.
+Title: DataSHIELD server site Omic functions
 Version: 1.0.1
 Date: 2021-01-23
 Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
 Description: DataSHIELD server site Omic functions.
-Depends: R (>= 3.6.1),
+Depends: R (>= 3.6.0),
      resourcer,
      tidyverse,
      magrittr
@@ -21,9 +21,10 @@ Imports:
      knitr,
      DESeq2,
      edgeR,
+     methods,
      dplyr,
      readr
-License: MIT
+License: MIT + file LICENSE
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
 VignetteBuilder: knitr

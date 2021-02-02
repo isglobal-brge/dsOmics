@@ -10,7 +10,7 @@
 
 selSNPDS <- function(genoData, i) {
   g <- as.numeric(GWASTools::getGenotypeSelection(genoData, i))
-  vv <- getScanVariableNames(genoData)
-  ans <- data.frame(snp=g, getScanVariable(genoData, vv))
+  vv <- GWASTools::getScanVariableNames(genoData)
+  ans <- data.frame(snp=g, GWASTools::getScanVariable(genoData, vv))
   ans
 }

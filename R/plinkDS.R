@@ -2,8 +2,8 @@
 #' 
 #' @description Performs GWAS using PLINK using shell command lines
 #' 
-#' @param client ...
-#' @param ... 
+#' @param client \code{ssh} SSH resource
+#' @param ... \code{character vector} Arguments to pass to the PLINK software
 #' 
 #' @author Gonzalez, JR.
 #'
