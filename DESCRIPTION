@@ -21,7 +21,6 @@ Imports:
      knitr,
      DESeq2,
      edgeR,
-     methods,
      dplyr,
      readr
 License: MIT + file LICENSE

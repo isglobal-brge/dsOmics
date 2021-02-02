@@ -7,7 +7,7 @@
 featureDataDS(x)
 }
 \arguments{
-\item{object}{Object, possibly derived from \code{eSet-class}.}
+\item{x}{Object, possibly derived from \code{eSet-class}.}
 }
 \value{
 an object containing information on both variable values and variable meta-data.
