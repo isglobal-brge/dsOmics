@@ -1,7 +1,7 @@
 #' @title Interface to run SNPtest commands on a ssh connection (with SNPtest 2.5.2 installed)
 #'
 #' @param client \code{ssh} SSH resource
-#' @param ... \code{character vector} Arguments to pass to the snptest_v2.5.2 software
+#' @param ... \code{character vector} Arguments to pass to the snptest software
 #'
 #' @return List containing: \cr
 #' - Results: Table of results (typical SNPtest output file) \cr

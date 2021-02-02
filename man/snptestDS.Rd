@@ -9,7 +9,7 @@ snptestDS(client, ...)
 \arguments{
 \item{client}{\code{ssh} SSH resource}
 
-\item{...}{\code{character vector} Arguments to pass to the snptest_v2.5.2 software}
+\item{...}{\code{character vector} Arguments to pass to the snptest software}
 }
 \value{
 List containing: \cr

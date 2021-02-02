@@ -7,9 +7,9 @@
 plinkDS(client, ...)
 }
 \arguments{
-\item{client}{...}
+\item{client}{\code{ssh} SSH resource}
 
-\item{...}{}
+\item{...}{\code{character vector} Arguments to pass to the PLINK software}
 }
 \description{
 Performs GWAS using PLINK using shell command lines
