@@ -128,6 +128,9 @@ edgeRDS<-function(set, variable_names, intercept, dispersion, normalization, con
   results<-edgeR::topTags(fit)
   results<-results$table
   
+  # Gene names (rownames) to column to avoid loosing them when converting to tibble
+  results <- tibble::rownames_to_column(results, "gene")
+  
   return(as_tibble(results))
 }
 
