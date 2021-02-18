@@ -47,7 +47,7 @@ DESeq2DS<-function(vars, set,test, fitType, sfType, reduced, contrast)
     res <- DESeq2::results(dds, contrast = contrast) 
   }
 # Gene names (rownames) to column to avoid loosing them when converting to tibble
-  res <- tibble::rownames_to_column(res, "gene")
+  res <- tibble::rownames_to_column(data.frame(res), "gene")
   return(as_tibble(res))
 }
 
