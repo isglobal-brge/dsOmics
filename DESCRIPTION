@@ -17,7 +17,7 @@ Imports:
      GWASTools,
      GenomicRanges,
      SummarizedExperiment,
-     MEAL,
+     MEAL (>= 1.20.3),
      knitr,
      DESeq2,
      edgeR,
