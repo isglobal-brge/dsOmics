@@ -63,13 +63,15 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
     contrasts <- unlist(strsplit(contrasts, split=","))
     contrasts<-limma::makeContrasts(contrasts = contrasts,levels = levels)
   }
-    
+  if(method == 1){
+    method <- "ls"
+  } else {method <- "robust"}
   res <- MEAL::runPipeline(set = Set, weights = weights, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva, method = method)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
   ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
-    select(id, tail(names(.), length(annotCols)), everything())
+    dplyr::select(id, tail(names(.), length(annotCols)), everything())
   return(ans)
 }
