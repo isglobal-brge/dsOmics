@@ -23,7 +23,9 @@
 #' @export 
 #' 
 GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, ...){
-  covars <- unlist(strsplit(covars, split=","))
+  if(!is.null(covars)){
+    covars <- unlist(strsplit(covars, split=","))
+  }
   nullmod <- GENESIS::fitNullModel(genoData, outcome = outcome, 
                                    covars = covars, 
                                    family = family)
