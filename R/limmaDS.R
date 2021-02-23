@@ -70,6 +70,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva, method = method)
+  if(class(res) == 'simpleError'){stop(paste(res))}
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
   ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     dplyr::select(id, tail(names(.), length(annotCols)), everything())
