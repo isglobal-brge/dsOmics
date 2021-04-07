@@ -19,27 +19,30 @@ EGAhtsgetResourceClient <- R6::R6Class(
       if (is.null(conn)) {
         resource <- super$getResource()
         format <- resource$format
-        if ("EGAhtsgetVCF" == format) {
-          private$loadSNPRelate()
-          private$loadRhtsget()
-          private$loadGenomicRanges()
-          private$loadVariantAnnotation()
-          private$.vcf.file.tmp <- tempfile(fileext = ".vcf")
-          private$.gds.file.tmp <- tempfile(fileext = ".gds")
-          url <- super$parseURL()
-          token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
-                                    resource$identity, resource$secret)
-          method <- "biallelic.only"
-          snpfirstdim <- FALSE
-          private$.gr <- GenomicRanges::GRanges(paste0(url$query$referenceName, ":", url$query$start, "-", url$query$end))
-          private$.sample_id <- substr(url$path, start = 24, stop = nchar(url$path))
-          Rhtsget::htsget_variants(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets", 
-                                   token, destination = private$.vcf.file.tmp)
-          # VariantAnnotation::readVcf(private$.vcf.file.tmp)
-          SNPRelate::snpgdsVCF2GDS(private$.vcf.file.tmp, private$.gds.file.tmp)
-          SNPRelate::snpgdsSummary(private$.gds.file.tmp)
-        }
-        else if("EGAhtsgetBAM" == format){
+        # if ("EGAhtsgetVCF" == format) {
+        #   private$loadSNPRelate()
+        #   private$loadRhtsget()
+        #   private$loadGenomicRanges()
+        #   private$loadVariantAnnotation()
+        #   browser()
+        #   private$.vcf.file.tmp <- tempfile(fileext = ".vcf")
+        #   private$.gds.file.tmp <- tempfile(fileext = ".gds")
+        #   url <- super$parseURL()
+        #   token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
+        #                             resource$identity, resource$secret)
+        #   method <- "biallelic.only"
+        #   snpfirstdim <- FALSE
+        #   private$.gr <- GenomicRanges::GRanges(paste0(url$query$referenceName, ":", url$query$start, "-", url$query$end))
+        #   private$.sample_id <- substr(url$path, start = 24, stop = nchar(url$path))
+        #   Rhtsget::htsget_variants(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets",
+        #   #                          token, destination = private$.vcf.file.tmp)
+        #   # Rhtsget::htsget_variants(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/data/files",
+        #                            token, destination = private$.vcf.file.tmp)
+        #   # VariantAnnotation::readVcf(private$.vcf.file.tmp)
+        #   SNPRelate::snpgdsVCF2GDS(private$.vcf.file.tmp, private$.gds.file.tmp)
+        #   SNPRelate::snpgdsSummary(private$.gds.file.tmp)
+        # }
+        if("EGAhtsgetBAM" == format){
           private$loadgmapR()
           private$loadVariantTools()
           private$loadRhtsget()
@@ -51,7 +54,7 @@ EGAhtsgetResourceClient <- R6::R6Class(
           url <- super$parseURL()
           private$.gr <- GenomicRanges::GRanges(paste0(url$query$referenceName, ":", url$query$start, "-", url$query$end))
           private$.sample_id <- substr(url$path, start = 24, stop = nchar(url$path))
-          bam <- htsget_reads(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets", 
+          bam <- Rhtsget::htsget_reads(private$.gr, private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/tickets/tickets", 
                               ega = TRUE, token, destination = private$.bam.file.tmp)
           sortedFile <- Rsamtools::sortBam(file = bam, destination = paste0(gsub('.{3}$', '', bam), "sorted"), byQname = FALSE)
           indexedFile <- Rsamtools::indexBam(sortedFile)
