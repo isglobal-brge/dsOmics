@@ -17,7 +17,7 @@ BAM2VCF <- function(bam, grange, destination){
   names(gen) <- original_names # as.character(GenomeInfoDb::seqnames(grange))
   refgenome <- gmapR::GmapGenome(
                         genome = gen, 
-                        name = as.character(GenomeInfoDb::seqnames(grange)), 
+                        name = original_names,# as.character(GenomeInfoDb::seqnames(grange)), 
                         create = T
                       )
   tally.param <- VariantTools::TallyVariantsParam(
