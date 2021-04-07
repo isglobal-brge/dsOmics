@@ -9,11 +9,12 @@
 #' @export
 
 BAM2VCF <- function(bam, grange, destination){
+  original_names <- seqlevels(grange)
   seqlevelsStyle(seqlevels(grange)) <- "UCSC"
   gen <- Biostrings::DNAStringSet(
     BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19[[seqlevels(grange)]]
     )
-  names(gen) <- as.character(GenomeInfoDb::seqnames(grange))
+  names(gen) <- original_names # as.character(GenomeInfoDb::seqnames(grange))
   refgenome <- gmapR::GmapGenome(
                         genome = gen, 
                         name = as.character(GenomeInfoDb::seqnames(grange)), 
