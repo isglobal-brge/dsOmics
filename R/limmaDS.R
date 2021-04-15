@@ -72,7 +72,18 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
                            sva=sva, method = method)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
   if(any(class(temp) == 'simpleError')){stop(paste(temp))}
+  if(type == 1){
+    if(inherits(Set, "ExpressionSet")){
+      Set.counts <- Biobase::exprs(Set)
+    }
+    else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment"))){
+      Set.counts <- SummarizedExperiment::assay(Set)
+    }
+  }
+  n <- apply(Set.counts, 1, function(x) sum(!is.na(x)))
   ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
-    dplyr::select(id, tail(names(.), length(annotCols)), everything())
+    tibble::add_column(.after = 1, n=n) %>% dplyr::rename("beta" = "logFC") %>%
+    dplyr::select(id, tail(names(.), length(annotCols)), everything()) %>%
+    dplyr::select(id, n, beta, SE, t, P.Value, adj.P.Val)
   return(ans)
 }
