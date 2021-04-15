@@ -24,4 +24,5 @@ AssignMethods:
    GenotypeDataDS,
    selSNPDS,
    getSNPSbyGenDS,
-   addPhenoDataDS
+   addPhenoDataDS,
+   removeOutliersDS
