@@ -8,9 +8,30 @@
 #'
 #' @export
 
-selSNPDS <- function(genoData, i) {
+selSNPDS <- function(genoData, i, strat_variable=NULL, level_number=NULL){ #output_var_factor = NULL) {
   g <- as.numeric(GWASTools::getGenotypeSelection(genoData, i))
   vv <- GWASTools::getScanVariableNames(genoData)
   ans <- data.frame(snp=g, GWASTools::getScanVariable(genoData, vv))
+  if(!is.null(strat_variable)){
+    #############################################################
+    #MODULE 1: CAPTURE THE nfilter SETTINGS                     #
+    thr <- listDisclosureSettingsDS()                           #
+    nfilter.levels <- as.numeric(thr$nfilter.levels)            #
+    #############################################################
+    
+    factor.levels.present.in.source <- levels(factor(ans[[strat_variable]]))
+    num.levels<-length(factor.levels.present.in.source)
+    max.allowed.levels<-length(ans[[strat_variable]])*nfilter.levels
+    
+    if(num.levels>max.allowed.levels)
+    {
+      error.message<-
+        paste0("FAILED: this variable has too many levels and may be disclosive. The ds.asFactor function allows no more than ",
+               max.allowed.levels," levels in this particular study. This variable has ",num.levels)
+      return(list(error.message=error.message))
+    } else{
+      ans <- ans[ans[[strat_variable]] == level_number,]
+    }
+  }
   ans
 }

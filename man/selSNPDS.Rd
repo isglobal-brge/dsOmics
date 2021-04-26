@@ -4,7 +4,7 @@
 \alias{selSNPDS}
 \title{Subset the information of a given SNP in a GDS object.}
 \usage{
-selSNPDS(genoData, i)
+selSNPDS(genoData, i, strat_variable = NULL, level_number = NULL)
 }
 \arguments{
 \item{genoData}{the GDS object}
