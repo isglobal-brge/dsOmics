@@ -22,15 +22,17 @@ alleleFrequencyDS <- function(genoData, sexcol, male, female){
     if(sexcol %in% colnames(genoData@scanAnnot@data) == FALSE){
       stop(paste0("Selected sexcol [", sexcol, "] can't be found on the GenotypeData"))
     }
-    if(!all(c(male, female) %in% unique(genoData@scanAnnot@data[,sexcol]))){
-      stop(paste0("Incorrect male or female identifier [", male, "/", female,
-                  "]. Available gender identifiers: ", paste0(unique(genoData@scanAnnot@data[,sexcol]), collapse = "/")))
+    if(length(unique(genoData@scanAnnot@data[,sexcol])) > 1){
+      if(!all(c(male, female) %in% unique(genoData@scanAnnot@data[,sexcol]))){
+        stop(paste0("Incorrect male or female identifier [", male, "/", female,
+                    "]. Available gender identifiers: ", paste0(unique(genoData@scanAnnot@data[,sexcol]), collapse = "/")))
+      }
     }
     genoData@scanAnnot@sexCol <- sexcol
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == male] <- "M"
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == female] <- "F"
     ans <- GWASTools::alleleFrequency(genoData, verbose = FALSE)
-    return(as_tibble(ans))
+    return(tibble::as_tibble(tibble::rownames_to_column(data.frame(ans), "SNP")))
   }
   else(stop(paste0("Object of incorrect type [", class(genoData), "] alleleFrequency requires object of type GenotypeData")))
 }
