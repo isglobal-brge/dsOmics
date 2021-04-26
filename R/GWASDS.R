@@ -28,12 +28,11 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
   }
   nullmod <- GENESIS::fitNullModel(genoData, outcome = outcome, 
                                    covars = covars, 
-                                   family = family)
+                                   family = family, ...)
   genoIterator <- GWASTools::GenotypeBlockIterator(genoData, snpBlock=snpBlock)
   assoc <- GENESIS::assocTestSingle(genoIterator, null.model = nullmod)
   assoc$rs<-GWASTools::getVariable(genoData, "snp.rs.id")[assoc$variant.id]
   ans <- assoc %>% as_tibble() %>%
     arrange(Score.pval) %>% select(variant.id, rs, everything())
-  
   return(ans)
 }

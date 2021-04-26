@@ -17,10 +17,12 @@ PCASNPSDS <- function(gds, prune, ld.threshold){
   else{
     pca <- SNPRelate::snpgdsPCA(gdsPCA, num.thread=2)
   }
-  
-  tab <- data.frame(sample.id = pca$sample.id,
-                    EV1 = pca$eigenvect[,1], # the first eigenvector
-                    EV2 = pca$eigenvect[,2], # the second eigenvector
+  tab <- data.frame(pca$eigenvect,
                     stringsAsFactors = FALSE)
+  row.names(tab) <- pca$sample.id
+  # tab <- data.frame(sample.id = pca$sample.id,
+  #                   EV1 = pca$eigenvect[,1], # the first eigenvector
+  #                   EV2 = pca$eigenvect[,2], # the second eigenvector
+  #                   stringsAsFactors = FALSE)
   return(tab)
 }
