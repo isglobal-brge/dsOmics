@@ -25,4 +25,5 @@ AssignMethods:
    selSNPDS,
    getSNPSbyGenDS,
    addPhenoDataDS,
-   removeOutliersDS
+   removeOutliersDS,
+   createRSEDS

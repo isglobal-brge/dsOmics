@@ -9,6 +9,7 @@
 #' @export
 
 BAM2VCF <- function(bam, grange, destination){
+  browser()
   original_names <- seqlevels(grange)
   seqlevelsStyle(seqlevels(grange)) <- "UCSC"
   gen <- Biostrings::DNAStringSet(
