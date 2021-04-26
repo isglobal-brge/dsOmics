@@ -65,15 +65,26 @@ EGAhtsgetResourceClient <- R6::R6Class(
           snpfirstdim <- FALSE
           SNPRelate::snpgdsVCF2GDS(private$.vcf.file.tmp, private$.gds.file.tmp, method = method, snpfirstdim = snpfirstdim)
           SNPRelate::snpgdsSummary(private$.gds.file.tmp)
+          private$loadGWASTools()
+          conn <- GWASTools::GdsGenotypeReader(private$.gds.file.tmp)
+          super$setConnection(conn)
+          return(conn)
+        }
+        else if("EGACSV" == format){
+          private$loadRhtsget()
+          csv.file.tmp <- tempfile(fileext = ".csv")
+          token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",
+                                             resource$identity, resource$secret)
+          url <- super$parseURL()
+          private$.sample_id <- substr(url$path, start = 13, stop = nchar(url$path))
+          Rhtsget::fetch_file(private$.sample_id, "https://ega.ebi.ac.uk:8052/elixir/data",
+                              token, csv.file.tmp)
+          return(read.csv(csv.file.tmp))
         }
         else {
           NULL
         }
-        private$loadGWASTools()
-        conn <- GWASTools::GdsGenotypeReader(private$.gds.file.tmp)
-        super$setConnection(conn)
       }
-      conn
     },
     getValue = function() {
       self$getConnection()

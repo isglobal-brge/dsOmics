@@ -27,6 +27,62 @@ var dsOmics = {
     ],
     "types": [
       {
+        "name": "ega-csv",
+        "title": "EGA csv files",
+        "description": "Access the EGA archive and retrieve csv files",
+        "tags": ["ega"],
+        "parameters": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "items": [
+            {
+              "key": "file",
+              "type": "string",
+              "title": "File ID",
+              "description": "Name of the file to be retrieved from EGA."
+            },
+            {
+              "key": "format",
+              "type": "string",
+              "title": "Format",
+              "description": "CSV files will be converte to data frames",
+              "enum": [
+                {
+                  "key": "EGACSV",
+                  "title": "CSV (Comma Separated Values)"
+                }
+              ]
+            }
+          ],
+          "required": [
+            "file"
+          ]
+        },
+        "credentials": {
+          "$schema": "http://json-schema.org/schema#",
+          "type": "array",
+          "description": "Credentials to access EGA.",
+          "items": [
+            {
+              "key": "user",
+              "type": "string",
+              "title": "User",
+              "description": "Authentication username to EGA"
+            },
+            {
+              "key": "pass",
+              "type": "string",
+              "title": "Password",
+              "format": "password",
+              "description": "Authentication password to EGA"
+            }
+          ],
+          "required": [
+            "user", "pass"
+          ]
+        }
+      },
+      {
         "name": "ega-htsget",
         "title": "EGA htsget data access",
         "description": "Access using the GA4GH htsget API the EGA archive",
@@ -562,6 +618,16 @@ var dsOmics = {
         format: params.format
       };
     };
+    
+    var toHttpEGAcsv = function(name, params, credentials){
+      return{
+        name: name,
+        url: "https://ega.ebi.ac.uk:8052/elixir/data/" + params.file,
+        identity: credentials.user,
+        secret: credentials.pass,
+        format: params.format
+      };
+    };
 
     //
     // Resource factory functions by resource form type
@@ -569,6 +635,7 @@ var dsOmics = {
     var toResourceFactories = {
       "ga4gh-htsget": toHttpGA4GH,
       "ega-htsget": toHttpEGA,
+      "ega-csv": toHttpEGAcsv,
       "gridfs-gds-file": toGridfsResource,
       "http-gds-file": toHttpResource,
       "local-gds-file": toLocalResource,

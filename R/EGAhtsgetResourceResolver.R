@@ -13,7 +13,8 @@ EGAhtsgetResourceResolver <- R6::R6Class(
   public = list(
     isFor = function(x) {
       if (super$isFor(x)) {
-        !is.null(findFileResourceGetter(x)) && x$format %in% c("EGAhtsgetBAM", "EGAhtsgetVCF")
+        !is.null(findFileResourceGetter(x)) && x$format %in% c("EGAhtsgetBAM", "EGAhtsgetVCF",
+                                                               "EGACSV")
       } else {
         FALSE
       }
