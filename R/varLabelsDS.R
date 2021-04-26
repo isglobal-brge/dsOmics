@@ -11,6 +11,11 @@ varLabelsDS <- function(x){
     return(Biobase::varLabels(x))
   else if (inherits(x, c("SummarizedExperiment","RangedSummarizedExperiment")))
     return(colnames(SummarizedExperiment::colData(x)))
-  else
+  else if(inherits(x, "GenotypeData")){
+    return(Biobase::varLabels(GWASTools::getScanAnnotation(x)))
+  }
+  else{
     stop("implements the proper method")
+  }
+    
 } 
