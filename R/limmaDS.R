@@ -84,6 +84,6 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
   ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
     tibble::add_column(.after = 1, n=n) %>% dplyr::rename("beta" = "logFC") %>%
     dplyr::select(id, tail(names(.), length(annotCols)), everything()) %>%
-    dplyr::select(id, n, beta, SE, t, P.Value, adj.P.Val)
+    dplyr::select(id, n, beta, SE, t, P.Value, adj.P.Val, annotCols)
   return(ans)
 }

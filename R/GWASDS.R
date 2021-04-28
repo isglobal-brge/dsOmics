@@ -33,6 +33,7 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
   assoc <- GENESIS::assocTestSingle(genoIterator, null.model = nullmod)
   assoc$rs<-GWASTools::getVariable(genoData, "snp.rs.id")[assoc$variant.id]
   ans <- assoc %>% as_tibble() %>%
-    arrange(Score.pval) %>% select(variant.id, rs, everything())
+    arrange(Score.pval) %>% select(variant.id, rs, everything()) %>% 
+    select(!c("Score", "Score.SE", "Score.Stat", "Score.pval", "MAC"))
   return(ans)
 }

@@ -2,10 +2,13 @@
   resourcer::registerResourceResolver(GDSFileResourceResolver$new())
   resourcer::registerResourceResolver(GA4GHResourceResolver$new())
   resourcer::registerResourceResolver(EGAhtsgetResourceResolver$new())
+  options(pillar.sigfig = 3)
+  # resourcer::registerResourceResolver(EGAmetadataResourceResolver$new())
 }
 
 .onDetach <- function(libpath) {
   resourcer::unregisterResourceResolver("GDSFileResourceResolver")
   resourcer::unregisterResourceResolver("GA4GHResourceResolver")
   resourcer::unregisterResourceResolver("EGAhtsgetResourceResolver")
+  # resourcer::unregisterResourceResolver("EGAmetadataResourceResolver")
 }

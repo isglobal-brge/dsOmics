@@ -18,6 +18,7 @@
 #' @import dplyr
 
 alleleFrequencyDS <- function(genoData, sexcol, male, female){
+  
   if(inherits(genoData, "GenotypeData")){
     if(sexcol %in% colnames(genoData@scanAnnot@data) == FALSE){
       stop(paste0("Selected sexcol [", sexcol, "] can't be found on the GenotypeData"))
@@ -32,7 +33,8 @@ alleleFrequencyDS <- function(genoData, sexcol, male, female){
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == male] <- "M"
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == female] <- "F"
     ans <- GWASTools::alleleFrequency(genoData, verbose = FALSE)
-    return(tibble::as_tibble(tibble::rownames_to_column(data.frame(ans), "SNP")))
+    rs <- GWASTools::getVariable(genoData, "snp.rs.id")
+    return(tibble::as_tibble(ans) %>% tibble::add_column(rs=rs))
   }
   else(stop(paste0("Object of incorrect type [", class(genoData), "] alleleFrequency requires object of type GenotypeData")))
 }

@@ -31,10 +31,11 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
   na_string <- unlist(list(...))
   names(covars)[columnId] <- "scanID"
   if(!is.null(sexId)){
-    names(covars)[sexId] <- "sex"
+    covars <- covars %>% tibble::add_column(sex = unlist(covars[, sexId]))
     covars$sex[covars$sex %in% male_encoding] <- "M"
     covars$sex[covars$sex %in% female_encoding] <- "F"
   }
+  
   if(!is.null(case_control_column)){
     covars[[case_control_column]][covars[[case_control_column]] %in% case] <- 1
     covars[[case_control_column]][covars[[case_control_column]] %in% control] <- 0
@@ -45,8 +46,13 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
   }
   covars_id <- covars$scanID
   geno_id <- getScanID(x)
+  if(length(geno_id) > length(covars_id)){
+    stop('The covariates table is missing the individuals: ', 
+         paste(geno_id[!(geno_id %in% covars_id)], collapse = ", "))
+  }
   covars <- covars[covars_id %in% geno_id,]
   covars <- covars[match(geno_id, covars_id),]
+  
   scanAnnot <- GWASTools::ScanAnnotationDataFrame(data.frame(covars))
   geno <- GWASTools::GenotypeData(x, scanAnnot = scanAnnot)
   geno

@@ -15,7 +15,7 @@ selSNPDS <- function(genoData, i, strat_variable=NULL, level_number=NULL){ #outp
   if(!is.null(strat_variable)){
     #############################################################
     #MODULE 1: CAPTURE THE nfilter SETTINGS                     #
-    thr <- listDisclosureSettingsDS()                           #
+    thr <- dsBase:::listDisclosureSettingsDS()                  #
     nfilter.levels <- as.numeric(thr$nfilter.levels)            #
     #############################################################
     
