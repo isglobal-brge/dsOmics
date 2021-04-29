@@ -34,6 +34,7 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
   assoc$rs<-GWASTools::getVariable(genoData, "snp.rs.id")[assoc$variant.id]
   ans <- assoc %>% as_tibble() %>%
     arrange(Score.pval) %>% select(variant.id, rs, everything()) %>% 
-    select(!c("Score", "Score.SE", "Score.Stat", "Score.pval", "MAC"))
+    select(!c("Score", "Score.SE", "Score.Stat", "Score.pval", "MAC")) %>%
+    dplyr::rename(p.valule=PVE) %>% select(!c("variant.id"))
   return(ans)
 }
