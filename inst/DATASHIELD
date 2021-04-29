@@ -18,7 +18,8 @@ AggregateMethods:
    PCASNPSDS,
    DESeq2DS,
    snptestDS,
-   genoDimensionsDS
+   genoDimensionsDS,
+   plotPCASNPSDS
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
