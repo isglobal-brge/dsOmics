@@ -34,7 +34,7 @@ alleleFrequencyDS <- function(genoData, sexcol, male, female){
     genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == female] <- "F"
     ans <- GWASTools::alleleFrequency(genoData, verbose = FALSE)
     rs <- GWASTools::getVariable(genoData, "snp.rs.id")
-    return(tibble::as_tibble(ans) %>% tibble::add_column(rs=rs))
+    return(tibble::as_tibble(ans) %>% tibble::add_column(rs=rs) %>% dplyr::relocate(rs))
   }
   else(stop(paste0("Object of incorrect type [", class(genoData), "] alleleFrequency requires object of type GenotypeData")))
 }
