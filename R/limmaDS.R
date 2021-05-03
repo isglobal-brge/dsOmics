@@ -21,7 +21,7 @@
 limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, 
                     levels, coef, sva, annotCols=NULL, method){
   
-   Set<-eval(parse(text=Set))
+   Set<-eval(parse(text=Set), envir = parent.frame())
   
   if (!is.null(covariable_names))
     covariable_names <- unlist(strsplit(covariable_names, split=","))
