@@ -6,26 +6,16 @@
 \usage{
 exactHWEDS(
   genoData,
-  sexcol,
-  male,
-  female,
   chromosome,
   geno.counts,
   block.size,
-  permute
+  permute,
+  controls,
+  controls_column
 )
 }
 \arguments{
 \item{genoData}{\code{GenotypeData} object}
-
-\item{sexcol}{\code{character} Name of the sex column on the covariates file used to create the 
-\code{\link{GenotypeData}} object}
-
-\item{male}{\code{character} Name of the male indicator of the sex column on the covariates file used to create the 
-\code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{male} than \code{Male})}
-
-\item{female}{\code{character} Name of the female indicator of the sex column on the covariates file used to create the 
-\code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{female} than \code{Female})}
 
 \item{chromosome}{\code{character} Chromosome to study. \code{"all"} to study all available chromosomes}
 
@@ -34,6 +24,11 @@ exactHWEDS(
 \item{block.size}{\code{numeric}  number of SNPs to read in at once}
 
 \item{permute}{\code{bool} logical indicator for whether to permute alleles before calculations}
+
+\item{controls}{\code{bool} logical to calculate the HWE test only on the controls}
+
+\item{controls_column}{\code{character} name of the case/controls column of the covariates 
+used to create the GenotypeData object. Only used if \code{controls = TRUE}}
 }
 \value{
 

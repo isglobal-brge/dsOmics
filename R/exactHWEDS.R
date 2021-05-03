@@ -5,16 +5,13 @@
 #' and calculates inbreeding coefficients.
 #'
 #' @param genoData \code{GenotypeData} object
-#' @param sexcol \code{character} Name of the sex column on the covariates file used to create the 
-#' \code{\link{GenotypeData}} object
-#' @param male \code{character} Name of the male indicator of the sex column on the covariates file used to create the 
-#' \code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{male} than \code{Male})
-#' @param female \code{character} Name of the female indicator of the sex column on the covariates file used to create the 
-#' \code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{female} than \code{Female})
 #' @param chromosome \code{character} Chromosome to study. \code{"all"} to study all available chromosomes
 #' @param geno.counts \code{bool} if \code{TRUE}, genotype counts are returned in the output data.frame
 #' @param block.size \code{numeric}  number of SNPs to read in at once
 #' @param permute \code{bool} logical indicator for whether to permute alleles before calculations
+#' @param controls \code{bool} logical to calculate the HWE test only on the controls
+#' @param controls_column \code{character} name of the case/controls column of the covariates 
+#' used to create the GenotypeData object. Only used if \code{controls = TRUE}
 #'
 #' @return
 #' @export
@@ -22,17 +19,10 @@
 #' @import dplyr
 #'
 #' @examples
-exactHWEDS <- function(genoData, sexcol, male, female, chromosome, geno.counts, block.size, permute){
+exactHWEDS <- function(genoData, chromosome, geno.counts, block.size, permute, controls, 
+                       controls_column){
   
   if(inherits(genoData, "GenotypeData")){
-    if(sexcol %in% colnames(genoData@scanAnnot@data) == FALSE){
-      stop(paste0("Selected sexcol [", sexcol, "] can't be found on the GenotypeData"))
-    }
-    if(!all(c(male, female) %in% unique(genoData@scanAnnot@data[,sexcol]))){
-      stop(paste0("Incorrect male or female identifier [", male, "/", female,
-                  "]. Available gender identifiers: ", paste0(unique(genoData@scanAnnot@data[,sexcol]), collapse = "/")))
-    }
-
     chr <- getChromosome(genoData)
     
     if(chromosome != "all"){
@@ -53,13 +43,17 @@ exactHWEDS <- function(genoData, sexcol, male, female, chromosome, geno.counts, 
       snpStart <- range_chr[1]
       snpEnd <- range_chr[2]
     }
-    genoData@scanAnnot@sexCol <- sexcol
-    genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == male] <- "M"
-    genoData@scanAnnot@data[,sexcol][genoData@scanAnnot@data[,sexcol] == female] <- "F"
+
+    if(controls){
+      if(missing(controls_column)){stop('"controls" is set to TRUE, but no "controls_column" was provided')}
+      scan.exclude <- genoData@scanAnnot@data$scanID[genoData@scanAnnot@data[[controls_column]] == 1]
+    } else{scan.exclude <- NULL}
+    GWASTools::getScanID(genoData)
     ans <- GWASTools::exactHWE(genoData = genoData, 
                     geno.counts = geno.counts,
                     snpStart = snpStart,
                     snpEnd = snpEnd,
+                    scan.exclude = scan.exclude,
                     block.size = block.size, 
                     verbose = FALSE,
                     permute = permute)
