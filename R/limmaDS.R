@@ -19,7 +19,7 @@
 #' @export 
 #' 
 limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, 
-                    levels, coef, sva, annotCols=NULL, method){
+                    levels, coef, sva, annotCols=NULL, method, robust){
   
    Set<-eval(parse(text=Set), envir = parent.frame())
   
@@ -70,7 +70,8 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva, method = method)
-  temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, contrast = contrasts)
+  temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, 
+                                contrast = contrasts, robust = robust)
   if(any(class(temp) == 'simpleError')){stop(paste(temp))}
   if(type == 1){
     if(inherits(Set, "ExpressionSet")){
