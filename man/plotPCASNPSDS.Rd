@@ -4,7 +4,7 @@
 \alias{plotPCASNPSDS}
 \title{Title}
 \usage{
-plotPCASNPSDS(x, group)
+plotPCASNPSDS(x, geno, group)
 }
 \arguments{
 \item{x}{}

@@ -14,7 +14,8 @@ limmaDS(
   coef,
   sva,
   annotCols = NULL,
-  method
+  method,
+  robust
 )
 }
 \arguments{
