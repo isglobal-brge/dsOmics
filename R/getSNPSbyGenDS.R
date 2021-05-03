@@ -33,10 +33,18 @@ getSNPSbyGenDS <- function(gds, old_assign, ...){
   
   new_gds <- tempfile(fileext = ".gds")
   GWASTools::close(gds)
-  GWASTools::gdsSubset(gds@filename, new_gds, snp.include = snp.ids, allow.fork = TRUE)
-  
-  gds_new <- GWASTools::GdsGenotypeReader(new_gds)
-  
-  return(gds_new)
-  
+  if(inherits(gds, "GdsGenotypeReader")){
+    GWASTools::gdsSubset(gds@filename, new_gds, snp.include = snp.ids, allow.fork = TRUE)
+    gds_new <- GWASTools::GdsGenotypeReader(new_gds)
+    return(gds_new)
+  } else if(inherits(gds, "GenotypeData")){
+    covars <- gds@scanAnnot@data
+    columnId <- which(colnames(covars) %in% "scanID")
+    GWASTools::gdsSubset(gds@data@filename, new_gds, snp.include = snp.ids, allow.fork = TRUE)
+    gds_new <- GWASTools::GdsGenotypeReader(new_gds)
+    assign(deparse(substitute(gds)), GWASTools::GdsGenotypeReader(gds@data@filename), envir = parent.frame())
+    return(GenotypeDataDS(gds_new, covars, columnId, NULL, NULL, NULL, NULL, NULL, NULL))
+  } else{
+    stop('Objcect "gds" is not of class "GdsGenotypeReader" or "GenotypeData"')
+  }
 }
