@@ -2,7 +2,7 @@
 % Please edit documentation in R/createRSEDS.R
 \name{createRSEDS}
 \alias{createRSEDS}
-\title{reate a RangedSummarizedExperiment from a RNAseq count table and 
+\title{create a RangedSummarizedExperiment from a RNAseq count table and 
 a phenotypes table}
 \usage{
 createRSEDS(rnaseq, phe)
@@ -16,7 +16,7 @@ createRSEDS(rnaseq, phe)
 A \code{RangedSummarizedExperiment} object
 }
 \description{
-reate a RangedSummarizedExperiment from a RNAseq count table and 
+create a RangedSummarizedExperiment from a RNAseq count table and 
 a phenotypes table
 }
 \details{

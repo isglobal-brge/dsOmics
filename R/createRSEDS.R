@@ -1,4 +1,4 @@
-#' @title reate a RangedSummarizedExperiment from a RNAseq count table and 
+#' @title create a RangedSummarizedExperiment from a RNAseq count table and 
 #' a phenotypes table
 #' 
 #' @details The RNAseq count table has to have the following structure: \cr
@@ -42,6 +42,6 @@ createRSEDS <- function(rnaseq, phe){
   colData[,1] <- NULL
   rse <- SummarizedExperiment::SummarizedExperiment(assays=SimpleList(counts=counts),
                               rowRanges=rowRanges, colData=colData)
-  rse
+  return(rse)
 }
 

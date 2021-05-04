@@ -28,4 +28,5 @@ AssignMethods:
    getSNPSbyGenDS,
    addPhenoDataDS,
    removeOutliersDS,
-   createRSEDS
+   createRSEDS,
+   filterByExprDS
