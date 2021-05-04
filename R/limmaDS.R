@@ -10,8 +10,11 @@
 #' @param coef ...
 #' @param sva should differential expression analysis be adjusted by SVA?
 #' @param annotCols variables from the annotation data used in the output
-#' @param method String indicating the method used in the regression: "ls" or 
-#' "robust". (Default: "ls")
+#' @param method String indicating the method used in the regression (e.g. lmFit function of limma: "ls" or 
+#' "robust". (Default: "ls") 
+#' @param robust Logical value indicating whether robust method is applied in the eBayes function of limma. Default is FALSE.
+#' @param normalization String indicating the normalize method used when using voom for RNAseq data (see normalized.method argument in limma::vomm)
+#' 
 #' @return a matrix with genes ordered by p-value
 #' @author Gonzalez, JR.
 #' 
@@ -19,9 +22,9 @@
 #' @export 
 #' 
 limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, 
-                    levels, coef, sva, annotCols=NULL, method, robust){
+                    levels, coef, sva, annotCols=NULL, method, robust, normalization){
   
-   Set<-eval(parse(text=Set), envir = parent.frame())
+  Set <- eval(parse(text=Set), envir = parent.frame())
   
   if (!is.null(covariable_names))
     covariable_names <- unlist(strsplit(covariable_names, split=","))
@@ -41,7 +44,8 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
     }
     ff <- paste("~", paste(c(variable_names, covariable_names), collapse="+")) 
     design <- model.matrix(formula(ff), data=pheno)
-    v <- limma::voom(Set.counts, design = design)
+    v <- limma::voom(Set.counts, design = design, normalize.method=normalization,
+                     plot=FALSE)
     E <- v$E
     weights <- v$weights
     if(inherits(Set, "ExpressionSet"))

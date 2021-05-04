@@ -4,7 +4,11 @@
 \alias{plotPCASNPSDS}
 \title{Title}
 \usage{
+<<<<<<< Updated upstream
 plotPCASNPSDS(x, geno, group)
+=======
+plotPCASNPSDS(x, feno, feno_id, group)
+>>>>>>> Stashed changes
 }
 \arguments{
 \item{x}{}
