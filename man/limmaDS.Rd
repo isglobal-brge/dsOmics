@@ -15,7 +15,8 @@ limmaDS(
   sva,
   annotCols = NULL,
   method,
-  robust
+  robust,
+  normalization
 )
 }
 \arguments{
@@ -37,8 +38,12 @@ limmaDS(
 
 \item{annotCols}{variables from the annotation data used in the output}
 
-\item{method}{String indicating the method used in the regression: "ls" or 
+\item{method}{String indicating the method used in the regression (e.g. lmFit function of limma: "ls" or 
 "robust". (Default: "ls")}
+
+\item{robust}{Logical value indicating whether robust method is applied in the eBayes function of limma. Default is FALSE.}
+
+\item{normalization}{String indicating the normalize method used when using voom for RNAseq data (see normalized.method argument in limma::vomm)}
 }
 \value{
 a matrix with genes ordered by p-value

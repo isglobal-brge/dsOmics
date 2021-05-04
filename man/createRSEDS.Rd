@@ -5,12 +5,16 @@
 \title{create a RangedSummarizedExperiment from a RNAseq count table and 
 a phenotypes table}
 \usage{
-createRSEDS(rnaseq, phe)
+createRSEDS(rnaseq, phe, ...)
 }
 \arguments{
 \item{rnaseq}{\code{data.frame} RNAseq count table}
 
 \item{phe}{\code{data.frame} Phenotypes table}
+
+\item{...}{\code{character vector} Columns of the counts table to be used as 
+annotation when creating the SummarizedExperiment. If \code{NULL}, biomaRt will be used to find 
+annotation using the first column of the counts table (EntrezID)}
 }
 \value{
 A \code{RangedSummarizedExperiment} object
@@ -21,8 +25,9 @@ a phenotypes table
 }
 \details{
 The RNAseq count table has to have the following structure: \cr
-- First column: Entrez identificator \cr
-- Second column: Annotated symbol \cr
+- First column: Entrez identificator (column named "EntrezID") \cr
+- Second column: Annotated symbol (optional, but if present must be on this position, if not present, 
+make sure to set annot = FALSE) \cr
 - All the remaining columns: One col. per individual \cr
 The phenotypes table has to have the following structure: \cr
 - First column: ID of the individuals. To match with the column names 

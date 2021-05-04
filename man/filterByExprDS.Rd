@@ -4,10 +4,12 @@
 \alias{filterByExprDS}
 \title{Filter Genes By Expression Level}
 \usage{
-filterByExprDS(object)
+filterByExprDS(object, group)
 }
 \arguments{
 \item{object}{\code{eSet}, \code{RangedSummarizedExperiment} on the server}
+
+\item{group}{vector or factor giving group membership for a oneway layout, if appropriate.}
 }
 \value{
 A \code{RangedSummarizedExperiment} object with filtered genes

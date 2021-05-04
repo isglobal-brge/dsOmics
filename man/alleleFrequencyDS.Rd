@@ -4,19 +4,10 @@
 \alias{alleleFrequencyDS}
 \title{Allelic frequency}
 \usage{
-alleleFrequencyDS(genoData, sexcol, male, female)
+alleleFrequencyDS(genoData)
 }
 \arguments{
 \item{genoData}{\code{GenotypeData} \code{\link{GenotypeData}} object}
-
-\item{sexcol}{\code{character} Name of the sex column on the covariates file used to create the 
-\code{\link{GenotypeData}} object}
-
-\item{male}{\code{character} Name of the male indicator of the sex column on the covariates file used to create the 
-\code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{male} than \code{Male})}
-
-\item{female}{\code{character} Name of the female indicator of the sex column on the covariates file used to create the 
-\code{\link{GenotypeData}} object. (Note that it is case sensitive so it's not the same \code{female} than \code{Female})}
 }
 \value{
 A matrix with a row for each SNP. Columns "M" for males, "F" for females, and "all" for all scans give 
