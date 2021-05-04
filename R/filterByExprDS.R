@@ -10,8 +10,17 @@
 #' @export
 
 filterByExprDS <- function(object, group){
-  keep <- edgeR::filterByExpr(object, 
-                              group=object[[group]])
+  if(!is.null(group)){
+    if(group %in% varLabelsDS(object)){
+      keep <- edgeR::filterByExpr(object, 
+                                  group=object[[group]])
+    } else{
+      stop('Group [', group, '] is not present on the object. Check "ds.varLabels()"')
+    }
+    
+  } else{
+    keep <- edgeR::filterByExpr(object)
+  }
   object.filt <- object[keep,]
   return(object.filt)
 }
