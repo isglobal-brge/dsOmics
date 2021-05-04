@@ -24,8 +24,7 @@ plotPCASNPSDS <- function(x, geno, group){
   
   feno <- GWASTools::getScanAnnotation(geno)@data
   if(is.null(feno[[group]])){
-    stop('Grouping variable [', group, '] is not inside of the genotype file. Check the column
-         names of the covariates file used to create the GenotypeData file')
+    stop('Grouping variable [', group, '] is not inside of the genotype file. Check the column names of the covariates file used to create the GenotypeData file')
   }
   factor.levels.present.in.source <- levels(factor(feno[[group]]))
   num.levels<-length(factor.levels.present.in.source)
