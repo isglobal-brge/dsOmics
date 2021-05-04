@@ -40,10 +40,7 @@ createRSEDS <- function(rnaseq, phe, ...){
            paste(annot_cols[!(annot_cols %in% colnames(rnaseq))], collapse = ", "), ']')
     }
     annoted_positions <- !is.na(rnaseq[,2])
-    annot <- data.frame(entrezgene_id = rnaseq$EntrezID[annoted_positions],
-                        chromosome_name = rep(1,length(rnaseq[,2][annoted_positions])),
-                        start_position = rep(1,length(rnaseq[,2][annoted_positions])),
-                        end_position = rep(1,length(rnaseq[,2][annoted_positions])))
+    annot <- data.frame(entrezgene_id = rnaseq$EntrezID[annoted_positions])
   }
 
   # select only genes with annotation
@@ -52,21 +49,24 @@ createRSEDS <- function(rnaseq, phe, ...){
   # create the RSE
   counts <- as.matrix(cc[ , which(colnames(cc) %in% unlist(phe[,1]))]) # Assuming the ID column
   # is the 1st on the phe table
-  rowRanges <- makeGRangesFromDataFrame(cc, 
-                                        seqnames.field = 'chromosome_name',
-                                        start.field = 'start_position',
-                                        end.field = 'end_position')
-  if(is.null(annot_cols)){
-    mcols(rowRanges) <- data.frame(Gene_Symbol = annot$hgnc_symbol)
-  } else{
-    mcols(rowRanges) <- rnaseq[, annot_cols][annoted_positions]
-  }
   
   colData <- DataFrame(phe)
   rownames(colData) <- colData[,1]
   colData[,1] <- NULL
-  rse <- SummarizedExperiment::SummarizedExperiment(assays=SimpleList(counts=counts),
-                                                    rowRanges=rowRanges, colData=colData)
+  
+  if(is.null(annot_cols)){
+    rowRanges <- makeGRangesFromDataFrame(cc, 
+                                          seqnames.field = 'chromosome_name',
+                                          start.field = 'start_position',
+                                          end.field = 'end_position')
+    mcols(rowRanges) <- data.frame(Gene_Symbol = annot$hgnc_symbol)
+    
+    rse <- SummarizedExperiment::SummarizedExperiment(assays=SimpleList(counts=counts),
+                                                      rowRanges=rowRanges, colData=colData)
+  } else{
+    rse <- SummarizedExperiment::SummarizedExperiment(assays=SimpleList(counts=counts),
+                                                      rowData=rnaseq[, annot_cols][annoted_positions,], 
+                                                      colData=colData)}
   return(rse)
 }
 

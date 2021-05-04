@@ -9,11 +9,15 @@
 fvarLabelsDS <- function(x){
   if(inherits(x, "ExpressionSet"))
     return(Biobase::fvarLabels(x))
-  else if (inherits(x, c("SummarizedExperiment","RangedSummarizedExperiment"))){
+  else if (inherits(x, "RangedSummarizedExperiment")){
     df <- as.data.frame(SummarizedExperiment::rowRanges(x), 
                         stringsAsFactors = FALSE)
     colnames(df)[1] <- "chromosome"
     df[, 1] <- as.character(df[, 1])
+    return(colnames(df))
+  } else if(inherits(x, "SummarizedExperiment")){
+    df <- as.data.frame(SummarizedExperiment::rowData(x), 
+                        stringsAsFactors = FALSE)
     return(colnames(df))
   }
   else
