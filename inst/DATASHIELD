@@ -16,7 +16,6 @@ AggregateMethods:
    DESeq2DS,
    edgeRDS,
    PCASNPSDS,
-   DESeq2DS,
    snptestDS,
    genoDimensionsDS,
    plotPCASNPSDS
@@ -29,4 +28,4 @@ AssignMethods:
    addPhenoDataDS,
    removeOutliersDS,
    createRSEDS,
-   filterByExprDS
+   RNAseqPreprocDS

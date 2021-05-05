@@ -14,6 +14,11 @@
 #' "robust". (Default: "ls") 
 #' @param robust Logical value indicating whether robust method is applied in the eBayes function of limma. Default is FALSE.
 #' @param normalization String indicating the normalize method used when using voom for RNAseq data (see normalized.method argument in limma::vomm)
+#' @param voomQualityWeights Logical value indicating whether limma::voomWithQualityWeights should be used instead of
+#' limma::voom. 
+#' @param big Logical value indicating whether SmartSVA should be used instead of SVA 
+#' (TRUE recommended for methylation or when having large number of samples). 
+#' 
 #' 
 #' @return a matrix with genes ordered by p-value
 #' @author Gonzalez, JR.
@@ -22,7 +27,8 @@
 #' @export 
 #' 
 limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, 
-                    levels, coef, sva, annotCols=NULL, method, robust, normalization){
+                    levels, coef, sva, annotCols, method, robust, normalization,
+                    voomQualityWeights, big){
   
   Set <- eval(parse(text=Set), envir = parent.frame())
   
@@ -43,9 +49,20 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
       pheno <- SummarizedExperiment::colData(Set)
     }
     ff <- paste("~", paste(c(variable_names, covariable_names), collapse="+")) 
+    
     design <- model.matrix(formula(ff), data=pheno)
-    v <- limma::voom(Set.counts, design = design, normalize.method=normalization,
-                     plot=FALSE)
+
+    if (voomQualityWeights){
+      v <- limma::voomWithQualityWeights(Set.counts, design = design, 
+                                         normalize.method=normalization,
+                                         plot=FALSE)
+    } else {
+      v <- limma::voom(Set.counts, design = design, 
+                       normalize.method=normalization,
+                       plot=FALSE)
+    }
+    
+    
     E <- v$E
     weights <- v$weights
     if(inherits(Set, "ExpressionSet"))
@@ -63,13 +80,15 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
     contrasts <- unlist(strsplit(contrasts, split=","))
     contrasts<-limma::makeContrasts(contrasts = contrasts,levels = levels)
   }
+  
+
   if(method == 1){
     method <- "ls"
   } else {method <- "robust"}
   res <- MEAL::runPipeline(set = Set, weights = weights, 
                            variable_names = variable_names,
                            covariable_names = covariable_names,
-                           sva=sva, method = method)
+                           sva=sva, method = method, big = big)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, 
                                 contrast = contrasts, robust = robust)
   if(any(class(temp) == 'simpleError')){stop(paste(temp))}

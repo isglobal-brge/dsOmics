@@ -13,10 +13,12 @@ limmaDS(
   levels,
   coef,
   sva,
-  annotCols = NULL,
+  annotCols,
   method,
   robust,
-  normalization
+  normalization,
+  voomQualityWeights,
+  big
 )
 }
 \arguments{
@@ -44,6 +46,12 @@ limmaDS(
 \item{robust}{Logical value indicating whether robust method is applied in the eBayes function of limma. Default is FALSE.}
 
 \item{normalization}{String indicating the normalize method used when using voom for RNAseq data (see normalized.method argument in limma::vomm)}
+
+\item{voomQualityWeights}{Logical value indicating whether limma::voomWithQualityWeights should be used instead of
+limma::voom.}
+
+\item{big}{Logical value indicating whether SmartSVA should be used instead of SVA 
+(TRUE recommended for methylation or when having large number of samples).}
 }
 \value{
 a matrix with genes ordered by p-value
