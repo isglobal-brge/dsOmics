@@ -54,10 +54,6 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
       SummarizedExperiment::assay(Set) <- E
   }
   
-  if (!is.null(annotCols)){
-    annotCols <- unlist(strsplit(annotCols, split=","))
-  }
-  
   if(!is.null(contrasts)) 
   { 
     if(levels != "design"){
