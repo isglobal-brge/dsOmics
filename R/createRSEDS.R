@@ -50,22 +50,24 @@ createRSEDS <- function(rnaseq, phe, ...){
   counts <- as.matrix(cc[ , which(colnames(cc) %in% unlist(phe[,1]))]) # Assuming the ID column
   # is the 1st on the phe table
   
-  colData <- DataFrame(phe)
+  colData <- S4Vectors::DataFrame(phe)
   rownames(colData) <- colData[,1]
   colData[,1] <- NULL
   
   if(is.null(annot_cols)){
-    rowRanges <- makeGRangesFromDataFrame(cc, 
+    rowRanges <- GenomicRanges::makeGRangesFromDataFrame(cc, 
                                           seqnames.field = 'chromosome_name',
                                           start.field = 'start_position',
                                           end.field = 'end_position')
-    mcols(rowRanges) <- data.frame(Gene_Symbol = annot$hgnc_symbol)
+    GenomicRanges::mcols(rowRanges) <- data.frame(Gene_Symbol = annot$hgnc_symbol)
     
-    rse <- SummarizedExperiment::SummarizedExperiment(assays=SimpleList(counts=counts),
+    rse <- SummarizedExperiment::SummarizedExperiment(assays=S4Vectors::SimpleList(counts=counts),
                                                       rowRanges=rowRanges, colData=colData)
   } else{
-    rse <- SummarizedExperiment::SummarizedExperiment(assays=SimpleList(counts=counts),
-                                                      rowData=rnaseq[, annot_cols][annoted_positions,], 
+    rowData <- rnaseq[, annot_cols][annoted_positions,]
+    rownames(rowData) <- cc$EntrezID
+    rse <- SummarizedExperiment::SummarizedExperiment(assays=S4Vectors::SimpleList(counts=counts),
+                                                      rowData=rowData, 
                                                       colData=colData)}
   return(rse)
 }
