@@ -30,6 +30,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
                     levels, coef, sva, annotCols, method, robust, normalization,
                     voomQualityWeights, big){
   
+  
   Set <- eval(parse(text=Set), envir = parent.frame())
   
   if (!is.null(covariable_names))

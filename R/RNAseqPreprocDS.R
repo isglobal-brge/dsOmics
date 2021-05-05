@@ -42,9 +42,5 @@ RNAseqPreprocDS <- function(object, group){
   
   SummarizedExperiment::assays(object.filt)$logCPM <- edgeR::cpm(dge.filt, normalized.lib.sizes=TRUE,
                                                                  log=TRUE, prior.count=0.5)
-  
-  SummarizedExperiment::assays(object.filt)$noTMM <- dge.filt.noTMM
-  
-  
   return(object.filt)
 }
