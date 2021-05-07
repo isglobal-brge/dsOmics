@@ -42,9 +42,6 @@ GDSFileResourceClient <- R6::R6Class(
         }
         private$loadGWASTools()
         conn <- GWASTools::GdsGenotypeReader(path)
-        og_snpid <- conn@snpIDvar
-        conn@snpIDvar <- "snp.rs.id"
-        if(is.null(getSnpID(conn))){conn@snpIDvar <- og_snpid}
         super$setConnection(conn)
       }
       conn
