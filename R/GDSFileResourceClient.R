@@ -41,7 +41,7 @@ GDSFileResourceClient <- R6::R6Class(
           private$loadGDSFmt()
         }
         private$loadGWASTools()
-        conn <- GWASTools::GdsGenotypeReader(path)
+        conn <- GWASTools::GdsGenotypeReader(path, allow.fork = TRUE)
         super$setConnection(conn)
       }
       conn

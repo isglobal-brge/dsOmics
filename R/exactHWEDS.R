@@ -57,10 +57,11 @@ exactHWEDS <- function(genoData, chromosome, geno.counts, block.size, permute, c
                     block.size = block.size, 
                     verbose = FALSE,
                     permute = permute)
-    rs <- GWASTools::getVariable(genoData, "snp.rs.id")
+    rs <- data.frame(snpID = GWASTools::getVariable(genoData, "snp.id"),
+                     rs = GWASTools::getVariable(genoData, "snp.rs.id"))
+    ans <- dplyr::left_join(ans, rs, by = "snpID")
     return(tibble::as_tibble(ans) %>% mutate_at(c(3:6, 8:9), as.numeric) %>% 
-             tibble::add_column(rs=rs) %>% select(!c("snpID", "f")) %>% 
-             dplyr::relocate(rs))
+             select(!c("snpID", "f")) %>% dplyr::relocate(rs))
   }
   else{
     stop(paste0("Object of incorrect type [", class(genoData), "] exactHWE requires object of type GenotypeData"))
