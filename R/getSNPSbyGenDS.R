@@ -24,7 +24,7 @@ getSNPSbyGenDS <- function(gds, old_assign, ...){
   for(i in 1:length(dots)){
     snp.ranges <- c(snp.ranges, seq(gr@ranges[i]@start, length.out = gr@ranges[i]@width))
   }
-  
+
   snp.ids <- GWASTools::getSnpID(gds)[GWASTools::getPosition(gds) %in% snp.ranges]
   
   if(isEmpty(snp.ids)){
@@ -36,6 +36,7 @@ getSNPSbyGenDS <- function(gds, old_assign, ...){
   if(inherits(gds, "GdsGenotypeReader")){
     GWASTools::gdsSubset(gds@filename, new_gds, snp.include = snp.ids, allow.fork = TRUE)
     gds_new <- GWASTools::GdsGenotypeReader(new_gds)
+    assign(deparse(substitute(gds)), GWASTools::GdsGenotypeReader(gds@filename), envir = parent.frame())
     return(gds_new)
   } else if(inherits(gds, "GenotypeData")){
     covars <- gds@scanAnnot@data
