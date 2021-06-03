@@ -49,7 +49,7 @@ GDS file or a VCF file to be converted into a GDS file.
 \if{latex}{\out{\hypertarget{method-getConnection}{}}}
 \subsection{Method \code{getConnection()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$getConnection()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$getConnection(...)}\if{html}{\out{</div>}}
 }
 
 }
@@ -58,7 +58,7 @@ GDS file or a VCF file to be converted into a GDS file.
 \if{latex}{\out{\hypertarget{method-getValue}{}}}
 \subsection{Method \code{getValue()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$getValue()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceClient$getValue(...)}\if{html}{\out{</div>}}
 }
 
 }

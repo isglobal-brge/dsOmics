@@ -31,7 +31,9 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
   na_string <- unlist(list(...))
   names(covars)[columnId] <- "scanID"
   if(!is.null(sexId)){
-    covars <- covars %>% tibble::add_column(sex = unlist(covars[, sexId]))
+    if(colnames(covars)[sexId] != "sex"){
+      covars <- covars %>% tibble::add_column(sex = unlist(covars[, sexId]))
+    }
     covars$sex[covars$sex %in% male_encoding] <- "M"
     covars$sex[covars$sex %in% female_encoding] <- "F"
   }

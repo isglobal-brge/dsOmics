@@ -9,7 +9,7 @@ AggregateMethods:
    nFeaturesDS,
    tablePhenoDS,
    limmaDS,
-   getVariable=GWASTools::getVariable,
+   getVariable,
    getChromosomeNamesDS,
    GWASDS,
    plinkDS,
@@ -18,7 +18,9 @@ AggregateMethods:
    PCASNPSDS,
    snptestDS,
    genoDimensionsDS,
-   plotPCASNPSDS
+   plotPCASNPSDS,
+   PRSDS,
+   c=base::c
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
