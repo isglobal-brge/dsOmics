@@ -19,6 +19,7 @@
 #' @return \code{data.frame} were the rownames are the individuals. The columns found are: \cr
 #' prs: Polygenic risk score per individual \cr
 #' prs_nw: Polygenic risk score without weights (weight 1 for each risk allele) \cr
+#' p_prs_nw: Risk probability using prs_nw and SNPassoc::pscore \cr
 #' n_snps: Number of SNPs with information for each individual
 #' @export
 #'
@@ -125,10 +126,9 @@ PRSDS <- function(resources, pgs_id, snp_threshold){
   prs[which(percentage_snps < snp_threshold)] <- NA
   # calculate PRS without weights
   prs_nw <- rowSums(geno)
-  # TODO probability of prs_nw (snpassoc)
-  # p_prs_nw <- SNPassoc::pscore(prs_nw, colnames(geno))
-  # TODO devolver todo como una tabla mejor??
-  return(data.frame(prs = prs, prs_nw = prs_nw, n_snps = n_snps))
+  # Calculate probability PRS without weights using SNPassoc
+  p_prs_nw <- SNPassoc::pscore(prs_nw, colnames(geno))
+  return(data.frame(prs = prs, prs_nw = prs_nw, p_prs_nw = p_prs_nw, n_snps = n_snps))
 }
 
 #' @title Internal function: Get PGS catalog table of polygenic risks

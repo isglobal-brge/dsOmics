@@ -21,6 +21,7 @@ further information.}
 \code{data.frame} were the rownames are the individuals. The columns found are: \cr
 prs: Polygenic risk score per individual \cr
 prs_nw: Polygenic risk score without weights (weight 1 for each risk allele) \cr
+p_prs_nw: Risk probability using prs_nw and SNPassoc::pscore \cr
 n_snps: Number of SNPs with information for each individual
 }
 \description{
