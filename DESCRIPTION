@@ -14,7 +14,6 @@ Depends: R (>= 3.6.0),
 Imports:
      Biobase,
      SNPRelate (>= 1.26.0),
-     SNPassoc (>= 2.0.2-3),
      GENESIS, 
      GWASTools,
      GenomicRanges,
