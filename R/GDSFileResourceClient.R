@@ -34,7 +34,7 @@ GDSFileResourceClient <- R6::R6Class(
               snpfirstdim <- as.logical(url$query$snpfirstdim)
             }
           }
-          if(!is.null(list(...))){
+          if(!is.null(unlist(list(...)))){
             # Load necessary packages
             private$loadGenomicRanges()
             private$loadIRanges()

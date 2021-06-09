@@ -1,7 +1,7 @@
 Package: dsOmics
 Type: Package
 Title: DataSHIELD server site Omic functions
-Version: 1.0.5-3
+Version: 1.0.5-4
 Date: 2021-06-07
 Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Xavier", "Esriba-Montagut", , "xavier.escriba@isglobal.org", role = "aut"),
@@ -14,6 +14,7 @@ Depends: R (>= 3.6.0),
 Imports:
      Biobase,
      SNPRelate (>= 1.26.0),
+     SNPassoc (>= 2.0.2-3),
      GENESIS, 
      GWASTools,
      GenomicRanges,
