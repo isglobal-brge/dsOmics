@@ -4,7 +4,7 @@
 \alias{addPhenoDataDS}
 \title{Add Phenotype data to ExpressionSet}
 \usage{
-addPhenoDataDS(x, pheno, identifier, complete_cases)
+addPhenoDataDS(x, pheno, identifier, alternate_eset_id, complete_cases)
 }
 \arguments{
 \item{x}{\code{ExpressionSet} ExpressionSet to which add phenotype information}
@@ -12,6 +12,10 @@ addPhenoDataDS(x, pheno, identifier, complete_cases)
 \item{pheno}{\code{data.frame} Table with the new phenotypes}
 
 \item{identifier}{\code{character} Name of the ID column on the phenotypes data.frame}
+
+\item{alternate_eset_id}{\code{character} Alternate ID of the eSet pheno data, by default the rownames 
+of the eSet pheno data act as ID, use this argument if the ID to merge the individuals is on a column of the pheno data. 
+Input NULL for the standard behaviour of using the rownames of the pheno data as ID.}
 
 \item{complete_cases}{\code{bool} If \code{TRUE} only the matching individuals 
 between the ExpressionSet and the phenotypes table will be included on the resulting ExpressionSet. If 
