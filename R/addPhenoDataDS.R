@@ -32,8 +32,16 @@ addPhenoDataDS <- function(x, pheno, identifier, alternate_eset_id, complete_cas
     og_individuals <- og_pheno[,alternate_eset_id]
   }
   
+  if(!is.null(alternate_eset_id) & length(unique(og_individuals)) != nrow(og_pheno)){
+    stop('The selectected alternate_eset_id[', alternate_eset_id, '] does not correspond to a unique identifier, there are repeated IDs in this column')
+  }
+  
   new_individuals <- pheno[,identifier]
   common_individuals <- new_individuals %in% og_individuals
+  
+  if(all(common_individuals == FALSE)){
+    stop('No common individuals between the ExpressionSet and the new pheno data')
+  }
   
   new_pheno <- pheno[common_individuals,]
   og_pheno <- cbind(og_pheno, og_individuals_id = og_individuals)
