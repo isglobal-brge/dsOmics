@@ -29,14 +29,14 @@ addPhenoDataDS <- function(x, pheno, identifier, alternate_eset_id, complete_cas
   if(is.null(alternate_eset_id)){
     og_individuals <- rownames(og_pheno)
   } else {
-    og_individuals <- og_pheno[,alternate_eset_id]
+    og_individuals <- as.character(og_pheno[,alternate_eset_id])
   }
   
   if(!is.null(alternate_eset_id) & length(unique(og_individuals)) != nrow(og_pheno)){
     stop('The selectected alternate_eset_id[', alternate_eset_id, '] does not correspond to a unique identifier, there are repeated IDs in this column')
   }
   
-  new_individuals <- pheno[,identifier]
+  new_individuals <- as.character(unlist(pheno[,identifier]))
   common_individuals <- new_individuals %in% og_individuals
   
   if(all(common_individuals == FALSE)){
@@ -44,21 +44,24 @@ addPhenoDataDS <- function(x, pheno, identifier, alternate_eset_id, complete_cas
   }
   
   new_pheno <- pheno[common_individuals,]
+  new_pheno[,identifier] <- as.character(unlist(new_pheno[,identifier]))
   og_pheno <- cbind(og_pheno, og_individuals_id = og_individuals)
+  og_pheno$og_individuals_id <- as.character(og_pheno$og_individuals_id)
   
-  if(is.null(alternate_eset_id)){
-    rownames_new_pheno <- new_pheno$og_individuals_id
-  } else {
+  if(complete_cases == TRUE){
     rownames_new_pheno <- rownames(og_pheno[og_individuals %in% new_individuals[common_individuals],])
+  } else{
+    stop('complete cases FALSE not implemented')
   }
   
   if(complete_cases == TRUE){
     new_pheno <- dplyr::right_join(og_pheno, new_pheno, by = c("og_individuals_id" = identifier))
-    assay_data <- Biobase::exprs(x)[,colnames(Biobase::exprs(x)) %in% new_individuals]
+    assay_data <- Biobase::exprs(x)[,colnames(Biobase::exprs(x)) %in% rownames_new_pheno]
   }
   else{
-    new_pheno <- dplyr::left_join(og_pheno, new_pheno, by = c("og_individuals_id" = identifier))
-    assay_data <- Biobase::exprs(x)
+    stop('complete cases FALSE not implemented')
+    # new_pheno <- dplyr::left_join(og_pheno, new_pheno, by = c("og_individuals_id" = identifier))
+    # assay_data <- Biobase::exprs(x)
   }
   
   rownames(new_pheno) <- rownames_new_pheno
