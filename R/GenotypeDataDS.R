@@ -53,6 +53,7 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
          paste(geno_id[!(geno_id %in% covars_id)], collapse = ", "))
   }
   covars <- covars[covars_id %in% geno_id,]
+  covars_id <- covars$scanID
   covars <- covars[match(geno_id, covars_id),]
   
   scanAnnot <- GWASTools::ScanAnnotationDataFrame(data.frame(covars))
