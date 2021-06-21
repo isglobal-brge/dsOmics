@@ -32,12 +32,12 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
   na_string <- unlist(list(...))
   
   # Decode hex variables (character at origin)
-  male_encoding <- try(rawToChar((wkb::hex2raw(male_encoding))), T)
-  female_encoding <- try(rawToChar((wkb::hex2raw(female_encoding))), T)
-  case_control_column <- try(rawToChar((wkb::hex2raw(case_control_column))), T)
-  case <- try(rawToChar((wkb::hex2raw(case))), T)
-  control <- try(rawToChar((wkb::hex2raw(control))), T)
-  na_string <- sapply(na_string, function(x){try(rawToChar((wkb::hex2raw(x))), T)})
+  male_encoding <- if(!is.null(male_encoding)){rawToChar((wkb::hex2raw(male_encoding)))}
+  female_encoding <- if(!is.null(female_encoding)){rawToChar((wkb::hex2raw(female_encoding)))}
+  case_control_column <- if(!is.null(case_control_column)){rawToChar((wkb::hex2raw(case_control_column)))}
+  case <- if(!is.null(case)){rawToChar((wkb::hex2raw(case)))}
+  control <- if(!is.null(control)){rawToChar((wkb::hex2raw(control)))}
+  na_string <- if(!is.null(na_string)){sapply(na_string, function(x){rawToChar((wkb::hex2raw(x)))})}
   
   names(covars)[columnId] <- "scanID"
   if(!is.null(sexId)){
