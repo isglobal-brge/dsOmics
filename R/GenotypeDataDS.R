@@ -14,12 +14,10 @@
 #' phenotype on the covars table
 #' @param female_encoding \code{character} (default \code{"female"}) String used to encode the female sex
 #' phenotype on the covars table
-#' @param case_control_column \code{character} (default \code{NULL}) Name of the column that holds the
+#' @param case_control_column \code{numeric} (default \code{NULL}) Column that holds the
 #' case/control to relevel to 0/1
 #' @param case \code{character} (default \code{NULL}) Encoding of the case of the \code{case_control_column}
 #' @param control \code{character} (default \code{NULL}) Encoding of the control of the \code{case_control_column}
-#' @param na_string \code{character vector} (default \code{NULL}) Encoding to be
-#' put to NA of the \code{case_control_column}
 #'
 #' @return ...
 #' @author Gonzalez, JR.
@@ -27,17 +25,13 @@
 #' @export
 
 GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_encoding,
-                           case_control_column, case, control, ...){
-  
-  na_string <- unlist(list(...))
+                           case_control_column, case, control){
   
   # Decode hex variables (character at origin)
   male_encoding <- if(!is.null(male_encoding)){rawToChar((wkb::hex2raw(male_encoding)))}
   female_encoding <- if(!is.null(female_encoding)){rawToChar((wkb::hex2raw(female_encoding)))}
-  case_control_column <- if(!is.null(case_control_column)){rawToChar((wkb::hex2raw(case_control_column)))}
   case <- if(!is.null(case)){rawToChar((wkb::hex2raw(case)))}
   control <- if(!is.null(control)){rawToChar((wkb::hex2raw(control)))}
-  na_string <- if(!is.null(na_string)){sapply(na_string, function(x){rawToChar((wkb::hex2raw(x)))})}
   
   names(covars)[columnId] <- "scanID"
   if(!is.null(sexId)){
@@ -51,9 +45,6 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
   if(!is.null(case_control_column)){
     covars[[case_control_column]][covars[[case_control_column]] %in% case] <- 1
     covars[[case_control_column]][covars[[case_control_column]] %in% control] <- 0
-    if(!is.null(na_string)){
-      covars[[case_control_column]][covars[[case_control_column]] %in% na_string] <- NA
-    }
     covars[[case_control_column]] <- as.numeric(covars[[case_control_column]])
   }
   covars_id <- covars$scanID
