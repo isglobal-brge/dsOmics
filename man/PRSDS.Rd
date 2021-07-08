@@ -4,7 +4,7 @@
 \alias{PRSDS}
 \title{Get Ploygenic Risk Score}
 \usage{
-PRSDS(resources, pgs_id, snp_threshold)
+PRSDS(resources, pgs_id, snp_threshold, ...)
 }
 \arguments{
 \item{resources}{\code{list} of all the VCF resources with biallelic genotype information. It is advised to 
@@ -16,12 +16,13 @@ Polygenic Score ID & Name from https://www.pgscatalog.org/browse/scores/}
 
 \item{snp_threshold}{\code{numeric} (default \code{80}) Threshold to drop individuals. See details for 
 further information.}
+
+\item{...}{Corresponds to the ROI table passed from the client. It is assembled if not NULL.}
 }
 \value{
 \code{data.frame} were the rownames are the individuals. The columns found are: \cr
 prs: Polygenic risk score per individual \cr
 prs_nw: Polygenic risk score without weights (weight 1 for each risk allele) \cr
-p_prs_nw: Risk probability using prs_nw and SNPassoc::pscore \cr
 n_snps: Number of SNPs with information for each individual
 }
 \description{

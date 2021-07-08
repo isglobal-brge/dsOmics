@@ -15,18 +15,35 @@
 #' Polygenic Score ID & Name from https://www.pgscatalog.org/browse/scores/
 #' @param snp_threshold \code{numeric} (default \code{80}) Threshold to drop individuals. See details for 
 #' further information.
+#' @param ... Corresponds to the ROI table passed from the client. It is assembled if not NULL.
 #'
 #' @return \code{data.frame} were the rownames are the individuals. The columns found are: \cr
 #' prs: Polygenic risk score per individual \cr
 #' prs_nw: Polygenic risk score without weights (weight 1 for each risk allele) \cr
-#' p_prs_nw: Risk probability using prs_nw and SNPassoc::pscore \cr
 #' n_snps: Number of SNPs with information for each individual
 #' @export
 #'
 
-PRSDS <- function(resources, pgs_id, snp_threshold){
-  # Get PGS data to later calculate genetic risk score
-  ROI <- .retrievePGS(pgs_id)
+PRSDS <- function(resources, pgs_id, snp_threshold, ...){
+  
+  ROI <- unlist(list(...))
+  
+  if(is.null(ROI)){
+    # Get PGS data to later calculate genetic risk score
+    ROI <- .retrievePGS(pgs_id)
+  } else{
+    ROI <- data.frame(matrix(ROI[1:(length(ROI)-1)], ncol = as.numeric(ROI[length(ROI)])))
+    if(ncol(ROI) == 5){
+      colnames(ROI) <- c("chr_name", "start", "end", "effect_allele", "effect_weight")
+      ROI$start <- as.numeric(ROI$start)
+      ROI$end <- as.numeric(ROI$end)
+      ROI$chr_name <- as.numeric(ROI$chr_name)
+      ROI$effect_weight <- as.numeric(ROI$effect_weight)
+    } else if(ncol(ROI) == 3){
+      colnames(ROI) <- c("rsID", "effect_allele", "effect_weight")
+      ROI$effect_weight <- as.numeric(ROI$effect_weight)
+    } else{stop()}
+  }
   # Get the found SNPs, positions and alleles and merge into data frame
   found_rs <- do.call(c,lapply(resources, function(x){
     GWASTools::getVariable(x, "snp.rs.id")
@@ -126,8 +143,9 @@ PRSDS <- function(resources, pgs_id, snp_threshold){
   prs[which(percentage_snps < snp_threshold)] <- NA
   # calculate PRS without weights
   prs_nw <- rowSums(geno)
-  # Calculate probability PRS without weights using SNPassoc
+  # TODO probability of prs_nw (snpassoc)
   p_prs_nw <- SNPassoc::pscore(prs_nw, colnames(geno))
+  # TODO devolver todo como una tabla mejor??
   return(data.frame(prs = prs, prs_nw = prs_nw, p_prs_nw = p_prs_nw, n_snps = n_snps))
 }
 

@@ -64,6 +64,9 @@ GDSFileResourceClient <- R6::R6Class(
               valid_chromosomes <- unlist(valid_chromosomes)
               # Create the g_range object using only the present chromosomes
               valid_indexes <- extra_args$seq %in% valid_chromosomes
+              if(!any(valid_indexes == TRUE)){
+                stop('No SNPs found on VCF')
+              }
               g_range <- GenomicRanges::GRanges(extra_args$seq[valid_indexes], 
                                                 IRanges::IRanges(extra_args$start.loc[valid_indexes], 
                                                                  extra_args$end.loc[valid_indexes]))
@@ -85,7 +88,7 @@ GDSFileResourceClient <- R6::R6Class(
               })
               isSNP <- function(x) {
                 grepl(paste(extra_args$snps, collapse = "|"), x)
-                }
+              }
               prefilters <- FilterRules(list(snp=isSNP))
               filtered_vcf <- filterVcf(path, "hg19", destination = tempfile(),
                         prefilters=prefilters, verbose=TRUE)
