@@ -122,16 +122,7 @@ PRSDS <- function(resources, snp_threshold, ...){
     }
   })
   rownames(geno) <- individuals
-  # If weight_type is present and is equal to "OR" or "HR", convert the effect_weight
-  # to log(effect_weight) to get the beta
-  # This is done row by row in case not all rows have the same weight_type
-  if(!is.null(gds_with_risks$weight_type)){
-    for(i in seq(1, nrow(gds_with_risks))){
-      if(c("OR", "HR") %in% gds_with_risks$weight_type[i]){
-        gds_with_risks$effect_weight[i] <- log(gds_with_risks$effect_weight[i])
-      }
-    }
-  }
+  
   # Calculate PRS
   prs <- geno %*% gds_with_risks$effect_weight
   # Remove individuals that have less than snp_threshold percentage_snps
