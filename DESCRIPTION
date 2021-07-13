@@ -24,7 +24,8 @@ Imports:
      edgeR,
      dplyr,
      readr,
-     wkb
+     wkb,
+     SNPassoc 
 License: MIT + file LICENSE
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
