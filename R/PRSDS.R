@@ -11,8 +11,6 @@
 #' @param resources \code{list} of all the VCF resources with biallelic genotype information. It is advised to 
 #' have one VCF resource per chromosome, a big VCF file with all the information is always slower 
 #' to use.
-#' @param pgs_id \code{character} ID of the PGS catalog to be used to calculate the polygenic risk score. 
-#' Polygenic Score ID & Name from https://www.pgscatalog.org/browse/scores/
 #' @param snp_threshold \code{numeric} (default \code{80}) Threshold to drop individuals. See details for 
 #' further information.
 #' @param ... Corresponds to the ROI table passed from the client. It is assembled if not NULL.
@@ -56,11 +54,16 @@ PRSDS <- function(resources, snp_threshold, ...){
   resource_name <- do.call(c,lapply(resources, function(x){
     GWASTools::getVariable(x, "snp.rs.id")
   }))
-  individuals <- if(do.call(identical, lapply(resources, function(x){
-    GWASTools::getVariable(x, "sample.id")}))){
-    GWASTools::getVariable(resources[[1]], "sample.id")} else {
-      stop('Different individuals among the provided resources')
-    }
+  if(length(resources) == 1){
+    individuals <- GWASTools::getVariable(resources[[1]], "sample.id")
+  } else {
+    individuals <- if(do.call(identical, lapply(resources, function(x){
+      GWASTools::getVariable(x, "sample.id")}))){
+      GWASTools::getVariable(resources[[1]], "sample.id")} else {
+        stop('Different individuals among the provided resources')
+      }
+  }
+  
   # Get GDS parameters
   gds_info <- data.frame(rsID = found_rs, 
                          start = found_positions, 
