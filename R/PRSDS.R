@@ -57,11 +57,10 @@ PRSDS <- function(resources, snp_threshold, ...){
   if(length(resources) == 1){
     individuals <- GWASTools::getVariable(resources[[1]], "sample.id")
   } else {
-    individuals <- if(do.call(identical, lapply(resources, function(x){
-      GWASTools::getVariable(x, "sample.id")}))){
-      GWASTools::getVariable(resources[[1]], "sample.id")} else {
-        stop('Different individuals among the provided resources')
-      }
+    individuals <- if(class(Reduce(function(x,y) if (identical(x,y)) x else FALSE, lapply(resources, function(x){
+      GWASTools::getVariable(x, "sample.id")}))) != "logical"){
+      GWASTools::getVariable(resources[[1]], "sample.id")
+    } else {stop('Different individuals among the provided resources')}
   }
   
   # Get GDS parameters
