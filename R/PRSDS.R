@@ -132,7 +132,11 @@ PRSDS <- function(resources, snp_threshold, ...){
   # calculate PRS without weights
   prs_nw <- rowSums(geno)
   # TODO probability of prs_nw (snpassoc)
-  p_prs_nw <- SNPassoc::pscore(prs_nw, colnames(geno))
+  p_prs_nw <- tryCatch({
+    SNPassoc::pscore(prs_nw, colnames(geno))
+  }, error = function(w){
+    "SNPassoc (>2.0-3) not available on the Opal"
+  })
   # TODO devolver todo como una tabla mejor??
   return(data.frame(prs = prs, prs_nw = prs_nw, p_prs_nw = p_prs_nw, n_snps = n_snps))
 }
