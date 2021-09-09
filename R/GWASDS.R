@@ -31,7 +31,10 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
                                    family = family, ...)
   genoIterator <- GWASTools::GenotypeBlockIterator(genoData, snpBlock=snpBlock)
   assoc <- GENESIS::assocTestSingle(genoIterator, null.model = nullmod)
-  assoc$rs<-GWASTools::getVariable(genoData, "snp.rs.id")[assoc$variant.id]
+  assoc$rs <- GWASTools::getVariable(genoData, "snp.rs.id")[assoc$variant.id]
+  alleles <- GWASTools::getVariable(genoData, "snp.allele")[assoc$variant.id] # ref/alt
+  assoc$reference_allele <- substring(alleles, 1, 1)
+  assoc$alternate_allele <- substring(alleles, 3, 3)
   ans <- assoc %>% as_tibble() %>%
     arrange(Score.pval) %>% select(variant.id, rs, everything()) %>% 
     select(!c("Score", "Score.SE", "Score.Stat", "PVE", "MAC")) %>%
