@@ -31,4 +31,5 @@ AssignMethods:
    createRSEDS,
    RNAseqPreprocDS,
    PRSDS,
-   PRSDS_aux
+   PRSDS_aux,
+   make_valid_column_namesDS
