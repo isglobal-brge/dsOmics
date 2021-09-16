@@ -4,14 +4,14 @@
 \alias{PRSDS_aux}
 \title{Title}
 \usage{
-PRSDS_aux(table, prs, id)
+PRSDS_aux(prs_results, prs_results_name, table, id)
 }
 \arguments{
 \item{table}{}
 
-\item{prs}{}
-
 \item{id}{}
+
+\item{prs}{}
 }
 \value{
 
