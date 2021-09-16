@@ -137,6 +137,32 @@ PRSDS <- function(resources, snp_threshold, ...){
   }, error = function(w){
     "SNPassoc (>2.0-3) not available on the Opal"
   })
+
   # TODO devolver todo como una tabla mejor??
   return(data.frame(prs = prs, prs_nw = prs_nw, p_prs_nw = p_prs_nw, n_snps = n_snps))
 }
+
+#' Title
+#'
+#' @param table 
+#' @param prs 
+#' @param id 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+PRSDS_aux <- function(prs_results, prs_results_name, table, id){
+  prs_results <- prs_results %>% 
+    select(prs, prs_nw) %>% 
+    rename(!!paste0('prs_', prs_results_name) := prs, 
+           !!paste0('prs_nw_', prs_results_name) := prs_nw)
+  return(merge(table, prs_results,
+        by.x = colnames(table)[51], by.y = "row.names")[,union(names(table), names(prs_results))])
+}
+
+
+
+
+
+

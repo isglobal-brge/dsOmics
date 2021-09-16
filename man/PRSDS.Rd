@@ -4,15 +4,12 @@
 \alias{PRSDS}
 \title{Get Ploygenic Risk Score}
 \usage{
-PRSDS(resources, pgs_id, snp_threshold, ...)
+PRSDS(resources, snp_threshold, ...)
 }
 \arguments{
 \item{resources}{\code{list} of all the VCF resources with biallelic genotype information. It is advised to 
 have one VCF resource per chromosome, a big VCF file with all the information is always slower 
 to use.}
-
-\item{pgs_id}{\code{character} ID of the PGS catalog to be used to calculate the polygenic risk score. 
-Polygenic Score ID & Name from https://www.pgscatalog.org/browse/scores/}
 
 \item{snp_threshold}{\code{numeric} (default \code{80}) Threshold to drop individuals. See details for 
 further information.}

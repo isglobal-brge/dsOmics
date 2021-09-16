@@ -19,7 +19,6 @@ AggregateMethods:
    snptestDS,
    genoDimensionsDS,
    plotPCASNPSDS,
-   PRSDS,
    c=base::c
 AssignMethods:
    selFeatureDS,
@@ -30,4 +29,6 @@ AssignMethods:
    addPhenoDataDS,
    removeOutliersDS,
    createRSEDS,
-   RNAseqPreprocDS
+   RNAseqPreprocDS,
+   PRSDS,
+   PRSDS_aux
