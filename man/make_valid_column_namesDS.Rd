@@ -2,16 +2,16 @@
 % Please edit documentation in R/make_valid_column_namesDS.R
 \name{make_valid_column_namesDS}
 \alias{make_valid_column_namesDS}
-\title{Title}
+\title{Rename column names}
 \usage{
 make_valid_column_namesDS(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{data.frame} Table to change the column names}
 }
 \value{
-
+\code{data.frame} with the column names updated
 }
 \description{
-Title
+Passes the column names through \code{make.names} and rewrites them
 }

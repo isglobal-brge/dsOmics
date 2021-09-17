@@ -1,8 +1,9 @@
-#' Title
+#' @title Rename column names
+#' @description Passes the column names through \code{make.names} and rewrites them
 #'
-#' @param x 
+#' @param x \code{data.frame} Table to change the column names
 #'
-#' @return
+#' @return \code{data.frame} with the column names updated
 #' @export
 #'
 #' @examples
