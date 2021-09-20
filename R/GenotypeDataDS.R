@@ -8,13 +8,13 @@
 #' obtained in the opal servers
 #' from a resource of type VCF2GDS
 #' @param covars a data.frame or a tibble having the metadata of samples (i.e. phenotypes and/or covariates)
-#' @param columnId \code{numeric} Column of the covars that contains the IDs
-#' @param sexId \code{numeric} (default \code{NULL}) Column of the covars that contains the sex phenotype
+#' @param columnId \code{character} Column of the covars that contains the IDs
+#' @param sexId \code{character} (default \code{NULL}) Column of the covars that contains the sex phenotype
 #' @param male_encoding \code{character} (default \code{"male"}) String used to encode the male sex
 #' phenotype on the covars table
 #' @param female_encoding \code{character} (default \code{"female"}) String used to encode the female sex
 #' phenotype on the covars table
-#' @param case_control_column \code{numeric} (default \code{NULL}) Column that holds the
+#' @param case_control_column \code{character} (default \code{NULL}) Column that holds the
 #' case/control to relevel to 0/1
 #' @param case \code{character} (default \code{NULL}) Encoding of the case of the \code{case_control_column}
 #' @param control \code{character} (default \code{NULL}) Encoding of the control of the \code{case_control_column}
@@ -26,12 +26,15 @@
 
 GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_encoding,
                            case_control_column, case, control){
-  
   # Decode hex variables (character at origin)
   male_encoding <- if(!is.null(male_encoding)){rawToChar((wkb::hex2raw(male_encoding)))}
   female_encoding <- if(!is.null(female_encoding)){rawToChar((wkb::hex2raw(female_encoding)))}
   case <- if(!is.null(case)){rawToChar((wkb::hex2raw(case)))}
   control <- if(!is.null(control)){rawToChar((wkb::hex2raw(control)))}
+  columnId <- which(names(covars) == rawToChar((wkb::hex2raw(columnId))))
+  sexId <- if(!is.null(sexId)){which(names(covars) == rawToChar((wkb::hex2raw(sexId))))}
+  case_control_column <- if(!is.null(case_control_column)){
+    which(names(covars) == rawToChar((wkb::hex2raw(case_control_column))))}
   
   names(covars)[columnId] <- "scanID"
   if(!is.null(sexId)){
