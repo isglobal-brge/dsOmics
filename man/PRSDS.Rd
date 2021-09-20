@@ -14,7 +14,7 @@ to use.}
 \item{snp_threshold}{\code{numeric} (default \code{80}) Threshold to drop individuals. See details for 
 further information.}
 
-\item{...}{Corresponds to the ROI table passed from the client. It is assembled if not NULL.}
+\item{...}{Corresponds to the prs_table table passed from the client. It is assembled if not NULL.}
 }
 \value{
 \code{data.frame} were the rownames are the individuals. The columns found are: \cr

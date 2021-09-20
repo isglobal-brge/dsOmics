@@ -13,7 +13,7 @@
 #' to use.
 #' @param snp_threshold \code{numeric} (default \code{80}) Threshold to drop individuals. See details for 
 #' further information.
-#' @param ... Corresponds to the ROI table passed from the client. It is assembled if not NULL.
+#' @param ... Corresponds to the prs_table table passed from the client. It is assembled if not NULL.
 #'
 #' @return \code{data.frame} were the rownames are the individuals. The columns found are: \cr
 #' prs: Polygenic risk score per individual \cr
@@ -24,17 +24,17 @@
 
 PRSDS <- function(resources, snp_threshold, ...){
   
-  ROI <- unlist(list(...))
-  ROI <- data.frame(matrix(ROI[1:(length(ROI)-1)], ncol = as.numeric(ROI[length(ROI)])))
-  if(ncol(ROI) == 5){
-    colnames(ROI) <- c("chr_name", "start", "end", "effect_allele", "effect_weight")
-    ROI$start <- as.numeric(ROI$start)
-    ROI$end <- as.numeric(ROI$end)
-    ROI$chr_name <- as.numeric(ROI$chr_name)
-    ROI$effect_weight <- as.numeric(ROI$effect_weight)
-  } else if(ncol(ROI) == 3){
-    colnames(ROI) <- c("rsID", "effect_allele", "effect_weight")
-    ROI$effect_weight <- as.numeric(ROI$effect_weight)
+  prs_table <- unlist(list(...))
+  prs_table <- data.frame(matrix(prs_table[1:(length(prs_table)-1)], ncol = as.numeric(prs_table[length(prs_table)])))
+  if(ncol(prs_table) == 5){
+    colnames(prs_table) <- c("chr_name", "start", "end", "effect_allele", "effect_weight")
+    prs_table$start <- as.numeric(prs_table$start)
+    prs_table$end <- as.numeric(prs_table$end)
+    prs_table$chr_name <- as.numeric(prs_table$chr_name)
+    prs_table$effect_weight <- as.numeric(prs_table$effect_weight)
+  } else if(ncol(prs_table) == 3){
+    colnames(prs_table) <- c("rsID", "effect_allele", "effect_weight")
+    prs_table$effect_weight <- as.numeric(prs_table$effect_weight)
   } else{stop()}
   
   # Get the found SNPs, positions and alleles and merge into data frame
@@ -69,10 +69,10 @@ PRSDS <- function(resources, snp_threshold, ...){
                          reference_allele = do.call(c, lapply(found_alleles, function(x){substr(x, 1, 1)})), 
                          alternate_allele = do.call(c, lapply(found_alleles, function(x){substr(x, 3, 3)})),
                          resource_name = resource_name)
-  if(colnames(ROI) == "rsID"){
-    gds_with_risks <- dplyr::left_join(gds_info, ROI, by = "rsID")
+  if(colnames(prs_table) == "rsID"){
+    gds_with_risks <- dplyr::left_join(gds_info, prs_table, by = "rsID")
   } else {
-    gds_with_risks <- dplyr::left_join(gds_info, ROI, by = "start")
+    gds_with_risks <- dplyr::left_join(gds_info, prs_table, by = "start")
   }
   # Detect if effect_allele is on the reference_allele or alternate_allele (or none)
   #   'inverse' means that the reference_allele of the vcf is the effect_allele (risk allele)
@@ -95,7 +95,7 @@ PRSDS <- function(resources, snp_threshold, ...){
   })))
   colnames(geno) <- found_rs
   # Get the percentage of SNPs available for every individual (where 100% is all the SNPs found
-  # on the VCFs, not all the SNPs proposed by the ROI)
+  # on the VCFs, not all the SNPs proposed by the prs_table)
   # Also get the n_snps to return with the PRS results
   percentage_snps <- NULL
   n_snps <- NULL
@@ -142,16 +142,8 @@ PRSDS <- function(resources, snp_threshold, ...){
   return(data.frame(prs = prs, prs_nw = prs_nw, p_prs_nw = p_prs_nw, n_snps = n_snps))
 }
 
-#' Title
-#'
-#' @param table 
-#' @param prs 
-#' @param id 
-#'
-#' @return
+#' @title Auxiliary function to merge the PRS results to a table by ID
 #' @export
-#'
-#' @examples
 PRSDS_aux <- function(prs_results, prs_results_name, table, id){
   prs_results <- prs_results %>% 
     select(prs, prs_nw) %>% 

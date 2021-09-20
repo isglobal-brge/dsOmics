@@ -2,20 +2,10 @@
 % Please edit documentation in R/PRSDS.R
 \name{PRSDS_aux}
 \alias{PRSDS_aux}
-\title{Title}
+\title{Auxiliary function to merge the PRS results to a table by ID}
 \usage{
 PRSDS_aux(prs_results, prs_results_name, table, id)
 }
-\arguments{
-\item{table}{}
-
-\item{id}{}
-
-\item{prs}{}
-}
-\value{
-
-}
 \description{
-Title
+Auxiliary function to merge the PRS results to a table by ID
 }
