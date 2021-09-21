@@ -148,7 +148,7 @@ PRSDS_aux <- function(prs_results, prs_results_name, table, id){
   prs_results <- prs_results %>% 
     select(prs, prs_nw, n_snps) %>% 
     rename(!!paste0('prs_', prs_results_name) := prs, 
-           !!paste0('prs_nw_', prs_results_name) := prs_nw)
+           !!paste0('prs_nw_', prs_results_name) := prs_nw,
            !!paste0('n_snps_', prs_results_name) := n_snps)
   return(merge(table, prs_results,
         by.x = colnames(table)[which(names(table) == id)], by.y = "row.names")[,union(names(table), names(prs_results))])
