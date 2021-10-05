@@ -32,4 +32,4 @@ AssignMethods:
    RNAseqPreprocDS,
    PRSDS,
    PRSDS_aux,
-   make_valid_column_namesDS
+   make_valid_namesDS
