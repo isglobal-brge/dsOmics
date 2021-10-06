@@ -13,6 +13,6 @@
 make_valid_namesDS <- function(x){
   x <- eval(parse(text=x), envir = parent.frame())
   colnames(x) <- make.names(colnames(x))
-  x <- x %>% mutate(across(where(is.character), make.names))
+  x <- x %>% rowwise() %>% mutate(across(where(is.character), ~ if(!is.na(.x)){make.names(.x)}else{NA}))
   return(x)
 }
