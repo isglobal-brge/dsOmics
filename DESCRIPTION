@@ -26,7 +26,8 @@ Imports:
      dplyr,
      readr,
      wkb,
-     Rcpp (>= 1.0.7)
+     Rcpp (>= 1.0.7),
+     dummies
 License: MIT + file LICENSE
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true

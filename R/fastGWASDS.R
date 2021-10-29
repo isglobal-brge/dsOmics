@@ -45,15 +45,22 @@ replace.NA <- function(x, replacement , byRow = TRUE){ # Extracted from the MCRe
 #' @export
 #'
 #' @examples
-fastGWAS_getFitted.values <- function(x, mod_names, output_family, ...){
+fastGWAS_getFitted.values <- function(x, covars, mod_names, output_family, ...){
   # TODO ara aixo nomes funcione per una variable objectiu i una covariable,
   # ha de poder funcionar amb N covariables i sense covariables!
   # TODO tambe ha de funcionar per gaussian i binomial1!!!!!
+  
+  # Check with variables are to be recoded into dummies
+  covars_to_recode <- covars[!(covars %in% mod_names)]
+  
+  # Recode dummies
+  x_dummies <- dummies::dummy.data.frame(x, names = covars_to_recode, sep = "")
+  
   mod_values <- as.numeric(unlist(list(...)))
   if(output_family == "gaussian"){
-    fitted.values <- .fittedValues_linear(mod_values, mod_names, x)
+    fitted.values <- .fittedValues_linear(mod_values, mod_names, x_dummies)
   } else if (output_family == "binomial") {
-    fitted.values <- .fittedValues_exponential(mod_values, mod_names, x)
+    fitted.values <- .fittedValues_exponential(mod_values, mod_names, x_dummies)
   } else {
     stop()
   }
