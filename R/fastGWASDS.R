@@ -232,46 +232,52 @@ fastGWAS_ColSums <- function(table1, table2, type, means = NULL, pheno = NULL, g
     ids <- pheno$scanID
     sample.index <- which(getScanID(geno[[1]]) %in% ids)
     
-    n.cores <- parallel::detectCores() - 1
-    my.cluster <- parallel::makeCluster(
-      n.cores, 
-      type = "PSOCK"
-    )
-    doParallel::registerDoParallel(cl = my.cluster)
-    foreach::getDoParRegistered()
-    foreach::getDoParWorkers()
-
-    results <- Reduce(c, parLapply(my.cluster, geno, function(i){
-      node <- GWASTools::GdsGenotypeReader(i@data@filename, allow.fork = TRUE)
-      
-      geno_data <- t(replace.NA(GWASTools::getGenotype(node)[,sample.index], means, F))
-      
-      crossprod <- Rfast::colsums(table1 * geno_data)
-      sums <- Rfast::colsums(geno_data)
-      squared_sums <- Rfast::colsums(geno_data ^ 2)
-      
-      return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
-    }))
-    
-    stopCluster(my.cluster)
-    
-    #   results2 <- Reduce(c, lapply(geno, function(x){
-    #   GWASTools::resetIterator(x)
-    #   # genoData_temp <- t(as.tibble(getGenotypeSelection(x, scan=sample.index, order="selection")) %>% replace_na(as.list(means)))
-    #   genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
-    #   crossprod <- Rfast::colsums(table1 * genoData_temp)
-    #   sums <- Rfast::colsums(genoData_temp)
-    #   squared_sums <- Rfast::colsums(genoData_temp ^ 2)
+    # n.cores <- parallel::detectCores() - 1
+    # my.cluster <- parallel::makeCluster(
+    #   n.cores, 
+    #   type = "PSOCK"
+    # )
+    # doParallel::registerDoParallel(cl = my.cluster)
+    # foreach::getDoParRegistered()
+    # foreach::getDoParWorkers()
     # 
-    #   while(GWASTools::iterateFilter(x)){
-    #     genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
-    #     crossprod <- c(crossprod, Rfast::colsums(table1 * genoData_temp))
-    #     sums <- c(sums, Rfast::colsums(genoData_temp))
-    #     squared_sums <- c(squared_sums, Rfast::colsums(genoData_temp ^ 2))
-    #   }
-    # 
+    # results <- Reduce(c, parLapply(my.cluster, geno, function(i){
+    #   node <- GWASTools::GdsGenotypeReader(i@data@filename, allow.fork = TRUE)
+    #   
+    #   geno_data <- t(replace.NA(GWASTools::getGenotype(node)[,sample.index], means, F))
+    #   
+    #   crossprod <- Rfast::colsums(table1 * geno_data)
+    #   sums <- Rfast::colsums(geno_data)
+    #   squared_sums <- Rfast::colsums(geno_data ^ 2)
+    #   
     #   return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
     # }))
+    # 
+    # stopCluster(my.cluster)
+    
+      results2 <- Reduce(c, lapply(geno, function(x){
+      GWASTools::resetIterator(x)
+      # genoData_temp <- t(as.tibble(getGenotypeSelection(x, scan=sample.index, order="selection")) %>% replace_na(as.list(means)))
+      genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
+      # crossprod <- Rfast::colsums(table1 * genoData_temp)
+      crossprod <- colSums(table1 * genoData_temp)
+      # sums <- Rfast::colsums(genoData_temp)
+      sums <- colSums(genoData_temp)
+      # squared_sums <- Rfast::colsums(genoData_temp ^ 2)
+      squared_sums <- colSums(genoData_temp ^ 2)
+
+      while(GWASTools::iterateFilter(x)){
+        genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
+        # crossprod <- c(crossprod, Rfast::colsums(table1 * genoData_temp))
+        crossprod <- c(crossprod, colSums(table1 * genoData_temp))
+        # sums <- c(sums, Rfast::colsums(genoData_temp))
+        sums <- c(sums, colSums(genoData_temp))
+        # squared_sums <- c(squared_sums, Rfast::colsums(genoData_temp ^ 2))
+        squared_sums <- c(squared_sums, colSums(genoData_temp ^ 2))
+      }
+
+      return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
+    }))
         
     results_combined <- tapply(unlist(results, use.names = FALSE), rep(names(results), lengths(results)), FUN = c)
     return(results_combined)
