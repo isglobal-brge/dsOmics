@@ -45,18 +45,16 @@ replace.NA <- function(x, replacement , byRow = TRUE){ # Extracted from the MCRe
 #' @export
 #'
 #' @examples
-fastGWAS_getFitted.values <- function(x, output_family, ...){
+fastGWAS_getFitted.values <- function(x, mod_names, output_family, ...){
   # TODO ara aixo nomes funcione per una variable objectiu i una covariable,
   # ha de poder funcionar amb N covariables i sense covariables!
   # TODO tambe ha de funcionar per gaussian i binomial1!!!!!
-  input <- unlist(list(...))
-  mod_values <- as.numeric(input[which(!is.na(as.numeric(input)))])
-  mod_values_names <- input[which(is.na(as.numeric(input)))]
+  mod_values <- unlist(list(...))
   
   if(output_family == "gaussian"){
-    fitted.values <- .fittedValues_linear(mod_values, mod_values_names, x)
+    fitted.values <- .fittedValues_linear(mod_values, mod_names, x)
   } else if (output_family == "binomial") {
-    fitted.values <- .fittedValues_exponential(mod_values, mod_values_names, x)
+    fitted.values <- .fittedValues_exponential(mod_values, mod_names, x)
   } else {
     stop()
   }
