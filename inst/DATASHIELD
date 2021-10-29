@@ -19,7 +19,8 @@ AggregateMethods:
    snptestDS,
    genoDimensionsDS,
    plotPCASNPSDS,
-   c=base::c
+   c=base::c,
+   fastGWAS_ColSums
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
@@ -32,4 +33,9 @@ AssignMethods:
    RNAseqPreprocDS,
    PRSDS,
    PRSDS_aux,
-   make_valid_namesDS
+   make_valid_namesDS,
+   fastGWAS_S,
+   fastGWAS_getFitted.values,
+   fastGWAS_getResiduals,
+   fastGWAS_PHENO_removeNAindiv,
+   fastGWAS_S_impute
