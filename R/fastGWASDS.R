@@ -49,7 +49,7 @@ fastGWAS_getFitted.values <- function(x, mod_names, output_family, ...){
   # TODO ara aixo nomes funcione per una variable objectiu i una covariable,
   # ha de poder funcionar amb N covariables i sense covariables!
   # TODO tambe ha de funcionar per gaussian i binomial1!!!!!
-  mod_values <- unlist(list(...))
+  mod_values <- as.numeric(unlist(list(...)))
   
   if(output_family == "gaussian"){
     fitted.values <- .fittedValues_linear(mod_values, mod_names, x)
