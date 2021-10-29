@@ -255,7 +255,7 @@ fastGWAS_ColSums <- function(table1, table2, type, means = NULL, pheno = NULL, g
     # 
     # stopCluster(my.cluster)
     
-      results2 <- Reduce(c, lapply(geno, function(x){
+      results <- Reduce(c, lapply(geno, function(x){
       GWASTools::resetIterator(x)
       # genoData_temp <- t(as.tibble(getGenotypeSelection(x, scan=sample.index, order="selection")) %>% replace_na(as.list(means)))
       genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
