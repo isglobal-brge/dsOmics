@@ -2,16 +2,20 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{fastGWAS_S}
 \alias{fastGWAS_S}
-\title{Title}
+\title{Extract Geno iterator and Pheno information from GenotypeData GDS containers}
 \usage{
-fastGWAS_S(genoData, type, snpBlock = NULL)
+fastGWAS_S(genoData, type, snpBlock)
 }
 \arguments{
-\item{genoData}{}
+\item{genoData}{\code{GenotypeData}}
+
+\item{type}{}
+
+\item{snpBlock}{}
 }
 \value{
 
 }
 \description{
-Title
+Extract Geno iterator and Pheno information from GenotypeData GDS containers
 }
