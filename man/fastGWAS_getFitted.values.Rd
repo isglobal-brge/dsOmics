@@ -4,7 +4,7 @@
 \alias{fastGWAS_getFitted.values}
 \title{Title}
 \usage{
-fastGWAS_getFitted.values(x, output_family, ...)
+fastGWAS_getFitted.values(x, covars, mod_names, output_family, ...)
 }
 \arguments{
 \item{x}{}

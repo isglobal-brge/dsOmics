@@ -38,4 +38,4 @@ AssignMethods:
    fastGWAS_getFitted.values,
    fastGWAS_getResiduals,
    fastGWAS_PHENO_removeNAindiv,
-   fastGWAS_S_impute
+   fastGWAS_S_means

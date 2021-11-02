@@ -4,7 +4,7 @@
 \alias{fastGWAS_ColSums}
 \title{Title}
 \usage{
-fastGWAS_ColSums(table1, table2, type, means = NULL, pheno = NULL, geno = NULL)
+fastGWAS_ColSums(table1, type, means = NULL, pheno = NULL, geno = NULL)
 }
 \value{
 
