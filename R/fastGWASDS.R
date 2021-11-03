@@ -201,7 +201,6 @@ fastGWAS_ColSums <- function(table1, type, do.par = FALSE, n.cores = NULL, means
     
     if(do.par){
       if(is.null(n.cores)){n.cores <- parallel::detectCores() - 1}
-      print(n.cores)
       results <- Reduce(c, parallel::mclapply(geno, function(x){
         GWASTools::resetIterator(x)
         genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
