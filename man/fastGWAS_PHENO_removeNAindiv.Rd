@@ -2,20 +2,20 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{fastGWAS_PHENO_removeNAindiv}
 \alias{fastGWAS_PHENO_removeNAindiv}
-\title{Title}
+\title{Remove individuals from the phenotype that have NAs on any of the objective variable or covars}
 \usage{
 fastGWAS_PHENO_removeNAindiv(pheno, objective, covars)
 }
 \arguments{
-\item{pheno}{}
+\item{pheno}{\code{PhenoInfoTable} to which remove individuals}
 
-\item{objective}{}
+\item{objective}{\code{character} Objective variable}
 
-\item{covars}{}
+\item{covars}{\code{character vector} Covariables}
 }
 \value{
-
+\code{PhenoInfoTable} with individuals trimmed
 }
 \description{
-Title
+Remove individuals from the phenotype that have NAs on any of the objective variable or covars
 }

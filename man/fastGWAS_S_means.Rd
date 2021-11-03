@@ -2,18 +2,18 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{fastGWAS_S_means}
 \alias{fastGWAS_S_means}
-\title{Title}
+\title{Get mean of the genotype by individual}
 \usage{
 fastGWAS_S_means(geno, pheno)
 }
 \arguments{
-\item{geno}{}
+\item{geno}{\code{GenotypeBlockIterator} Genotype information}
 
-\item{pheno}{}
+\item{pheno}{\code{PhenoInfoTable} Phenotype information}
 }
 \value{
-
+\code{named numeric vector} with the means by individual. The names are the individual IDs
 }
 \description{
-Title
+Get mean of the genotype by individual
 }

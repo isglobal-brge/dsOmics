@@ -2,20 +2,25 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{fastGWAS_getFitted.values}
 \alias{fastGWAS_getFitted.values}
-\title{Title}
+\title{Obtain fitted values given coefficients, family and values table}
 \usage{
-fastGWAS_getFitted.values(x, covars, mod_names, output_family, ...)
+fastGWAS_getFitted.values(x, covars, mod_names, output_family, mod_values)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{PhenoInfoTable} Pheno data to get the fitted values from}
 
-\item{...}{}
+\item{covars}{\code{character vector} Covariables}
 
-\item{y}{}
+\item{mod_names}{\code{character vector} Names of the mod_values}
+
+\item{output_family}{\code{character} A description of the generalized linear model used. "binomial" is defined
+for case/control studies. Quantitative traits can be analyzed by using "gaussian"}
+
+\item{mod_values}{\code{numeric vector} Values of model 0}
 }
 \value{
-
+\code{numeric vector} of fitted values
 }
 \description{
-Title
+Obtain fitted values given coefficients, family and values table
 }

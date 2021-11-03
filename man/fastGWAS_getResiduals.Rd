@@ -2,20 +2,23 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{fastGWAS_getResiduals}
 \alias{fastGWAS_getResiduals}
-\title{Title}
+\title{Obtain residual values given fitted values, family and objective variable}
 \usage{
 fastGWAS_getResiduals(x, fitted.values, objective_variable, output_family)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{PhenoInfoTable} Pheno data to get the fitted values from}
 
-\item{y}{}
+\item{fitted.values}{\code{numeric vector} Fitted values}
 
-\item{...}{}
+\item{objective_variable}{\code{character} Objective variable}
+
+\item{output_family}{\code{character} A description of the generalized linear model used. "binomial" is defined
+for case/control studies. Quantitative traits can be analyzed by using "gaussian"}
 }
 \value{
-
+\code{numeric vectors} of residual values
 }
 \description{
-Title
+Obtain residual values given fitted values, family and objective variable
 }

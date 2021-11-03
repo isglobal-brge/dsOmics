@@ -36,8 +36,9 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
   assoc$reference_allele <- substring(alleles, 1, 1)
   assoc$alternate_allele <- substring(alleles, 3, 3)
   ans <- assoc %>% as_tibble() %>%
-    arrange(Score.pval) %>% select(variant.id, rs, everything()) %>% 
+    select(variant.id, rs, everything()) %>% 
     select(!c("Score", "Score.SE", "Score.Stat", "PVE", "MAC")) %>%
-    dplyr::rename(p.value=Score.pval) %>% select(!c("variant.id"))
+    dplyr::rename(p.value=Score.pval) %>% select(!c("variant.id")) %>%
+    arrange(p.value)
   return(ans)
 }

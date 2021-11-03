@@ -7,14 +7,18 @@
 fastGWAS_S(genoData, type, snpBlock)
 }
 \arguments{
-\item{genoData}{\code{GenotypeData}}
+\item{genoData}{\code{GenotypeData / vector of GenotypeData} container for storing genotype data
+from a GWAS toghether with the metadata associated with the subjects (i.e. phenotypes and/or covariates)}
 
-\item{type}{}
+\item{type}{\code{character} What to extract from the genoData, the GenoBlockIterators [geno] 
+or the phenotypes [pheno]}
 
-\item{snpBlock}{}
+\item{snpBlock}{\code{numeric} Block size for dividing the genotype data, it equals to the 
+number of SNPs used on each iteration, depending on the servers RAM it may perform faster using lower or greater 
+block sizes, do some testing to assess it.}
 }
 \value{
-
+\code{PhenoInfoTable} or \code{GenotypeBlockIterator}
 }
 \description{
 Extract Geno iterator and Pheno information from GenotypeData GDS containers

@@ -2,22 +2,10 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{.fittedValues_linear}
 \alias{.fittedValues_linear}
-\title{Title}
+\title{Fit values for linear model}
 \usage{
 .fittedValues_linear(mod_values, mod_values_names, x)
 }
-\arguments{
-\item{mod_values}{}
-
-\item{mod_values_names}{}
-
-\item{x}{}
-
-\item{intercept}{}
-}
-\value{
-
-}
 \description{
-Title
+Internal function
 }

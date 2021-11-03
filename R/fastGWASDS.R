@@ -1,13 +1,17 @@
 #' @title Extract Geno iterator and Pheno information from GenotypeData GDS containers
 #'
-#' @param genoData \code{GenotypeData}
-#' @param type 
-#' @param snpBlock 
+#' @param genoData \code{GenotypeData / vector of GenotypeData} container for storing genotype data
+#' from a GWAS toghether with the metadata associated with the subjects (i.e. phenotypes and/or covariates)
+#' @param type \code{character} What to extract from the genoData, the GenoBlockIterators [geno] 
+#' or the phenotypes [pheno]
+#' @param snpBlock \code{numeric} Block size for dividing the genotype data, it equals to the 
+#' number of SNPs used on each iteration, depending on the servers RAM it may perform faster using lower or greater 
+#' block sizes, do some testing to assess it.
 #'
-#' @return
+#' @return \code{PhenoInfoTable} or \code{GenotypeBlockIterator}
 #' @export
 #'
-#' @examples
+
 fastGWAS_S <- function(genoData, type, snpBlock){
   if(type == "geno"){
     geno <- lapply(genoData, function(x){
@@ -32,31 +36,39 @@ fastGWAS_S <- function(genoData, type, snpBlock){
   }
 }
 
-#' Title
+#' @title Remove individuals from the phenotype that have NAs on any of the objective variable or covars
 #'
-#' @param pheno 
-#' @param objective 
-#' @param covars 
+#' @param pheno \code{PhenoInfoTable} to which remove individuals
+#' @param objective \code{character} Objective variable
+#' @param covars \code{character vector} Covariables
 #'
-#' @return
+#' @return \code{PhenoInfoTable} with individuals trimmed
 #' @export
 #'
-#' @examples
+
 fastGWAS_PHENO_removeNAindiv <- function(pheno, objective, covars){
-  # TODO ficar un inherits o algo aixi per assegurarnos que el pheno es de classe PhenoInfoTable
+  if(!inherits(pheno, "PhenoInfoTable")){
+    stop('[pheno] argument shoud be of class "PhenoInfoTable", generated using dsOmics::fastGWAS_S')
+  }
   return(pheno[complete.cases(pheno[, c(objective, covars)]), c(objective, covars, "scanID")])
 }
 
-#' Title
+#' @title Get mean of the genotype by individual
 #'
-#' @param geno 
-#' @param pheno 
+#' @param geno \code{GenotypeBlockIterator} Genotype information
+#' @param pheno \code{PhenoInfoTable} Phenotype information
 #'
-#' @return
+#' @return \code{named numeric vector} with the means by individual. The names are the individual IDs
 #' @export
 #'
-#' @examples
+
 fastGWAS_S_means <- function(geno, pheno){
+  if(!all(unlist(lapply(geno, function(x){inherits(x, "GenotypeBlockIterator")})))){
+    stop('[geno] argument shoud be of class "GenotypeBlockIterator", generated using dsOmics::fastGWAS_S')
+  }
+  if(!inherits(pheno, "PhenoInfoTable")){
+    stop('[pheno] argument shoud be of class "PhenoInfoTable", generated using dsOmics::fastGWAS_S')
+  }
   ids <- pheno$scanID
   sample.index <- which(getScanID(geno[[1]]) %in% ids)
   results <- Reduce(cbind, lapply(geno, function(x){
@@ -76,28 +88,29 @@ fastGWAS_S_means <- function(geno, pheno){
   return(output)
 }
 
-#' Title
+#' @title Obtain fitted values given coefficients, family and values table
 #'
-#' @param x 
-#' @param y 
-#' @param ... 
+#' @param x \code{PhenoInfoTable} Pheno data to get the fitted values from
+#' @param covars \code{character vector} Covariables
+#' @param mod_names \code{character vector} Names of the mod_values
+#' @param output_family \code{character} A description of the generalized linear model used. "binomial" is defined
+#' for case/control studies. Quantitative traits can be analyzed by using "gaussian"
+#' @param mod_values \code{numeric vector} Values of model 0
 #'
-#' @return
+#' @return \code{numeric vector} of fitted values
 #' @export
 #'
-#' @examples
-fastGWAS_getFitted.values <- function(x, covars, mod_names, output_family, ...){
-  # TODO ara aixo nomes funcione per una variable objectiu i una covariable,
-  # ha de poder funcionar amb N covariables i sense covariables!
-  # TODO tambe ha de funcionar per gaussian i binomial1!!!!!
-  
+
+fastGWAS_getFitted.values <- function(x, covars, mod_names, output_family, mod_values){
+  if(!inherits(x, "PhenoInfoTable")){
+    stop('[x] argument shoud be of class "PhenoInfoTable", generated using dsOmics::fastGWAS_S')
+  }
   # Check with variables are to be recoded into dummies
   covars_to_recode <- covars[!(covars %in% mod_names)]
   
   # Recode dummies
   x_dummies <- dummies::dummy.data.frame(x, names = covars_to_recode, sep = "")
   
-  mod_values <- as.numeric(unlist(list(...)))
   if(output_family == "gaussian"){
     fitted.values <- .fittedValues_linear(mod_values, mod_names, x_dummies)
   } else if (output_family == "binomial") {
@@ -108,33 +121,17 @@ fastGWAS_getFitted.values <- function(x, covars, mod_names, output_family, ...){
   return(unlist(fitted.values))
 }
 
-#' Title
-#'
-#' @param mod_values 
-#' @param mod_values_names 
-#' @param x 
-#' @param intercept 
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @title Fit values for linear model
+#' @description Internal function
+
 .fittedValues_linear <- function(mod_values, mod_values_names, x){
   fitted.values <- mod_values[1] + Reduce("+", lapply(1:length(mod_values[-1]), function(i){
     mod_values[-1][i]*x[mod_values_names[i]]}))
 }
 
-#' Title
-#'
-#' @param mod_values 
-#' @param mod_values_names 
-#' @param x 
-#' @param intercept 
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @title Fit values for binomial model
+#' @description Internal function
+
 .fittedValues_exponential <- function(mod_values, mod_values_names, x){
   fitted.values <- (exp(mod_values[1] + 
                           Reduce("+",lapply(1:length(mod_values[-1]), function(i){
@@ -144,17 +141,22 @@ fastGWAS_getFitted.values <- function(x, covars, mod_names, output_family, ...){
                           }))))
 }
 
-#' Title
+#' @title Obtain residual values given fitted values, family and objective variable
 #'
-#' @param x 
-#' @param y 
-#' @param ... 
+#' @param x \code{PhenoInfoTable} Pheno data to get the fitted values from
+#' @param fitted.values \code{numeric vector} Fitted values
+#' @param objective_variable \code{character} Objective variable
+#' @param output_family \code{character} A description of the generalized linear model used. "binomial" is defined
+#' for case/control studies. Quantitative traits can be analyzed by using "gaussian"
 #'
-#' @return
+#' @return \code{numeric vectors} of residual values
 #' @export
 #'
-#' @examples
+
 fastGWAS_getResiduals <- function(x, fitted.values, objective_variable, output_family){
+  if(!inherits(x, "PhenoInfoTable")){
+    stop('[x] argument shoud be of class "PhenoInfoTable", generated using dsOmics::fastGWAS_S')
+  }
   # TODO fer que funcioni tambe per gaussian, ara nomes esta per binomial
   # Working residuals
   if(output_family == "gaussian"){
@@ -167,13 +169,26 @@ fastGWAS_getResiduals <- function(x, fitted.values, objective_variable, output_f
   
 }
 
-#' Title
+#' @title Get colsums needed for fast GWAS
 #'
-#' @return
+#' @param table1 \code{numeric vector} To be squared or multiplied to genoData, depending on type
+#' @param type \code{character} ["square_vect"] to square and sum table1 or ["GWASsums"] to get all the colsums 
+#' needed for fast GWAS
+#' @param do.par \code{bool} Whether to use parallelization on the servers, to do so the servers 
+#' have to have the package \code{doParallel} installed and run on a POSIX OS (Mac, Linux, Unix, BSD); Windows 
+#' is not supported. This parallelization computes in parallel each \code{genoData} object, therefore it is only useful 
+#' when the genoData is divided by chromosome. 
+#' @param n.cores \code{numeric} Numbers of cores to use when \code{do.par} is \code{TRUE}. If 
+#' \code{NULL} the number of cores used will be the maximum available minus one.
+#' @param means \code{numeric vector} of geno means by individual
+#' @param pheno \code{PhenoInfoTable} Pheno data
+#' @param geno \code{GenotypeBlockIterator} Genotype information
+#'
+#' @return \code{numeric vectors}
 #' @export
 #'
-#' @examples
-fastGWAS_ColSums <- function(table1, type, means = NULL, pheno = NULL, geno = NULL){
+
+fastGWAS_ColSums <- function(table1, type, do.par = FALSE, n.cores = NULL, means = NULL, pheno = NULL, geno = NULL){
   # TODO check que el genoinfotable sigui del tipus que toque!!! sino el colsums altanto
   # TODO ficar potser algun filtre de minim delements (rows) a fer colsum
   
@@ -184,49 +199,43 @@ fastGWAS_ColSums <- function(table1, type, means = NULL, pheno = NULL, geno = NU
     ids <- pheno$scanID
     sample.index <- which(getScanID(geno[[1]]) %in% ids)
     
-    # TODO devlop parallel implementation further using forks instead of psock, 
-    # this only works on a Linux machine. PSOCK implementation has too much overhead.
-    
-    # n.cores <- parallel::detectCores() - 1
-    # my.cluster <- parallel::makeCluster(
-    #   n.cores, 
-    #   type = "PSOCK"
-    # )
-    # doParallel::registerDoParallel(cl = my.cluster)
-    # foreach::getDoParRegistered()
-    # foreach::getDoParWorkers()
-    # 
-    # results <- Reduce(c, parLapply(my.cluster, geno, function(i){
-    #   node <- GWASTools::GdsGenotypeReader(i@data@filename, allow.fork = TRUE)
-    #   
-    #   geno_data <- t(replace.NA(GWASTools::getGenotype(node)[,sample.index], means, F))
-    #   
-    #   crossprod <- Rfast::colsums(table1 * geno_data)
-    #   sums <- Rfast::colsums(geno_data)
-    #   squared_sums <- Rfast::colsums(geno_data ^ 2)
-    #   
-    #   return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
-    # }))
-    # 
-    # stopCluster(my.cluster)
-    
-      results <- Reduce(c, lapply(geno, function(x){
-      GWASTools::resetIterator(x)
-      genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
-      crossprod <- colSums(table1 * genoData_temp)
-      sums <- colSums(genoData_temp)
-      squared_sums <- colSums(genoData_temp ^ 2)
-
-      while(GWASTools::iterateFilter(x)){
+    if(do.par){
+      if(is.null(n.cores)){n.cores <- parallel::detectCores() - 1}
+      print(n.cores)
+      results <- Reduce(c, parallel::mclapply(geno, function(x){
+        GWASTools::resetIterator(x)
         genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
-        crossprod <- c(crossprod, colSums(table1 * genoData_temp))
-        sums <- c(sums, colSums(genoData_temp))
-        squared_sums <- c(squared_sums, colSums(genoData_temp ^ 2))
-      }
-
-      return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
-    }))
+        crossprod <- colSums(table1 * genoData_temp)
+        sums <- colSums(genoData_temp)
+        squared_sums <- colSums(genoData_temp ^ 2)
         
+        while(GWASTools::iterateFilter(x)){
+          genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
+          crossprod <- c(crossprod, colSums(table1 * genoData_temp))
+          sums <- c(sums, colSums(genoData_temp))
+          squared_sums <- c(squared_sums, colSums(genoData_temp ^ 2))
+        }
+        
+        return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
+      }, mc.cores = n.cores))
+    } else {
+      results <- Reduce(c, lapply(geno, function(x){
+        GWASTools::resetIterator(x)
+        genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
+        crossprod <- colSums(table1 * genoData_temp)
+        sums <- colSums(genoData_temp)
+        squared_sums <- colSums(genoData_temp ^ 2)
+        
+        while(GWASTools::iterateFilter(x)){
+          genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
+          crossprod <- c(crossprod, colSums(table1 * genoData_temp))
+          sums <- c(sums, colSums(genoData_temp))
+          squared_sums <- c(squared_sums, colSums(genoData_temp ^ 2))
+        }
+        
+        return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
+      }))
+    }
     results_combined <- tapply(unlist(results, use.names = FALSE), rep(names(results), lengths(results)), FUN = c)
     return(results_combined)
   } else {
@@ -235,18 +244,10 @@ fastGWAS_ColSums <- function(table1, type, means = NULL, pheno = NULL, geno = NU
   
 }
 
-##### Auxiliary function to fast replace NAs on matrix
-#' Title
-#'
-#' @param x 
-#' @param replacement 
-#' @param byRow 
-#'
-#' @return
+##### Auxiliary function to fast replace NAs on matrix copied from the MCRestimate package to avoid the dependency
 #' @export
-#'
-#' @examples
-replace.NA <- function(x, replacement , byRow = TRUE){ # Extracted from the MCRestimate package to avoid the dependency
+
+replace.NA <- function(x, replacement , byRow = TRUE){
   if (byRow==TRUE){
     norows=nrow(x)
     lengthy=length(replacement)

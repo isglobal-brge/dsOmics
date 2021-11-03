@@ -2,13 +2,41 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{fastGWAS_ColSums}
 \alias{fastGWAS_ColSums}
-\title{Title}
+\title{Get colsums needed for fast GWAS}
 \usage{
-fastGWAS_ColSums(table1, type, means = NULL, pheno = NULL, geno = NULL)
+fastGWAS_ColSums(
+  table1,
+  type,
+  do.par = FALSE,
+  n.cores = NULL,
+  means = NULL,
+  pheno = NULL,
+  geno = NULL
+)
+}
+\arguments{
+\item{table1}{\code{numeric vector} To be squared or multiplied to genoData, depending on type}
+
+\item{type}{\code{character} ["square_vect"] to square and sum table1 or ["GWASsums"] to get all the colsums 
+needed for fast GWAS}
+
+\item{do.par}{\code{bool} Whether to use parallelization on the servers, to do so the servers 
+have to have the package \code{doParallel} installed and run on a POSIX OS (Mac, Linux, Unix, BSD); Windows 
+is not supported. This parallelization computes in parallel each \code{genoData} object, therefore it is only useful 
+when the genoData is divided by chromosome.}
+
+\item{n.cores}{\code{numeric} Numbers of cores to use when \code{do.par} is \code{TRUE}. If 
+\code{NULL} the number of cores used will be the maximum available minus one.}
+
+\item{means}{\code{numeric vector} of geno means by individual}
+
+\item{pheno}{\code{PhenoInfoTable} Pheno data}
+
+\item{geno}{\code{GenotypeBlockIterator} Genotype information}
 }
 \value{
-
+\code{numeric vectors}
 }
 \description{
-Title
+Get colsums needed for fast GWAS
 }

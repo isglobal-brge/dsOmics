@@ -2,22 +2,10 @@
 % Please edit documentation in R/fastGWASDS.R
 \name{.fittedValues_exponential}
 \alias{.fittedValues_exponential}
-\title{Title}
+\title{Fit values for binomial model}
 \usage{
 .fittedValues_exponential(mod_values, mod_values_names, x)
 }
-\arguments{
-\item{mod_values}{}
-
-\item{mod_values_names}{}
-
-\item{x}{}
-
-\item{intercept}{}
-}
-\value{
-
-}
 \description{
-Title
+Internal function
 }
