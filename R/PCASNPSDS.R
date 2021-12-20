@@ -8,6 +8,7 @@
 #' @export
 
 PCASNPSDS <- function(gds, prune, ld.threshold){
+  browser()
   gdsPCA <- SNPRelate::snpgdsOpen(gds@filename, allow.duplicate = TRUE)
   if(prune){
     snpset <- SNPRelate::snpgdsLDpruning(gdsPCA, ld.threshold=ld.threshold)

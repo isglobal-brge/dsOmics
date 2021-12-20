@@ -20,7 +20,8 @@ AggregateMethods:
    genoDimensionsDS,
    plotPCASNPSDS,
    c=base::c,
-   fastGWAS_ColSums
+   fastGWAS_ColSums,
+   PCADS
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
