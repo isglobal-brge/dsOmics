@@ -52,13 +52,20 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
   }
   covars_id <- covars$scanID
   geno_id <- getScanID(x)
-  if(length(geno_id) > length(covars_id)){
-    stop('The covariates table is missing the individuals: ', 
-         paste(geno_id[!(geno_id %in% covars_id)], collapse = ", "))
-  }
+  
+  # if(length(geno_id) > length(covars_id)){
+  #   stop('The covariates table is missing the individuals: ', 
+  #        paste(geno_id[!(geno_id %in% covars_id)], collapse = ", "))
+  # }
+  
   covars <- covars[covars_id %in% geno_id,]
   covars_id <- covars$scanID
   covars <- covars[match(geno_id, covars_id),]
+  
+  if(length(geno_id) > length(covars_id)){
+    covars$scanID <- geno_id
+  }
+  covars <- covars[!is.na(covars$scanID),]
   
   scanAnnot <- GWASTools::ScanAnnotationDataFrame(data.frame(covars))
   geno <- GWASTools::GenotypeData(x, scanAnnot = scanAnnot)
