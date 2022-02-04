@@ -9,9 +9,8 @@
 #' @param geno.counts \code{bool} if \code{TRUE}, genotype counts are returned in the output data.frame
 #' @param block.size \code{numeric}  number of SNPs to read in at once
 #' @param permute \code{bool} logical indicator for whether to permute alleles before calculations
-#' @param controls \code{bool} logical to calculate the HWE test only on the controls
-#' @param controls_column \code{character} name of the case/controls column of the covariates 
-#' used to create the GenotypeData object. Only used if \code{controls = TRUE}
+#' @param controls_column \code{character} If specified, the control individuals found on this column 
+#' (specified by the encoding \code{1}) will be excluded when calculating the HWE.
 #'
 #' @return
 #' @export
@@ -19,7 +18,7 @@
 #' @import dplyr
 #'
 #' @examples
-exactHWEDS <- function(genoData, chromosome, geno.counts, block.size, permute, controls, 
+exactHWEDS <- function(genoData, chromosome, geno.counts, block.size, permute,  
                        controls_column){
   
   if(inherits(genoData, "GenotypeData")){
@@ -43,12 +42,9 @@ exactHWEDS <- function(genoData, chromosome, geno.counts, block.size, permute, c
       snpStart <- range_chr[1]
       snpEnd <- range_chr[2]
     }
-
-    if(controls){
-      if(missing(controls_column)){stop('"controls" is set to TRUE, but no "controls_column" was provided')}
+    if(!is.null(controls_column)){
       scan.exclude <- genoData@scanAnnot@data$scanID[genoData@scanAnnot@data[[controls_column]] == 1]
     } else{scan.exclude <- NULL}
-    GWASTools::getScanID(genoData)
     ans <- GWASTools::exactHWE(genoData = genoData, 
                     geno.counts = geno.counts,
                     snpStart = snpStart,

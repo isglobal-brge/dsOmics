@@ -1,5 +1,6 @@
 AggregateMethods:
    alleleFrequencyDS,
+   fastAlleleFrequencyDS,
    exactHWEDS,
    featureNamesDS,
    varLabelsDS,
@@ -39,4 +40,6 @@ AssignMethods:
    fastGWAS_getFitted.values,
    fastGWAS_getResiduals,
    fastGWAS_PHENO_removeNAindiv,
-   fastGWAS_S_means
+   fastGWAS_S_means,
+   extractPhenoFromGDSDS,
+   subsetExpressionSetDS

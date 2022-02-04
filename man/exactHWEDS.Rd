@@ -10,7 +10,6 @@ exactHWEDS(
   geno.counts,
   block.size,
   permute,
-  controls,
   controls_column
 )
 }
@@ -25,10 +24,8 @@ exactHWEDS(
 
 \item{permute}{\code{bool} logical indicator for whether to permute alleles before calculations}
 
-\item{controls}{\code{bool} logical to calculate the HWE test only on the controls}
-
-\item{controls_column}{\code{character} name of the case/controls column of the covariates 
-used to create the GenotypeData object. Only used if \code{controls = TRUE}}
+\item{controls_column}{\code{character} If specified, the control individuals found on this column 
+(specified by the encoding \code{1}) will be excluded when calculating the HWE.}
 }
 \value{
 

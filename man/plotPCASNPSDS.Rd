@@ -4,14 +4,14 @@
 \alias{plotPCASNPSDS}
 \title{Title}
 \usage{
-plotPCASNPSDS(x, geno, group)
+plotPCASNPSDS(x, group)
 }
 \arguments{
 \item{x}{}
 
-\item{geno}{}
-
 \item{group}{}
+
+\item{geno}{}
 }
 \value{
 

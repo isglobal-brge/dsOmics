@@ -8,7 +8,7 @@
 #' @export
 
 getSNPSbyGenDS <- function(gds, old_assign, ...){
-
+  
   if(old_assign){
     gds <- GdsGenotypeReader(gds@filename)
     return(gds)
@@ -16,7 +16,11 @@ getSNPSbyGenDS <- function(gds, old_assign, ...){
   
   dots <- unlist(list(...))
   
-  df <- AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db, keys = dots, columns = c("SYMBOL", "ENTREZID"), keytype = "SYMBOL")
+  df <- tryCatch({
+    AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db, keys = dots, columns = c("SYMBOL", "ENTREZID"), keytype = "SYMBOL")
+  }, error = function(w){
+    stop('Queried gene(s) [', paste(dots, collapse = ","), '] were not found on `org.Hs.eg.db` database.')
+  }) 
   gr <- GenomicFeatures::genes(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene, filter=list(gene_id=df$ENTREZID))
   GenomeInfoDb::seqlevelsStyle(gr) <- "NCBI"
   
@@ -32,17 +36,16 @@ getSNPSbyGenDS <- function(gds, old_assign, ...){
   }
   
   new_gds <- tempfile(fileext = ".gds")
-
+  
   if(inherits(gds, "GdsGenotypeReader")){
     GWASTools::gdsSubset(gds@filename, new_gds, snp.include = snp.ids, allow.fork = TRUE)
     gds_new <- GWASTools::GdsGenotypeReader(new_gds, allow.fork = TRUE)
     return(gds_new)
   } else if(inherits(gds, "GenotypeData")){
     covars <- gds@scanAnnot@data
-    columnId <- which(colnames(covars) %in% "scanID")
     GWASTools::gdsSubset(gds@data@filename, new_gds, snp.include = snp.ids, allow.fork = TRUE)
     gds_new <- GWASTools::GdsGenotypeReader(new_gds, allow.fork = TRUE)
-    return(GenotypeDataDS(gds_new, covars, columnId, NULL, NULL, NULL, NULL, NULL, NULL))
+    return(GenotypeDataDS(gds_new, covars, paste0(charToRaw("scanID"), collapse = ""), NULL, NULL, NULL, NULL, NULL, NULL))
   } else{
     stop('Objcect "gds" is not of class "GdsGenotypeReader" or "GenotypeData"')
   }

@@ -34,33 +34,53 @@ GenotypeDataDS <- function(x, covars, columnId, sexId, male_encoding, female_enc
   columnId <- which(names(covars) == rawToChar((wkb::hex2raw(columnId))))
   sexId <- if(!is.null(sexId)){which(names(covars) == rawToChar((wkb::hex2raw(sexId))))}
   case_control_column <- if(!is.null(case_control_column)){
-    which(names(covars) == rawToChar((wkb::hex2raw(case_control_column))))}
+    val <- rawToChar(wkb::hex2raw(case_control_column))
+    if(!(val %in% names(covars))){
+      stop('The [case_control_column] supplied (', val, 
+           ') is not present on the covars table')
+      } else {val}
+    } 
   
   names(covars)[columnId] <- "scanID"
   if(!is.null(sexId)){
+    # TODO does the sexId supplied exist?
     if(colnames(covars)[sexId] != "sex"){
       covars <- covars %>% tibble::add_column(sex = unlist(covars[, sexId]))
     }
+    # TODO does the male/female_encoding supplied exist?
     covars$sex[covars$sex %in% male_encoding] <- "M"
     covars$sex[covars$sex %in% female_encoding] <- "F"
   }
-  
+  # TODO check if the supplied `case` and `control` are even present on the dataset
   if(!is.null(case_control_column)){
     covars[[case_control_column]][covars[[case_control_column]] %in% case] <- 1
     covars[[case_control_column]][covars[[case_control_column]] %in% control] <- 0
     covars[[case_control_column]] <- as.numeric(covars[[case_control_column]])
   }
+
   covars_id <- covars$scanID
   geno_id <- getScanID(x)
-  
-  # if(length(geno_id) > length(covars_id)){
-  #   stop('The covariates table is missing the individuals: ', 
-  #        paste(geno_id[!(geno_id %in% covars_id)], collapse = ", "))
-  # }
-  
+
   covars <- covars[covars_id %in% geno_id,]
   covars_id <- covars$scanID
   covars <- covars[match(geno_id, covars_id),]
+  
+  # TODO commented code corresponds to possible no.match argument to substitute NAs created by having more
+  # geno individuals than pheno individuals. To be revised on the future.
+  # if(!is.null(no.match)){
+  #   # Check if no.match is numeric
+  #   if(!is.na(as.numeric(no.match))){ # If can be converted successfully use as numeric
+  #     no.match <- as.numeric(no.match)
+  #   } # Otherwise use as it is
+  #   rows_to_put_no_match <- is.na(covars$scanID)
+  #   
+  #   covars <- as_tibble(lapply(covars, function(x){
+  #     tryCatch({
+  #       x[rows_to_put_no_match] <- no.match
+  #       return(x)
+  #     }, error = function(w){return(x)})
+  #   }))
+  # }
   
   if(length(geno_id) > length(covars_id)){
     covars$scanID <- geno_id

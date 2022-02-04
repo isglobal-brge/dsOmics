@@ -8,8 +8,16 @@
 #' @export
 
 PCASNPSDS <- function(gds, prune, ld.threshold){
-  browser()
-  gdsPCA <- SNPRelate::snpgdsOpen(gds@filename, allow.duplicate = TRUE)
+
+  if(inherits(gds, "GdsGenotypeReader")){
+    gdsPCA <- SNPRelate::snpgdsOpen(gds@filename, allow.duplicate = TRUE)
+    
+  } else if(inherits(gds, "GenotypeData")){
+    gdsPCA <- SNPRelate::snpgdsOpen(gds@data@filename, allow.duplicate = TRUE)
+  } else{
+    stop('Objcect "gds" is not of class "GdsGenotypeReader" or "GenotypeData"')
+  }
+  
   if(prune){
     snpset <- SNPRelate::snpgdsLDpruning(gdsPCA, ld.threshold=ld.threshold)
     snpset.id <- unlist(unname(snpset))
