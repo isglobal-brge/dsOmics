@@ -2,16 +2,32 @@
 % Please edit documentation in R/subsetExpressionSetDS.R
 \name{subsetExpressionSetDS}
 \alias{subsetExpressionSetDS}
-\title{Title}
+\title{Subset ExpressionSet}
 \usage{
-subsetExpressionSetDS(eSet, objective_variable, objective_value)
+subsetExpressionSetDS(
+  eSet,
+  objective_variable,
+  objective_value,
+  complete_cases
+)
 }
 \arguments{
-\item{objective_value}{}
+\item{eSet}{\code{ExpressionSet} ExpressionSet to subset}
+
+\item{objective_variable}{\code{character} (default \code{NULL}) Name of the covariate on the ExpressionSet to use as filter}
+
+\item{objective_value}{\code{character} (default \code{NULL}) Name of the value from the \code{objective_variable} to filter. 
+The resulting subset will be the individuals that match this value. 
+To put in in code, it can be represented as: \code{subset <- expressionSet[expressionSet$objective_variable == objective_value,]}}
+
+\item{complete_cases}{\code{bool} (default \code{FALSE}) If \code{TRUE} only the complete cases will be included on the subset. 
+This option can be used with \code{objective_variable} and \code{objective_value} or without them, if those arguments are not 
+present, the subset will be the complete cases of the whole ExpressionSet.}
 }
 \value{
-
+Subseted \code{ExpressionSet}
 }
 \description{
-Title
+Subset ExpressionSet using a categorical variable of the covariates as filter. Can also subset by 
+complete cases
 }

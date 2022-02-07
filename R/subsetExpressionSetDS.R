@@ -1,13 +1,20 @@
-#' Title
+#' @title Subset ExpressionSet
+#' 
+#' @description Subset ExpressionSet using a categorical variable of the covariates as filter. Can also subset by 
+#' complete cases
 #'
-#' @param eSet
-#' @param objective_variable
-#' @param objective_value
+#' @param eSet \code{ExpressionSet} ExpressionSet to subset
+#' @param objective_variable \code{character} (default \code{NULL}) Name of the covariate on the ExpressionSet to use as filter
+#' @param objective_value \code{character} (default \code{NULL}) Name of the value from the \code{objective_variable} to filter. 
+#' The resulting subset will be the individuals that match this value. 
+#' To put in in code, it can be represented as: \code{subset <- expressionSet[expressionSet$objective_variable == objective_value,]}
+#' @param complete_cases \code{bool} (default \code{FALSE}) If \code{TRUE} only the complete cases will be included on the subset. 
+#' This option can be used with \code{objective_variable} and \code{objective_value} or without them, if those arguments are not 
+#' present, the subset will be the complete cases of the whole ExpressionSet.
 #'
-#' @return
+#' @return Subseted \code{ExpressionSet}
 #' @export
-#'
-#' @examples
+
 subsetExpressionSetDS <- function(eSet, objective_variable, objective_value, complete_cases){
   subset_indexes <- subset_indexes_complete_cases <- T
   

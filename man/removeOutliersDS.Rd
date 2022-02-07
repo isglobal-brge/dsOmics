@@ -4,14 +4,18 @@
 \alias{removeOutliersDS}
 \title{Filter potential CpG outliers}
 \usage{
-removeOutliersDS(x)
+removeOutliersDS(x, pct)
 }
 \arguments{
 \item{x}{\code{ExpressionSet} or \code{SummarizedExperiment / RangedSummarizedExperiment} object 
 to which perform the filtering}
+
+\item{pct}{\code{numeric} Tail and head quantiles that will be considered as 
+outliers; for example: a \code{pct=0.125} will use the function 
+\code{matrixStats::rowQuantiles(probs = c(0.125, 1-0.125))} to detect outliers.}
 }
 \value{
-
+\code{ExpressionSet} with the outliers marked as NAs
 }
 \description{
 Filter potential CpG outliers
