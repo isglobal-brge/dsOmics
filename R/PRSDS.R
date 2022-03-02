@@ -22,7 +22,7 @@
 #' @export
 #'
 
-PRSDS <- function(resources, snp_threshold, pgs_id, ...){
+PRSDS <- function(resources, snp_threshold, snp_assoc, pgs_id, ...){
 
   # Get table of SNPs and betas
   if(!is.null(pgs_id)){ # Retrieve pgs_id table
@@ -102,7 +102,7 @@ PRSDS <- function(resources, snp_threshold, pgs_id, ...){
                  start = positions[[x]][match_indexes[[x]]],
                  reference_allele = unlist(lapply(alleles[[x]][match_indexes[[x]]], function(y){substr(y, 1, 1)})), 
                  alternate_allele = unlist(lapply(alleles[[x]][match_indexes[[x]]], function(y){substr(y, 3, 3)})),
-                 index_of_resource = x)
+                 chr_name = as.numeric(chromosomes[[x]][match_indexes[[x]]]))
     }
   }))
   
@@ -110,7 +110,7 @@ PRSDS <- function(resources, snp_threshold, pgs_id, ...){
   if("rsID" %in% colnames(prs_table)){
     gds_with_risks <- dplyr::left_join(gds_info, prs_table, by = "rsID")
   } else {
-    gds_with_risks <- dplyr::left_join(gds_info, prs_table, by = "start")
+    gds_with_risks <- dplyr::left_join(gds_info, prs_table, by = c("start", "chr_name"))
   }
 
   # Detect if effect_allele is on the reference_allele or alternate_allele (or none)
@@ -183,11 +183,15 @@ PRSDS <- function(resources, snp_threshold, pgs_id, ...){
   # calculate PRS without weights
   prs_nw <- rowSums(geno)
   # TODO probability of prs_nw (snpassoc)
-  p_prs_nw <- tryCatch({
-    SNPassoc::pscore(prs_nw, colnames(geno))
-  }, error = function(w){
-    "SNPassoc (>2.0-3) not available on the Opal"
-  })
+  if(snp_assoc){
+    p_prs_nw <- tryCatch({
+      SNPassoc::pscore(prs_nw, colnames(geno))
+    }, error = function(w){
+      "SNPassoc (>2.0-3) not available on the Opal"
+    })
+  } else {
+    p_prs_nw <- rep(NA, length(prs))
+  }
 
   # TODO devolver todo como una tabla mejor??
   return(data.frame(prs = prs, prs_nw = prs_nw, p_prs_nw = p_prs_nw, n_snps = n_snps))
@@ -196,6 +200,9 @@ PRSDS <- function(resources, snp_threshold, pgs_id, ...){
 #' @title Auxiliary function to merge the PRS results to a table by ID
 #' @export
 PRSDS_aux <- function(prs_results, prs_results_name, table, id){
+  if(!(id %in% colnames(table))){
+    stop('[',id,'] is not present on the table to be merged.')
+  }
   prs_results <- prs_results %>% 
     select(prs, prs_nw, n_snps) %>% 
     rename(!!paste0('prs_', prs_results_name) := prs, 
@@ -279,13 +286,11 @@ PRSDS_aux <- function(prs_results, prs_results_name, table, id){
     data <- data.frame(chr_name = scorings$chr_name,
                        start = scorings$chr_position,
                        end = scorings$chr_position,
-                       # reference_allele = scorings$reference_allele,
                        effect_allele = scorings$effect_allele,
                        effect_weight = scorings$effect_weight)
     return(data)
   } else {
     data <- data.frame(rsID = scorings$rsID,
-                       # reference_allele = scorings$reference_allele,
                        effect_allele = scorings$effect_allele,
                        effect_weight = scorings$effect_weight)
     return(data)
