@@ -39,6 +39,6 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
     select(variant.id, rs, everything()) %>% 
     select(!c("Score", "Score.SE", "Score.Stat", "PVE", "MAC")) %>%
     dplyr::rename(p.value=Score.pval) %>% select(!c("variant.id")) %>%
-    arrange(p.value)
+    arrange(p.value) %>% dplyr::relocate(p.value, .after = pos)
   return(ans)
 }
