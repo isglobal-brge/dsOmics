@@ -13,6 +13,22 @@
 
 alleleFrequencyDS <- function(genoData){
   if(inherits(genoData, "GenotypeData")){
+    
+    #############################################################
+    # MODULE 1: CAPTURE THE nfilter SETTINGS
+    thr <- dsBase::listDisclosureSettingsDS()
+    nfilter.tab <- as.numeric(thr$nfilter.tab)
+    #nfilter.glm <- as.numeric(thr$nfilter.glm)
+    #nfilter.subset <- as.numeric(thr$nfilter.subset)
+    #nfilter.string <- as.numeric(thr$nfilter.string)
+    #############################################################
+    
+    scan_number <- GWASTools::nscan(genoData)
+    
+    if(scan_number < nfilter.tab){
+      stop("Disclosure issue: Not enough individuals to aggregate: N.individuals less than nfilter.tab")
+    }
+    
     ans <- GWASTools::alleleFrequency(genoData, verbose = FALSE)
     rs <- GWASTools::getVariable(genoData, "snp.rs.id")
     return(tibble::as_tibble(ans) %>% tibble::add_column(rs=rs) %>% dplyr::relocate(rs))

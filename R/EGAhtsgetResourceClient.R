@@ -71,6 +71,7 @@ EGAhtsgetResourceClient <- R6::R6Class(
           return(conn)
         }
         else if("EGACSV" == format){
+          browser()
           private$loadRhtsget()
           csv.file.tmp <- tempfile(fileext = ".csv")
           token <- Rhtsget::htsget_get_token("https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token",

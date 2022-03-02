@@ -1,29 +1,45 @@
-#' Title
+#' @title Allelic frequency
+#' 
+#' @description Calculates the frequency of the A allele on a server side GenotypeData object.
 #'
-#' @param genoData 
-#' @param snpBlock 
+#' @param genoData \code{GenotypeData} or \code{GdsGenotypeReader} Genotype data
+#' @param snpBlock \code{integer} number of SNPs to read at each iteration, 
+#' tune this parameter to improve performance.
 #'
 #' @return
 #' @export
 #'
 #' @examples
 fastAlleleFrequencyDS <- function(genoData, snpBlock){
-  
+
   if(inherits(genoData, "GenotypeData")){
     geno <- GWASTools::GenotypeBlockIterator(genoData, snpBlock=snpBlock)
   } else if (inherits(genoData, "GdsGenotypeReader")) {
     gds_gd <- GWASTools::GenotypeData(genoData)
     geno <- GWASTools::GenotypeBlockIterator(gds_gd, snpBlock=snpBlock)
   } else {
-    stop()
+    stop('genoData object is not of class ["GenotypeData" or "GdsGenotypeReader"]')
+  }
+  
+  #############################################################
+  # MODULE 1: CAPTURE THE nfilter SETTINGS
+  thr <- dsBase::listDisclosureSettingsDS()
+  nfilter.tab <- as.numeric(thr$nfilter.tab)
+  #nfilter.glm <- as.numeric(thr$nfilter.glm)
+  #nfilter.subset <- as.numeric(thr$nfilter.subset)
+  #nfilter.string <- as.numeric(thr$nfilter.string)
+  #############################################################
+  
+  scan_number <- GWASTools::nscan(genoData)
+  
+  if(scan_number < nfilter.tab){
+    stop("Disclosure issue: Not enough individuals to aggregate: N.individuals less than nfilter.tab")
   }
   
   gfile <- openfn.gds(geno@data@filename, allow.duplicate = T, allow.fork = T)
   n <- index.gdsn(gfile, "genotype")
  
   iterations <- length(geno@snpFilter)
-  
-  # sums <- matrix(data = NA, ncol = ncol(geno@scanAnnot@data), ncol = iterations)
   
   sums_col <- Reduce(rbind, lapply(1:iterations, function(x){
     snp.sel <- geno@snpFilter[[x]]

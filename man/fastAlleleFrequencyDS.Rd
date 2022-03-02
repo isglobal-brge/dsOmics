@@ -2,18 +2,19 @@
 % Please edit documentation in R/fastAlleleFrequencyDS.R
 \name{fastAlleleFrequencyDS}
 \alias{fastAlleleFrequencyDS}
-\title{Title}
+\title{Allelic frequency}
 \usage{
 fastAlleleFrequencyDS(genoData, snpBlock)
 }
 \arguments{
-\item{genoData}{}
+\item{genoData}{\code{GenotypeData} or \code{GdsGenotypeReader} Genotype data}
 
-\item{snpBlock}{}
+\item{snpBlock}{\code{integer} number of SNPs to read at each iteration, 
+tune this parameter to improve performance.}
 }
 \value{
 
 }
 \description{
-Title
+Calculates the frequency of the A allele on a server side GenotypeData object.
 }

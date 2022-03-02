@@ -42,4 +42,5 @@ AssignMethods:
    fastGWAS_PHENO_removeNAindiv,
    fastGWAS_S_means,
    extractPhenoFromGDSDS,
-   subsetExpressionSetDS
+   subsetExpressionSetDS,
+   subsetGenoDS
