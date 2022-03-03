@@ -27,6 +27,7 @@ PRSDS <- function(resources, snp_threshold, snp_assoc, pgs_id, ...){
   # Get table of SNPs and betas
   if(!is.null(pgs_id)){ # Retrieve pgs_id table
     prs_table <- .retrievePGS(pgs_id)
+    prs_table$chr_name <- as.numeric(prs_table$chr_name)
   } else { # Construct custom table
     prs_table <- unlist(list(...))
     prs_table <- data.frame(matrix(prs_table[1:(length(prs_table)-1)], ncol = as.numeric(prs_table[length(prs_table)])))
