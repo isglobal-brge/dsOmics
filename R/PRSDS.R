@@ -43,6 +43,9 @@ PRSDS <- function(resources, snp_threshold, snp_assoc, pgs_id, ...){
     }
   }
   
+  # Use only complete cases for safety (sometimes there may be rogue NAs)
+  prs_table <- prs_table[complete.cases(prs_table),]
+  
   # Get the  SNPs, positions and alleles and merge into data frame
   positions <- lapply(resources, function(x){
     GWASTools::getVariable(x, "snp.position")
@@ -113,6 +116,9 @@ PRSDS <- function(resources, snp_threshold, snp_assoc, pgs_id, ...){
   } else {
     gds_with_risks <- dplyr::left_join(gds_info, prs_table, by = c("start", "chr_name"))
   }
+  
+  # Remove mismatches
+  gds_with_risks <- gds_with_risks[complete.cases(gds_with_risks),]
 
   # Detect if effect_allele is on the reference_allele or alternate_allele (or none)
   #   'inverse' means that the reference_allele of the vcf is the effect_allele (risk allele)
@@ -157,6 +163,11 @@ PRSDS <- function(resources, snp_threshold, snp_assoc, pgs_id, ...){
     n_snps <- c(n_snps, snps)
   }
   names(n_snps) <- individuals
+  
+  # Make sure `gds_with_risks` matches the rsIDs of `geno`. This mismatch can occur if there are 
+  # mismatches removed from `gds_with_risks` (upper lines)
+  geno <- geno[,colnames(geno) %in% gds_with_risks$rsID]
+  
   # Remap geno; 0 means double alternate allele, 1 means single alternate allele, 2 means no alternate allele
   # remap to: 2 double alternate allele, 1 single alternate allele, 0 no alternate allele
   # the above is done taking into account if the reference and alternate allele are the effect allele
