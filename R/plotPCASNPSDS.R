@@ -17,8 +17,7 @@ plotPCASNPSDS <- function(x, group){
   #############################################################
   #MODULE 1: CAPTURE THE nfilter SETTINGS                     #
   thr <- dsBase:::listDisclosureSettingsDS()                  #
-  nfilter.levels.density <- as.numeric(thr$nfilter.levels.density) #
-  nfilter.levels.max <- as.numeric(thr$nfilter.levels.max)         #
+  nfilter.levels.density <- as.numeric(thr$nfilter.levels) #
   #############################################################
   
   feno <- GWASTools::getScanAnnotation(x)@data
@@ -31,14 +30,7 @@ plotPCASNPSDS <- function(x, group){
   max.levels.by.density<-nfilter.levels.density*length(feno[[group]])
   
   
-  if(num.levels>nfilter.levels.max)
-  {
-    error.message<-
-      paste0("FAILED: this variable has too many levels and may be disclosive. The ds.asFactor function allows no more than ",
-             max.allowed.levels," levels in this particular study. This variable has ",num.levels)
-    return(list(error.message=error.message))
-  } 
-  else if(num.levels>max.levels.by.density)
+  if(num.levels>max.levels.by.density)
   {
     error.message<-
       paste0("FAILED: this variable has too many levels and may be disclosive. The ds.asFactor function allows no more than ",

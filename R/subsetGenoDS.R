@@ -37,14 +37,14 @@ subsetGenoDS <- function(genoData, snp_list){
   new_f <- tempfile()
   
   if(inherits(genoData_og, "GenotypeData")){
-    gdsSubset(genoData_og@data@filename, new_f,
+    gdsSubset2(genoData_og@data@filename, new_f,
               sample.include=NULL, snp.include=ids_of_interest,
               sub.storage=NULL,
               compress="LZMA_RA",
               verbose=TRUE,
               allow.fork=TRUE)
   } else if(inherits(genoData_og, "GdsGenotypeReader")){
-    gdsSubset(genoData_og@handler$filename, new_f,
+    gdsSubset2(genoData_og@handler$filename, new_f,
               sample.include=NULL, snp.include=ids_of_interest,
               sub.storage=NULL,
               compress="LZMA_RA",
