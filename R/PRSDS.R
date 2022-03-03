@@ -211,10 +211,10 @@ PRSDS_aux <- function(prs_results, prs_results_name, table, id){
              !!paste0('n_snps_', prs_results_name) := n_snps)
   } else {
     prs_results <- prs_results %>% 
-      select(prs, prs_nw, n_snps) %>% 
+      select(prs, prs_nw, p_prs_nw, n_snps) %>% 
       rename(!!paste0('prs_', prs_results_name) := prs, 
              !!paste0('prs_nw_', prs_results_name) := prs_nw,
-             !!paste0('p_prs_nw', prs_results_name) := p_prs_nw,
+             !!paste0('p_prs_nw_', prs_results_name) := p_prs_nw,
              !!paste0('n_snps_', prs_results_name) := n_snps)
   }
   
