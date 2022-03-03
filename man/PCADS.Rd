@@ -4,7 +4,7 @@
 \alias{PCADS}
 \title{Title}
 \usage{
-PCADS(genoData, pca_rs, pca_means, pca_sd_hw)
+PCADS(genoData, pca_rs, pca_means, pca_sd_hw, snpBlock)
 }
 \arguments{
 \item{genoData}{}

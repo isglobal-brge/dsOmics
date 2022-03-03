@@ -4,7 +4,7 @@
 \alias{PRSDS}
 \title{Get Ploygenic Risk Score}
 \usage{
-PRSDS(resources, snp_threshold, ...)
+PRSDS(resources, snp_threshold, snp_assoc, pgs_id, ...)
 }
 \arguments{
 \item{resources}{\code{list} of all the VCF resources with biallelic genotype information. It is advised to 

@@ -58,6 +58,11 @@ subsetGenoDS <- function(genoData, snp_list){
   
   new_gds <- GWASTools::GdsGenotypeReader(new_f, allow.fork = TRUE)
   
+  # Add pheno information if GenotypeData object
+  if(inherits(genoData_og, "GenotypeData")){
+    new_gds <- GWASTools::GenotypeData(new_gds, scanAnnot = genoData_og@scanAnnot)
+  }
+  
   return(new_gds)
   
 }
