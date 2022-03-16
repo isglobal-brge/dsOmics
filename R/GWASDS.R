@@ -40,5 +40,77 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
     select(!c("Score", "Score.SE", "Score.Stat", "PVE", "MAC")) %>%
     dplyr::rename(p.value=Score.pval) %>% select(!c("variant.id")) %>%
     arrange(p.value) %>% dplyr::relocate(p.value, .after = pos)
-  return(ans)
+
+  #############################################################
+  # CAPTURE THE diffP SETTINGS
+  nfilter.diffP.epsilon <- getOption("default.nfilter.diffP.epsilon")
+  nfilter.diffP.resampleN <- getOption("default.nfilter.diffP.resampleN")
+  #############################################################
+  
+  if(!is.null(nfilter.diffP.epsilon) & !is.null(nfilter.diffP.resampleN)){
+    # Resample `nfilter.diffP.resampleN` times the GWAS data (removing a random ID each time)
+    l1.sens <- do.call(rbind, lapply(1:nfilter.diffP.resampleN, function(x){
+      # Select resample individuals
+      individuals <- GWASTools::getVariable(genoData, "sample.id")
+      individuals_resample <- individuals[-sample(1:length(individuals), 1)]
+      # New temp file
+      new_f <- tempfile()
+      # Subset all SNPs all individuals - random one
+      gdsSubset2(genoData@data@filename, new_f,
+                 sample.include=individuals_resample, snp.include=NULL,
+                 sub.storage=NULL,
+                 compress="LZMA_RA",
+                 verbose=TRUE,
+                 allow.fork=TRUE)
+      new_gds <- GWASTools::GdsGenotypeReader(new_f, allow.fork = TRUE)
+      # Add pheno information to subset
+      new_gds <- GWASTools::GenotypeData(new_gds, 
+                                         scanAnnot = genoData@scanAnnot[genoData@scanAnnot@data$scanID %in% 
+                                                                          individuals_resample])
+      # Fit the same model to the subset
+      nullmod2 <- GENESIS::fitNullModel(new_gds, outcome = outcome, 
+                                        covars = covars, 
+                                        family = family, ...)
+      genoIterator2 <- GWASTools::GenotypeBlockIterator(new_gds, snpBlock=snpBlock)
+      assoc2 <- GENESIS::assocTestSingle(genoIterator2, null.model = nullmod2)
+      assoc2$rs <- GWASTools::getVariable(new_gds, "snp.rs.id")[assoc2$variant.id]
+      alleles2 <- GWASTools::getVariable(new_gds, "snp.allele")[assoc2$variant.id] # ref/alt
+      assoc2$ref_allele <- substring(alleles2, 1, 1)
+      assoc2$alt_allele <- substring(alleles2, 3, 3)
+      ans2 <- assoc2 %>% as_tibble() %>%
+        select(variant.id, rs, everything()) %>% 
+        select(!c("Score", "Score.SE", "Score.Stat", "PVE", "MAC", "chr", "pos", 
+                  "Score.pval", "n.obs", "ref_allele", "alt_allele", "variant.id"))
+      # Merge resample with original results
+      merged_data <- merge(ans, ans2, by = "rs")
+      # Get l1-sensitivity of Est, EstSE and freq
+      est_sens <- max(merged_data$Est.x - merged_data$Est.y)
+      estSE_sens <- max(merged_data$Est.SE.x - merged_data$Est.SE.y)
+      freq_sens <- max(merged_data$freq.x - merged_data$freq.y)
+      # Return l1-sensitivities
+      return(data.frame(est_sens = est_sens, estSE_sens = estSE_sens, freq_sens = freq_sens))
+    }))
+    # Extract max l1-sensitivities
+    est_sens <- max(l1.sens$est_sens)
+    estSE_sens <- max(l1.sens$estSE_sens)
+    freq_sens <- max(l1.sens$freq_sens)
+    # Add Laplacian noise to Est, EstSE and freq with mean mean 0 and
+    # scale l1-sensitivity / nfilter.diffP.epsilon
+    ans_diffP <- ans %>% mutate(Est := Est + Laplace_noise_generator(m = 0, 
+                                                                     b = est_sens/nfilter.diffP.epsilon, 
+                                                                     n.noise = nrow(ans))) %>%
+      mutate(Est.SE := Est.SE + Laplace_noise_generator(m = 0, 
+                                                        b = estSE_sens/nfilter.diffP.epsilon, 
+                                                        n.noise = nrow(ans))) %>% 
+      mutate(freq := freq + Laplace_noise_generator(m = 0, 
+                                                    b = freq_sens/nfilter.diffP.epsilon, 
+                                                    n.noise = nrow(ans))) %>%
+      mutate(p.value := 2 * pnorm(-abs(Est / Est.SE)))
+    return(ans_diffP)
+  } else {
+    return(ans)
+  }
 }
+
+
+

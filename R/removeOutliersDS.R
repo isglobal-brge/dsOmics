@@ -16,7 +16,7 @@ removeOutliersDS <- function(x, pct){
   else if (inherits(x, c("SummarizedExperiment","RangedSummarizedExperiment"))){
     probes <- SummarizedExperiment::assay(x)
   }
-
+  
   rows <- matrixStats::rowQuantiles(probes, probs = c(pct, 1-pct), na.rm = T)
   maskL<- probes < rows[,1]
   maskU<- probes > rows[,2]

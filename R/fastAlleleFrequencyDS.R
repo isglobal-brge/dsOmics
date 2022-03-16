@@ -25,9 +25,6 @@ fastAlleleFrequencyDS <- function(genoData, snpBlock){
   # MODULE 1: CAPTURE THE nfilter SETTINGS
   thr <- dsBase::listDisclosureSettingsDS()
   nfilter.tab <- as.numeric(thr$nfilter.tab)
-  #nfilter.glm <- as.numeric(thr$nfilter.glm)
-  #nfilter.subset <- as.numeric(thr$nfilter.subset)
-  #nfilter.string <- as.numeric(thr$nfilter.string)
   #############################################################
   
   scan_number <- GWASTools::nscan(genoData)
@@ -53,10 +50,23 @@ fastAlleleFrequencyDS <- function(genoData, snpBlock){
   sums_col_no_0 <- sums_col[sums_col[,1] != 0,]
   sums_col_no_0[,2] <- length(GWASTools::getVariable(geno, "sample.id")) - sums_col_no_0[,2]
   
+  # diffP
+  #############################################################
+  # CAPTURE THE diffP SETTINGS
+  nfilter.diffP.epsilon <- getOption("default.nfilter.diffP.epsilon")
+  #############################################################
+  
+  if(!is.null(nfilter.diffP.epsilon)){
+    # l1-sensitivity = 2 (geno encoding 0,1,2; when performing colSums max difference when extracting
+    # one individual is 2)
+    laplace_noise <- Laplace_noise_generator(m = 0, 
+                                             b = 2/nfilter.diffP.epsilon, 
+                                             n.noise = length(sums_col_no_0[,1]))
+    sums_col_no_0[,1] <- sums_col_no_0[,1] + laplace_noise
+  }
+  
   sums_col_tot <- sums_col_no_0[,1] / (2 * sums_col_no_0[,2])
-  
   sums_col_tot[sums_col_tot > 0.5] <- 1 - sums_col_tot[sums_col_tot > 0.5]
-  
   return(tibble(rs = rs, n = sums_col_no_0[,2], MAF = sums_col_tot))
   
 }

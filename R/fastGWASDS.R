@@ -76,7 +76,6 @@ fastGWAS_S_means <- function(geno, pheno){
     sums <- rowSums(getGenotypeSelection(x, scan=sample.index, order="selection",transpose=TRUE), na.rm = T)
     while(GWASTools::iterateFilter(x)){
       sums <- cbind(sums, rowSums(getGenotypeSelection(x, scan=sample.index, order="selection",transpose=TRUE), na.rm = T))
-      
     }
     return(sums)
   }))
@@ -84,6 +83,19 @@ fastGWAS_S_means <- function(geno, pheno){
   n_snps <- Reduce("+", lapply(geno, function(x){
     tail(x@snpFilter[[length(x@snpFilter)]], 1)
   }))
+  # diff P
+  #############################################################
+  # CAPTURE THE diffP SETTINGS
+  nfilter.diffP.epsilon <- getOption("default.nfilter.diffP.epsilon")
+  #############################################################
+  if(!is.null(nfilter.diffP.epsilon)){
+    # l1-sensitivity = 2 (geno encoding 0,1,2; when performing rowSums max difference when extracting
+    # one individual is 2)
+    laplace_noise <- Laplace_noise_generator(m = 0, 
+                            b = 2/nfilter.diffP.epsilon, 
+                            n.noise = length(results))
+    results <- results + laplace_noise
+  }
   output <- rowSums(results) / n_snps
   return(output)
 }
@@ -164,7 +176,7 @@ fastGWAS_getResiduals <- function(x, fitted.values, objective_variable, output_f
   } else if (output_family == "binomial") {
     return(unlist((x[objective_variable]-fitted.values) / (fitted.values*(1-fitted.values))))
   } else {
-    stop()
+    stop('Invalid family argument')
   }
   
 }
@@ -199,25 +211,25 @@ fastGWAS_ColSums <- function(table1, type, do.par = FALSE, n.cores = NULL, means
     ids <- pheno$scanID
     sample.index <- which(getScanID(geno[[1]]) %in% ids)
     
-    if(do.par){
-      if(is.null(n.cores)){n.cores <- parallel::detectCores() - 1}
-      results <- Reduce(c, parallel::mclapply(geno, function(x){
-        GWASTools::resetIterator(x)
-        genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
-        crossprod <- colSums(table1 * genoData_temp)
-        sums <- colSums(genoData_temp)
-        squared_sums <- colSums(genoData_temp ^ 2)
-        
-        while(GWASTools::iterateFilter(x)){
-          genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
-          crossprod <- c(crossprod, colSums(table1 * genoData_temp))
-          sums <- c(sums, colSums(genoData_temp))
-          squared_sums <- c(squared_sums, colSums(genoData_temp ^ 2))
-        }
-        
-        return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
-      }, mc.cores = n.cores))
-    } else {
+    # if(do.par){
+    #   if(is.null(n.cores)){n.cores <- parallel::detectCores() - 1}
+    #   results <- Reduce(c, parallel::mclapply(geno, function(x){
+    #     GWASTools::resetIterator(x)
+    #     genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
+    #     crossprod <- colSums(table1 * genoData_temp)
+    #     sums <- colSums(genoData_temp)
+    #     squared_sums <- colSums(genoData_temp ^ 2)
+    #     
+    #     while(GWASTools::iterateFilter(x)){
+    #       genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
+    #       crossprod <- c(crossprod, colSums(table1 * genoData_temp))
+    #       sums <- c(sums, colSums(genoData_temp))
+    #       squared_sums <- c(squared_sums, colSums(genoData_temp ^ 2))
+    #     }
+    #     
+    #     return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
+    #   }, mc.cores = n.cores))
+    # } else {
       results <- Reduce(c, lapply(geno, function(x){
         GWASTools::resetIterator(x)
         genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
@@ -234,8 +246,34 @@ fastGWAS_ColSums <- function(table1, type, do.par = FALSE, n.cores = NULL, means
         
         return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
       }))
-    }
+    # }
     results_combined <- tapply(unlist(results, use.names = FALSE), rep(names(results), lengths(results)), FUN = c)
+    # diff P
+    #############################################################
+    # CAPTURE THE diffP SETTINGS
+    nfilter.diffP.epsilon <- getOption("default.nfilter.diffP.epsilon")
+    #############################################################
+    if(!is.null(nfilter.diffP.epsilon)){
+      # l1-sensitivity = 2 (geno encoding 0,1,2; when performing colSums max difference when extracting
+      # one individual is 2)
+        # Sums
+      laplace_noise <- Laplace_noise_generator(m = 0, 
+                                               b = 2/nfilter.diffP.epsilon, 
+                                               n.noise = length(results_combined$sums))
+      results_combined$sums <- results_combined$sums + laplace_noise
+      # l1-sensitivity = 2^2
+        # Squares sums
+      laplace_noise <- Laplace_noise_generator(m = 0, 
+                                               b = 4/nfilter.diffP.epsilon, 
+                                               n.noise = length(results_combined$squared_sums))
+      results_combined$squared_sums <- results_combined$squared_sums + laplace_noise
+      # l1-sensitivity = max(table1) * 2
+      l2.sens <- max(abs(table1), na.rm = T) * 2
+      laplace_noise <- Laplace_noise_generator(m = 0, 
+                                               b = l2.sens/nfilter.diffP.epsilon, 
+                                               n.noise = length(results_combined$crossprod))
+      results_combined$crossprod <- results_combined$crossprod + laplace_noise
+    }
     return(results_combined)
   } else {
     stop()
