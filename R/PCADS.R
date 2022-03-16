@@ -56,7 +56,7 @@ PCADS <- function(genoData, pca_rs, pca_means, pca_sd_hw, snpBlock){
     
   }))
   
-  results <- svdPartial(t(results))
+  results <- svdPartial(results)
   
   return(results)
   
