@@ -84,9 +84,9 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
       # Merge resample with original results
       merged_data <- merge(ans, ans2, by = "rs")
       # Get l1-sensitivity of Est, EstSE and freq
-      est_sens <- max(merged_data$Est.x - merged_data$Est.y)
-      estSE_sens <- max(merged_data$Est.SE.x - merged_data$Est.SE.y)
-      freq_sens <- max(merged_data$freq.x - merged_data$freq.y)
+      est_sens <- max(abs(merged_data$Est.x - merged_data$Est.y))
+      estSE_sens <- max(abs(merged_data$Est.SE.x - merged_data$Est.SE.y))
+      freq_sens <- max(abs(merged_data$freq.x - merged_data$freq.y))
       # Return l1-sensitivities
       return(data.frame(est_sens = est_sens, estSE_sens = estSE_sens, freq_sens = freq_sens))
     }))
