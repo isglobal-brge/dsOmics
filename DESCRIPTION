@@ -73,10 +73,12 @@ AssignMethods:
    fastGWAS_S_means,
    extractPhenoFromGDSDS,
    subsetExpressionSetDS,
-   subsetGenoDS
+   subsetGenoDS,
+   gneo_pca_pooled_addPCDS
 Options:
     default.nfilter.diffP.epsilon=3,
-    default.nfilter.diffP.resampleN=3
+    default.nfilter.diffP.resampleN=3,
+    default.nfilter.MAF=0.05
 License: MIT + file LICENSE
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
