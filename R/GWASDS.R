@@ -96,16 +96,19 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
     freq_sens <- max(l1.sens$freq_sens)
     # Add Laplacian noise to Est, EstSE and freq with mean mean 0 and
     # scale l1-sensitivity / nfilter.diffP.epsilon
-    ans_diffP <- ans %>% mutate(Est := Est + Laplace_noise_generator(m = 0, 
-                                                                     b = est_sens/nfilter.diffP.epsilon, 
-                                                                     n.noise = nrow(ans))) %>%
-      mutate(Est.SE := Est.SE + Laplace_noise_generator(m = 0, 
-                                                        b = estSE_sens/nfilter.diffP.epsilon, 
-                                                        n.noise = nrow(ans))) %>% 
-      mutate(freq := freq + Laplace_noise_generator(m = 0, 
-                                                    b = freq_sens/nfilter.diffP.epsilon, 
-                                                    n.noise = nrow(ans))) %>%
-      mutate(p.value := 2 * pnorm(-abs(Est / Est.SE)))
+    if(!any(c(est_sens, estSE_sens, freq_sens) == 0)){
+      ans_diffP <- ans %>% mutate(Est := Est + Laplace_noise_generator(m = 0, 
+                                                                       b = est_sens/nfilter.diffP.epsilon, 
+                                                                       n.noise = nrow(ans))) %>%
+        mutate(Est.SE := Est.SE + Laplace_noise_generator(m = 0, 
+                                                          b = estSE_sens/nfilter.diffP.epsilon, 
+                                                          n.noise = nrow(ans))) %>% 
+        mutate(freq := freq + Laplace_noise_generator(m = 0, 
+                                                      b = freq_sens/nfilter.diffP.epsilon, 
+                                                      n.noise = nrow(ans))) %>%
+        mutate(p.value := 2 * pnorm(-abs(Est / Est.SE)))
+    }
+    else {ans_diffP <- ans}
     return(ans_diffP)
   } else {
     return(ans)
