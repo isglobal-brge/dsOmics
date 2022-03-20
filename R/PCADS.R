@@ -97,13 +97,17 @@ gneo_pca_pooled_addPCDS <- function(geno, pca, ncomp){
     GWASTools::getVariable(x, "genotype")
   }))
   
+  # Extract individuals
+  individuals <- GWASTools::getVariable(geno[[1]], "sample.id")
+  
   # Unserialize PCA object
   pca <- matrix(pca, ncol = ncomp)
-  browser()
+  
   # Calculate individual princ comp values
   pca_coord <- genoSNPS %*% pca
   colnames(pca_coord) <- paste0("Dim.", 1:ncol(pca))
-  ### ADDD ROWNAMES TOO!!!!!
+  rownames(pca_coord) <- individuals
+  
   return(data.frame(pca_coord))
   
 }
