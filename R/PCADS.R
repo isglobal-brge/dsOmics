@@ -90,7 +90,7 @@ svdPartial <- function(x){
 #' @return \code{dt}
 #' @export
 
-gneo_pca_pooled_addPCDS <- function(geno, pca, ncomp){
+geno_pca_pooled_addPCDS <- function(geno, pca, ncomp){
 
   # Extract genotype data
   genoSNPS <- do.call(cbind, lapply(geno, function(x){

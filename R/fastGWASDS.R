@@ -230,21 +230,29 @@ fastGWAS_ColSums <- function(table1, type, do.par = FALSE, n.cores = NULL, means
     #     return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
     #   }, mc.cores = n.cores))
     # } else {
+    
+    # maxes <- Reduce(cbind,lapply(geno, function(x){
+    #   geno_temp <- GWASTools::getVariable(x, "genotype")
+    #   return(max(geno_temp))
+    # }))
+    # browser()
       results <- Reduce(c, lapply(geno, function(x){
         GWASTools::resetIterator(x)
         genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
         crossprod <- colSums(table1 * genoData_temp)
         sums <- colSums(genoData_temp)
         squared_sums <- colSums(genoData_temp ^ 2)
+        geno_maxs <- matrixStats::colMaxs(genoData_temp)
         
         while(GWASTools::iterateFilter(x)){
           genoData_temp <- t(replace.NA(getGenotypeSelection(x, scan=sample.index, order="selection"), means, F))
           crossprod <- c(crossprod, colSums(table1 * genoData_temp))
           sums <- c(sums, colSums(genoData_temp))
           squared_sums <- c(squared_sums, colSums(genoData_temp ^ 2))
+          geno_maxs <- c(geno_maxs, matrixStats::colMaxs(genoData_temp))
         }
         
-        return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums))
+        return(list(crossprod = crossprod, sums = sums, squared_sums = squared_sums, geno_maxs = geno_maxs))
       }))
     # }
     results_combined <- tapply(unlist(results, use.names = FALSE), rep(names(results), lengths(results)), FUN = c)
@@ -257,21 +265,19 @@ fastGWAS_ColSums <- function(table1, type, do.par = FALSE, n.cores = NULL, means
       # l1-sensitivity = 2 (geno encoding 0,1,2; when performing colSums max difference when extracting
       # one individual is 2)
         # Sums
-      laplace_noise <- Laplace_noise_generator(m = 0, 
-                                               b = 2/nfilter.diffP.epsilon, 
+      results_combined$geno_maxs[which(results_combined$geno_maxs == 0)] <- .Machine$double.xmin
+      laplace_noise <- Laplace_noise_generator(m = 0,
+                                               b = results_combined$geno_maxs/nfilter.diffP.epsilon,
                                                n.noise = length(results_combined$sums))
       results_combined$sums <- results_combined$sums + laplace_noise
       # l1-sensitivity = 2^2
         # Squares sums
-      laplace_noise <- Laplace_noise_generator(m = 0, 
-                                               b = 4/nfilter.diffP.epsilon, 
-                                               n.noise = length(results_combined$squared_sums))
-      results_combined$squared_sums <- results_combined$squared_sums + laplace_noise
+      results_combined$squared_sums <- results_combined$squared_sums + laplace_noise^2
       # l1-sensitivity = max(table1) * 2
-      l2.sens <- max(abs(table1), na.rm = T) * 2
-      laplace_noise <- Laplace_noise_generator(m = 0, 
-                                               b = l2.sens/nfilter.diffP.epsilon, 
-                                               n.noise = length(results_combined$crossprod))
+      l2.sens <- max(table1) * results_combined$geno_maxs
+      laplace_noise <- Laplace_noise_generator(m = 0,
+                                               b = l2.sens/nfilter.diffP.epsilon,
+                                               n.noise = length(results_combined$sums))
       results_combined$crossprod <- results_combined$crossprod + laplace_noise
     }
     return(results_combined)

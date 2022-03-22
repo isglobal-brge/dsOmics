@@ -52,7 +52,8 @@ AggregateMethods:
    plotPCASNPSDS,
    c=base::c,
    fastGWAS_ColSums,
-   PCADS
+   PCADS,
+   plotPCADS
 AssignMethods:
    selFeatureDS,
    cellCountsDS,
@@ -74,7 +75,7 @@ AssignMethods:
    extractPhenoFromGDSDS,
    subsetExpressionSetDS,
    subsetGenoDS,
-   gneo_pca_pooled_addPCDS
+   geno_pca_pooled_addPCDS
 Options:
     default.nfilter.diffP.epsilon=3,
     default.nfilter.diffP.resampleN=3,

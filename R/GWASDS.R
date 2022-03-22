@@ -49,7 +49,7 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
   
   if(!is.null(nfilter.diffP.epsilon) & !is.null(nfilter.diffP.resampleN)){
     # Resample `nfilter.diffP.resampleN` times the GWAS data (removing a random ID each time)
-    l1.sens <- do.call(rbind, lapply(1:nfilter.diffP.resampleN, function(x){
+    l1.sens <- lapply(1:nfilter.diffP.resampleN, function(x){
       # Select resample individuals
       individuals <- GWASTools::getVariable(genoData, "sample.id")
       individuals_resample <- individuals[-sample(1:length(individuals), 1)]
@@ -84,30 +84,47 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
       # Merge resample with original results
       merged_data <- merge(ans, ans2, by = "rs")
       # Get l1-sensitivity of Est, EstSE and freq
-      est_sens <- max(abs(merged_data$Est.x - merged_data$Est.y))
-      estSE_sens <- max(abs(merged_data$Est.SE.x - merged_data$Est.SE.y))
-      freq_sens <- max(abs(merged_data$freq.x - merged_data$freq.y))
+      est_sens <- abs(merged_data$Est.x - merged_data$Est.y)
+      estSE_sens <- abs(merged_data$Est.SE.x - merged_data$Est.SE.y)
+      freq_sens <- abs(merged_data$freq.x - merged_data$freq.y)
+      # est_sens <- max(abs(merged_data$Est.x - merged_data$Est.y))
+      # estSE_sens <- max(abs(merged_data$Est.SE.x - merged_data$Est.SE.y))
+      # freq_sens <- max(abs(merged_data$freq.x - merged_data$freq.y))
       # Return l1-sensitivities
-      return(data.frame(est_sens = est_sens, estSE_sens = estSE_sens, freq_sens = freq_sens))
-    }))
+      return(list(est_sens = est_sens, estSE_sens = estSE_sens, freq_sens = freq_sens))
+    })
     # Extract max l1-sensitivities
-    est_sens <- max(l1.sens$est_sens)
-    estSE_sens <- max(l1.sens$estSE_sens)
-    freq_sens <- max(l1.sens$freq_sens)
+    l1.sens <- data.frame(l1.sens)
+    cmd <- parse(text = paste0("c('",paste(colnames(l1.sens)
+                                           [grepl("^est_sens", colnames(l1.sens))],
+                                           collapse = "','"),"')"))
+    est_sens <- matrixStats::rowMaxs(as.matrix(l1.sens[,eval(cmd)]))
+    est_sens[which(est_sens == 0)] <- min(est_sens)
+    cmd <- parse(text = paste0("c('",paste(colnames(l1.sens)
+                                           [grepl("^estSE_sens", colnames(l1.sens))],
+                                           collapse = "','"),"')"))
+    estSE_sens <- matrixStats::rowMaxs(as.matrix(l1.sens[,eval(cmd)]))
+    estSE_sens[which(estSE_sens == 0)] <- min(estSE_sens)
+    # est_sens <- max(l1.sens$est_sens)
+    # estSE_sens <- max(l1.sens$estSE_sens)
+    # freq_sens <- max(l1.sens$freq_sens)
     # Add Laplacian noise to Est, EstSE and freq with mean mean 0 and
     # scale l1-sensitivity / nfilter.diffP.epsilon
-    if(!any(c(est_sens, estSE_sens, freq_sens) == 0)){
-      ans_diffP <- ans %>% mutate(Est := Est + Laplace_noise_generator(m = 0, 
-                                                                       b = est_sens/nfilter.diffP.epsilon, 
-                                                                       n.noise = nrow(ans))) %>%
-        mutate(Est.SE := Est.SE + Laplace_noise_generator(m = 0, 
-                                                          b = estSE_sens/nfilter.diffP.epsilon, 
-                                                          n.noise = nrow(ans))) %>% 
-        mutate(freq := freq + Laplace_noise_generator(m = 0, 
-                                                      b = freq_sens/nfilter.diffP.epsilon, 
-                                                      n.noise = nrow(ans))) %>%
-        mutate(p.value := 2 * pnorm(-abs(Est / Est.SE)))
+    # if(!any(c(est_sens, estSE_sens, freq_sens) == 0)){ # TODO revisar aquest any no fa falta crec
+    if(!any(c(est_sens, estSE_sens) == 0)){ # TODO revisar aquest any no fa falta crec
+      est_sens[which(est_sens == 0)] <- .Machine$double.xmin
+      laplace_noise <- Laplace_noise_generator(m = 0,
+                                               b = est_sens/nfilter.diffP.epsilon,
+                                               n.noise = nrow(ans))
+      ans_diffP <- ans %>% mutate(Est := Est + laplace_noise)
+      
+      estSE_sens[which(estSE_sens == 0)] <- .Machine$double.xmin
+      laplace_noise <- Laplace_noise_generator(m = 0,
+                                               b = estSE_sens/nfilter.diffP.epsilon,
+                                               n.noise = nrow(ans))
+      ans_diffP <- ans_diffP %>% mutate(p.value := 2 * pnorm(-abs(Est / Est.SE)))
     }
+    # TODO do not return freq!!!
     else {ans_diffP <- ans}
     return(ans_diffP)
   } else {
