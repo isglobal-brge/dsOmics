@@ -52,7 +52,7 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
     l1.sens <- lapply(1:nfilter.diffP.resampleN, function(x){
       # Select resample individuals
       individuals <- GWASTools::getVariable(genoData, "sample.id")
-      individuals_resample <- individuals[-sample(1:length(individuals), 1)]
+      individuals_resample <- individuals[-sample(1:length(individuals), 100)]
       # New temp file
       new_f <- tempfile()
       # Subset all SNPs all individuals - random one
@@ -82,16 +82,18 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
         select(!c("Score", "Score.SE", "Score.Stat", "PVE", "MAC", "chr", "pos", 
                   "Score.pval", "n.obs", "ref_allele", "alt_allele", "variant.id"))
       # Merge resample with original results
+      merged_data <- merge(ans, ans2, by = "rs", all.x = TRUE)
       merged_data <- merge(ans, ans2, by = "rs")
+      
       # Get l1-sensitivity of Est, EstSE and freq
       est_sens <- abs(merged_data$Est.x - merged_data$Est.y)
       estSE_sens <- abs(merged_data$Est.SE.x - merged_data$Est.SE.y)
       freq_sens <- abs(merged_data$freq.x - merged_data$freq.y)
       
       # Error control
-      if(nrow(ans2) != nrow(ans)){
-        return(list(est_sens = rep(0, nrow(ans)), 
-                    estSE_sens = rep(0, nrow(ans)), 
+      if(nrow(ans2) != nrow(ans) || !all(ans2$rs %in% ans$rs)){
+        return(list(est_sens = rep(0, nrow(ans)),
+                    estSE_sens = rep(0, nrow(ans)),
                     freq_sens = rep(0, nrow(ans))))
       }
       
@@ -102,6 +104,7 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
       # Return l1-sensitivities
       return(list(est_sens = est_sens, estSE_sens = estSE_sens, freq_sens = freq_sens))
     })
+    # browser()
     # Extract max l1-sensitivities
     l1.sens <- data.frame(l1.sens)
     cmd <- parse(text = paste0("c('",paste(colnames(l1.sens)
