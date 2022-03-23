@@ -88,35 +88,40 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
       # Get l1-sensitivity of Est, EstSE and freq
       est_sens <- abs(merged_data$Est.x - merged_data$Est.y)
       estSE_sens <- abs(merged_data$Est.SE.x - merged_data$Est.SE.y)
-      freq_sens <- abs(merged_data$freq.x - merged_data$freq.y)
+      # freq_sens <- abs(merged_data$freq.x - merged_data$freq.y)
       
       # Error control
-      if(nrow(ans2) != nrow(ans) || !all(ans2$rs %in% ans$rs)){
-        return(list(est_sens = rep(0, nrow(ans)),
-                    estSE_sens = rep(0, nrow(ans)),
-                    freq_sens = rep(0, nrow(ans))))
-      }
+      # if(nrow(ans2) != nrow(ans)){ #|| !all(ans2$rs %in% ans$rs)){
+      #   # browser()
+      #   return(list(est_sens = rep(0, nrow(ans)),
+      #               estSE_sens = rep(0, nrow(ans)),
+      #               freq_sens = rep(0, nrow(ans))))
+      # }
       
       
       # est_sens <- max(abs(merged_data$Est.x - merged_data$Est.y))
       # estSE_sens <- max(abs(merged_data$Est.SE.x - merged_data$Est.SE.y))
       # freq_sens <- max(abs(merged_data$freq.x - merged_data$freq.y))
       # Return l1-sensitivities
-      return(list(est_sens = est_sens, estSE_sens = estSE_sens, freq_sens = freq_sens))
+      return(data.frame(rs = merged_data$rs, est_sens = est_sens, estSE_sens = estSE_sens))
     })
-    # browser()
+    
     # Extract max l1-sensitivities
-    l1.sens <- data.frame(l1.sens)
+    l1.sens <- Reduce(function(x,y){merge(x,y,by = "rs")}, l1.sens)
+    # if(!all(l1.sens$rs %in% ans$rs)){
+    #   browser()
+    # }
+    
     cmd <- parse(text = paste0("c('",paste(colnames(l1.sens)
                                            [grepl("^est_sens", colnames(l1.sens))],
                                            collapse = "','"),"')"))
     est_sens <- matrixStats::rowMaxs(as.matrix(l1.sens[,eval(cmd)]))
-    est_sens[which(est_sens == 0)] <- min(est_sens)
+    est_sens[which(est_sens == 0)] <- .Machine$double.xmin
     cmd <- parse(text = paste0("c('",paste(colnames(l1.sens)
                                            [grepl("^estSE_sens", colnames(l1.sens))],
                                            collapse = "','"),"')"))
     estSE_sens <- matrixStats::rowMaxs(as.matrix(l1.sens[,eval(cmd)]))
-    estSE_sens[which(estSE_sens == 0)] <- min(estSE_sens)
+    estSE_sens[which(estSE_sens == 0)] <- .Machine$double.xmin
     # est_sens <- max(l1.sens$est_sens)
     # estSE_sens <- max(l1.sens$estSE_sens)
     # freq_sens <- max(l1.sens$freq_sens)
