@@ -69,6 +69,7 @@ alleleFrequencyDS <- function(genoData){
         # Return l1-sensitivities
         return(data.frame(freq_sens = freq_sens))
       }))
+      
       # Extract max l1-sensitivities
       freq_sens <- max(resamp$freq_sens)
       # Add Laplacian noise to  freq with mean mean 0 and
@@ -76,8 +77,26 @@ alleleFrequencyDS <- function(genoData){
       ans_diffP <- ans %>% mutate(MAF := MAF + Laplace_noise_generator(m = 0, 
                                                                        b = freq_sens/nfilter.diffP.epsilon, 
                                                                        n.noise = nrow(ans)))
+      # MAF filter
+      #############################################################
+      # CAPTURE THE diffP SETTINGS
+      default.nfilter.MAF <- getOption("default.nfilter.MAF")
+      #############################################################
+      if(!is.null(default.nfilter.MAF)){
+        ans_diffP <- ans_diffP %>% filter(MAF > default.nfilter.MAF)
+      }
       return(ans_diffP)
-    } else {return(ans)}
+    } else {
+      # MAF filter
+      #############################################################
+      # CAPTURE THE diffP SETTINGS
+      default.nfilter.MAF <- getOption("default.nfilter.MAF")
+      #############################################################
+      if(!is.null(default.nfilter.MAF)){
+        ans <- ans %>% filter(MAF > default.nfilter.MAF)
+      }
+      return(ans)
+    }
     
   }
   else(stop(paste0("Object of incorrect type [", class(genoData), "] alleleFrequency requires object of type GenotypeData")))

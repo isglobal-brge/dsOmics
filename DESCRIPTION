@@ -75,7 +75,8 @@ AssignMethods:
    extractPhenoFromGDSDS,
    subsetExpressionSetDS,
    subsetGenoDS,
-   geno_pca_pooled_addPCDS
+   geno_pca_pooled_addPCDS,
+   geno_pca_pooled_addPC2GenoDS
 Options:
     default.nfilter.diffP.epsilon=3,
     default.nfilter.diffP.resampleN=3,

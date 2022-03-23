@@ -67,6 +67,18 @@ fastAlleleFrequencyDS <- function(genoData, snpBlock){
   
   sums_col_tot <- sums_col_no_0[,1] / (2 * sums_col_no_0[,2])
   sums_col_tot[sums_col_tot > 0.5] <- 1 - sums_col_tot[sums_col_tot > 0.5]
-  return(tibble(rs = rs, n = sums_col_no_0[,2], MAF = sums_col_tot))
+  
+  results <- tibble(rs = rs, n = sums_col_no_0[,2], MAF = sums_col_tot)
+  
+  # MAF filter
+  #############################################################
+  # CAPTURE THE diffP SETTINGS
+  default.nfilter.MAF <- getOption("default.nfilter.MAF")
+  #############################################################
+  if(!is.null(default.nfilter.MAF)){
+    results <- results %>% filter(MAF > default.nfilter.MAF)
+  }
+  
+  return(results)
   
 }

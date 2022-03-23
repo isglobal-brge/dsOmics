@@ -111,3 +111,30 @@ geno_pca_pooled_addPCDS <- function(geno, pca, ncomp){
   return(data.frame(pca_coord))
   
 }
+
+#' Title
+#'
+#' @param geno 
+#' @param pca 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+geno_pca_pooled_addPC2GenoDS <- function(geno, pca){
+  
+  # Get old scan annotation (phenotypes)
+  old_scanAnnot <- geno@scanAnnot
+  # Create new scanAnnot (old + pca results)
+  new_data <- merge(old_scanAnnot@data, 
+                          pca %>% tibble::rownames_to_column("rownames"), 
+                          by.x = "scanID", by.y = "rownames", sort = FALSE)
+  new_scanAnnot <- ScanAnnotationDataFrame(new_data)
+  
+  # Create new GenotypeData with updated phenotypes
+  gds <- openfn.gds(geno@data@filename, allow.fork=TRUE, allow.duplicate = TRUE)
+  new_gds <- GWASTools::GdsGenotypeReader(gds, allow.fork = TRUE)
+  new_gds <- GWASTools::GenotypeData(new_gds, scanAnnot = new_scanAnnot)
+  
+  return(new_gds)
+}

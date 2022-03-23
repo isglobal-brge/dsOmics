@@ -4,7 +4,7 @@
 \alias{plotPCADS}
 \title{Title}
 \usage{
-plotPCADS(object, group)
+plotPCADS(object, geno, group)
 }
 \arguments{
 \item{object}{}
