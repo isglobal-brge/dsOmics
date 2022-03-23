@@ -87,6 +87,15 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
       est_sens <- abs(merged_data$Est.x - merged_data$Est.y)
       estSE_sens <- abs(merged_data$Est.SE.x - merged_data$Est.SE.y)
       freq_sens <- abs(merged_data$freq.x - merged_data$freq.y)
+      
+      # Error control
+      if(nrow(ans2) != nrow(ans)){
+        return(list(est_sens = rep(0, nrow(ans)), 
+                    estSE_sens = rep(0, nrow(ans)), 
+                    freq_sens = rep(0, nrow(ans))))
+      }
+      
+      
       # est_sens <- max(abs(merged_data$Est.x - merged_data$Est.y))
       # estSE_sens <- max(abs(merged_data$Est.SE.x - merged_data$Est.SE.y))
       # freq_sens <- max(abs(merged_data$freq.x - merged_data$freq.y))
