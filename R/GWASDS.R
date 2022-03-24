@@ -52,7 +52,7 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
     l1.sens <- lapply(1:nfilter.diffP.resampleN, function(x){
       # Select resample individuals
       individuals <- GWASTools::getVariable(genoData, "sample.id")
-      individuals_resample <- individuals[-sample(1:length(individuals), 100)]
+      individuals_resample <- individuals[-sample(1:length(individuals), 1)]
       # New temp file
       new_f <- tempfile()
       # Subset all SNPs all individuals - random one
@@ -80,38 +80,18 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
       ans2 <- assoc2 %>% as_tibble() %>%
         select(variant.id, rs, everything()) %>% 
         select(!c("Score", "Score.SE", "Score.Stat", "PVE", "MAC", "chr", "pos", 
-                  "Score.pval", "n.obs", "ref_allele", "alt_allele", "variant.id"))
-      # Merge resample with original results
-      merged_data <- merge(ans, ans2, by = "rs", all.x = TRUE)
-      merged_data <- merge(ans, ans2, by = "rs")
+                  "Score.pval", "n.obs", "ref_allele", "alt_allele", "variant.id", "freq"))
+      results <- dplyr::left_join(ans %>% select(c("rs", "Est", "Est.SE")), ans2, by = "rs")
+      results <- results %>% dplyr::mutate(est_sens = abs(Est.x - Est.y)) %>%
+        mutate(estSE_sens = abs(Est.SE.x - Est.SE.y)) %>% select(c("rs", "est_sens", "estSE_sens")) %>%
+        replace(is.na(.), 0)
       
-      # Get l1-sensitivity of Est, EstSE and freq
-      est_sens <- abs(merged_data$Est.x - merged_data$Est.y)
-      estSE_sens <- abs(merged_data$Est.SE.x - merged_data$Est.SE.y)
-      # freq_sens <- abs(merged_data$freq.x - merged_data$freq.y)
-      
-      # Error control
-      # if(nrow(ans2) != nrow(ans)){ #|| !all(ans2$rs %in% ans$rs)){
-      #   # browser()
-      #   return(list(est_sens = rep(0, nrow(ans)),
-      #               estSE_sens = rep(0, nrow(ans)),
-      #               freq_sens = rep(0, nrow(ans))))
-      # }
-      
-      
-      # est_sens <- max(abs(merged_data$Est.x - merged_data$Est.y))
-      # estSE_sens <- max(abs(merged_data$Est.SE.x - merged_data$Est.SE.y))
-      # freq_sens <- max(abs(merged_data$freq.x - merged_data$freq.y))
-      # Return l1-sensitivities
-      return(data.frame(rs = merged_data$rs, est_sens = est_sens, estSE_sens = estSE_sens))
+      return(results)
     })
     
     # Extract max l1-sensitivities
-    l1.sens <- Reduce(function(x,y){merge(x,y,by = "rs")}, l1.sens)
-    # if(!all(l1.sens$rs %in% ans$rs)){
-    #   browser()
-    # }
-    
+    l1.sens <- Reduce(function(...){dplyr::left_join(..., by = "rs")}, l1.sens)
+
     cmd <- parse(text = paste0("c('",paste(colnames(l1.sens)
                                            [grepl("^est_sens", colnames(l1.sens))],
                                            collapse = "','"),"')"))
@@ -122,27 +102,34 @@ GWASDS <- function(genoData, outcome, covars=NULL, family="binomial", snpBlock, 
                                            collapse = "','"),"')"))
     estSE_sens <- matrixStats::rowMaxs(as.matrix(l1.sens[,eval(cmd)]))
     estSE_sens[which(estSE_sens == 0)] <- .Machine$double.xmin
-    # est_sens <- max(l1.sens$est_sens)
-    # estSE_sens <- max(l1.sens$estSE_sens)
-    # freq_sens <- max(l1.sens$freq_sens)
-    # Add Laplacian noise to Est, EstSE and freq with mean mean 0 and
-    # scale l1-sensitivity / nfilter.diffP.epsilon
-    # if(!any(c(est_sens, estSE_sens, freq_sens) == 0)){ # TODO revisar aquest any no fa falta crec
-    if(!any(c(est_sens, estSE_sens) == 0)){ # TODO revisar aquest any no fa falta crec
-      est_sens[which(est_sens == 0)] <- .Machine$double.xmin
-      laplace_noise <- Laplace_noise_generator(m = 0,
-                                               b = est_sens/nfilter.diffP.epsilon,
-                                               n.noise = nrow(ans))
-      ans_diffP <- ans %>% mutate(Est := Est + laplace_noise)
-      
-      estSE_sens[which(estSE_sens == 0)] <- .Machine$double.xmin
-      laplace_noise <- Laplace_noise_generator(m = 0,
-                                               b = estSE_sens/nfilter.diffP.epsilon,
-                                               n.noise = nrow(ans))
-      ans_diffP <- ans_diffP %>% mutate(p.value := 2 * pnorm(-abs(Est / Est.SE)))
-    }
+    
+    
+    laplace_noise <- Laplace_noise_generator(m = 0,
+                                             b = est_sens/nfilter.diffP.epsilon,
+                                             n.noise = nrow(ans))
+    quants <- quantile(laplace_noise,c(0.05,0.95))
+    laplace_noise[laplace_noise < quants[1]] <- quants[1]
+    laplace_noise[laplace_noise > quants[2]] <- quants[2]
+    ans_diffP <- ans %>% mutate(Est := Est + laplace_noise)
+    
+    
+    laplace_noise2 <- Laplace_noise_generator(m = 0,
+                                              b = estSE_sens/nfilter.diffP.epsilon,
+                                              n.noise = nrow(ans))
+    quants <- quantile(laplace_noise2,c(0.05,0.95))
+    laplace_noise2[laplace_noise2 < quants[1]] <- quants[1]
+    laplace_noise2[laplace_noise2 > quants[2]] <- quants[2]
+    ans_diffP <- ans_diffP %>% mutate(Est.SE := Est.SE + laplace_noise2)
+    
+    ans_diffP <- ans_diffP %>% mutate(p.value := 2 * pnorm(-abs(Est / Est.SE)))
+    
+    # -abs(Est / Est.SE) = qnorm(p.value/2)
+    # laplace_noise = abs(laplace_noise) / qnorm(ans$p.value/2)
+    # if(!any(c(est_sens, estSE_sens) == 0)){ # TODO revisar aquest any no fa falta crec
+    #   
+    # }
     # TODO do not return freq!!!
-    else {ans_diffP <- ans}
+    # else {ans_diffP <- ans}
     return(ans_diffP)
   } else {
     return(ans)
