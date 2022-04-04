@@ -35,7 +35,8 @@ snptestDS <- function(client, ...){
   }
   else {
     if (length(outs)==1) {
-      results <- readr::read_table(outs)
+      # results <- readr::read_table(outs, skip = 3)
+      results <- readr::read_delim(outs, delim = " ", comment = "#")
     }
     else {
       results <- c("There are more than 1 table as output")

@@ -15,7 +15,6 @@ plinkDS <- function(client, ...){
   
   dots <- list(...)
   
-  
   dashedNames <- unlist(lapply(names(dots), function(n) {
     paste0("--", n)
   }))
@@ -29,10 +28,10 @@ plinkDS <- function(client, ...){
   
   plink <- client$exec('plink1', command)
   
-  client$downloadFile(paste0(tempDir, '/out.*'))  
-  
   outs <- client$exec('ls', tempDir)$output
   outs <- outs[-grep(".hh$|.log$|.nof$", outs)]
+  
+  client$downloadFile(paste0(tempDir, '/', outs))
   
   if (length(outs)==0){
     ans <- plink$error
