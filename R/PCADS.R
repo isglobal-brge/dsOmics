@@ -37,13 +37,13 @@ PCADS <- function(genoData, pca_rs, pca_means, pca_sd_hw, snpBlock){
   #   rs <- GWASTools::getVariable(geno, "snp.rs.id")
   #   
   #   if(stand){
-  #     # svd_partial <- Reduce(cbind, lapply(1:iterations, function(x){
-  #     #   snp.sel <- geno@snpFilter[[x]]
-  #     #   genoData_temp <- readex.gdsn(n, list(NULL, snp.sel))#, .value = 3, .substitute = NA)
-  #     #   dt_temp <- dt[which(dt$rs %in% rs[snp.sel]),]
-  #     #   genoData_temp <- t((t(genoData_temp) - dt_temp$means) / dt_temp$sd_hw)
-  #     #   svd_partial <- svdPartial(genoData_temp)
-  #     # }))
+      # svd_partial <- Reduce(cbind, lapply(1:iterations, function(x){
+      #   snp.sel <- geno@snpFilter[[x]]
+      #   genoData_temp <- readex.gdsn(n, list(NULL, snp.sel))#, .value = 3, .substitute = NA)
+      #   dt_temp <- dt[which(dt$rs %in% rs[snp.sel]),]
+      #   genoData_temp <- t((t(genoData_temp) - dt_temp$means) / dt_temp$sd_hw)
+      #   svd_partial <- svdPartial(genoData_temp)
+      # }))
   #   } else {
   #     browser()
   #     svd_partial <- Reduce(cbind, lapply(1:iterations, function(x){
@@ -58,6 +58,18 @@ PCADS <- function(genoData, pca_rs, pca_means, pca_sd_hw, snpBlock){
   results <- do.call(cbind, lapply(genoData, function(x){
     GWASTools::getVariable(x, "genotype")
   }))
+  
+  if(stand){
+    rs <- do.call(c, lapply(genoData, function(x){
+      GWASTools::getVariable(x, "snp.rs.id")
+    }))
+    dt <- dplyr::left_join(tibble::as_tibble(rs) %>% dplyr::rename(rs = value), dt)
+    dt$means[is.na(dt$means)] <- 0
+    dt$sd_hw[is.na(dt$sd_hw)] <- 1
+    
+    aux <- matrix(c(t(results)) + dt$means, ncol = nrow(dt), byrow = T)
+    results <- matrix(c(t(aux)) + dt$sd_hw, ncol = nrow(dt), byrow = T)
+  }
 
   results <- svdPartial(t(results))
   
@@ -122,7 +134,6 @@ geno_pca_pooled_addPCDS <- function(geno, pca, ncomp){
 #'
 #' @examples
 geno_pca_pooled_addPC2GenoDS <- function(geno, pca){
-  
   # Get old scan annotation (phenotypes)
   old_scanAnnot <- geno@scanAnnot
   # Create new scanAnnot (old + pca results)

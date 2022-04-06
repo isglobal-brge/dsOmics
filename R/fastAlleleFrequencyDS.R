@@ -76,7 +76,9 @@ fastAlleleFrequencyDS <- function(genoData, snpBlock){
   default.nfilter.MAF <- getOption("default.nfilter.MAF")
   #############################################################
   if(!is.null(default.nfilter.MAF)){
-    results <- results %>% filter(MAF > default.nfilter.MAF)
+    if(default.nfilter.MAF > 0){
+      results <- results %>% filter(MAF > default.nfilter.MAF)
+    }
   }
   
   return(results)
