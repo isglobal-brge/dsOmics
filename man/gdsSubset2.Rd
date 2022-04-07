@@ -2,7 +2,7 @@
 % Please edit documentation in R/gdsSubset.R
 \name{gdsSubset2}
 \alias{gdsSubset2}
-\title{Title}
+\title{Write a subset of data in a GDS file to a new GDS file}
 \usage{
 gdsSubset2(
   parent.gds,
@@ -17,31 +17,29 @@ gdsSubset2(
 )
 }
 \arguments{
-\item{parent.gds}{}
+\item{parent.gds}{Name of the parent GDS file}
 
-\item{sub.gds}{}
+\item{sub.gds}{Name of the subset GDS file}
 
-\item{sample.include}{}
+\item{sample.include}{Vector of sampleIDs to include in sub.gds}
 
-\item{snp.include}{}
+\item{snp.include}{Vector of snpIDs to include in sub.gds}
 
-\item{sub.storage}{}
+\item{sub.storage}{storage type for the subset file; defaults to original storage type}
 
-\item{compress}{}
+\item{compress}{The compression level for variables in a GDS file (see \link{GWASTools::add.gdsn} for options)}
 
-\item{block.size}{}
+\item{block.size}{for GDS files stored with scan,snp dimensions, the number of SNPs to read from the parent 
+file at a time. Ignored for snp,scan dimensions.}
 
-\item{verbose}{}
+\item{verbose}{Logical value specifying whether to show progress information.}
 
-\item{allow.fork}{}
-}
-\value{
-
+\item{allow.fork}{Logical value specifying whether to enable multiple forks to access the gds file simultaneously.}
 }
 \description{
-Title
+Function addapted from GWASTools::gdsSubset. Changed the line 31 (of the source file) to have the argument 
+\code{allow.duplicate = TRUE}
 }
-\examples{
-
-## ADAPTED FROM GWASTools::gdsSubset
+\author{
+Adrienne Stilp
 }

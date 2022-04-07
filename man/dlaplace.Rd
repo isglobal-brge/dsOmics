@@ -2,22 +2,22 @@
 % Please edit documentation in R/laplaceNoise.R
 \name{dlaplace}
 \alias{dlaplace}
-\title{Title}
+\title{Random laplace distribution generator}
 \usage{
 dlaplace(y, m = 0, s = 1, log = FALSE)
 }
 \arguments{
-\item{y}{}
+\item{y}{\code{numeric} Samples}
 
-\item{m}{}
+\item{m}{\code{integer} (default \code{0}) Mean of Laplace distribution}
 
-\item{s}{}
+\item{s}{\code{integer} (default \code{1}) Standard deviation of Laplace distribution}
 
-\item{log}{}
+\item{log}{\code{bool} (default \code{FALSE}) Apply \code{exp} transformation to the distribution}
 }
 \value{
-
+Vector of numbers
 }
 \description{
-Title
+Extracted from https://rpubs.com/mengxu/gaussian-and-laplace-noise
 }

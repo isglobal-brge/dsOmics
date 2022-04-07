@@ -2,18 +2,18 @@
 % Please edit documentation in R/PCADS.R
 \name{geno_pca_pooled_addPC2GenoDS}
 \alias{geno_pca_pooled_addPC2GenoDS}
-\title{Title}
+\title{Add PCA results to the phenotype slot}
 \usage{
 geno_pca_pooled_addPC2GenoDS(geno, pca)
 }
 \arguments{
-\item{geno}{}
+\item{geno}{\code{GenotypeData} object}
 
-\item{pca}{}
+\item{pca}{\code{data.frame} of the PCA results}
 }
 \value{
-
+\code{GenotypeData} object
 }
 \description{
-Title
+Add the PCA results to be used on an association analysis as covariates
 }

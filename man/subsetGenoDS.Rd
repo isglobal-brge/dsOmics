@@ -2,18 +2,18 @@
 % Please edit documentation in R/subsetGenoDS.R
 \name{subsetGenoDS}
 \alias{subsetGenoDS}
-\title{Title}
+\title{Subset genotype}
 \usage{
 subsetGenoDS(genoData, snp_list)
 }
 \arguments{
-\item{genoData}{}
+\item{genoData}{\code{GenotypeData} or \code{GdsGenotypeReader} object}
 
-\item{snp_list}{}
+\item{snp_list}{\code{character} Use \code{"ethnic_snps"}}
 }
 \value{
-
+\code{GenotypeData} or \code{GdsGenotypeReader} object
 }
 \description{
-Title
+Subset genotype by SNPs linked with ethcity differences from
 }

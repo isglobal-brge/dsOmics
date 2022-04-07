@@ -2,16 +2,16 @@
 % Please edit documentation in R/genoDimensionsDS.R
 \name{genoDimensionsDS}
 \alias{genoDimensionsDS}
-\title{Title}
+\title{Get main dimensions of Genotype data}
 \usage{
 genoDimensionsDS(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{GenotypeData} or \code{GdsGenotypeReader} object}
 }
 \value{
-
+\code{list} with results
 }
 \description{
-Title
+Get the number of SNPs, number of scans and number of chromosomes on the genotype file
 }

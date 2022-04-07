@@ -2,20 +2,20 @@
 % Please edit documentation in R/laplaceNoise.R
 \name{rlaplace}
 \alias{rlaplace}
-\title{Title}
+\title{Random laplace generator}
 \usage{
 rlaplace(n = 1, m = 0, s = 1)
 }
 \arguments{
-\item{n}{}
+\item{n}{\code{integer} (default \code{1}) Number of samples to generate}
 
-\item{m}{}
+\item{m}{\code{integer} (default \code{0}) Mean of Laplace distribution}
 
-\item{s}{}
+\item{s}{\code{integer} (default \code{1}) Standard deviation of Laplace distribution}
 }
 \value{
-
+Vector of numbers
 }
 \description{
-Title
+Extracted from https://rpubs.com/mengxu/gaussian-and-laplace-noise
 }

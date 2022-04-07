@@ -2,22 +2,27 @@
 % Please edit documentation in R/PCADS.R
 \name{PCADS}
 \alias{PCADS}
-\title{Title}
+\title{Principal Component Analysis (PCA) on SNP genotype data}
 \usage{
-PCADS(genoData, pca_rs, pca_means, pca_sd_hw, snpBlock)
+PCADS(genoData, pca_rs, pca_means, pca_sd_hw)
 }
 \arguments{
-\item{genoData}{}
+\item{genoData}{\code{GenotypeData} object}
 
-\item{rs}{}
+\item{pca_rs}{\code{vector of strings} SNPs included on the standardization. Obtained with dsBaseClient::standardizeGenoData}
 
-\item{means}{}
+\item{pca_means}{\code{vector of numerics} Means. Obtained with dsBaseClient::standardizeGenoData}
 
-\item{sd_hw}{}
+\item{pca_sd_hw}{\code{vector of numerics} Standar deviations. Obtained with dsBaseClient::standardizeGenoData}
 }
 \value{
-
+\code{data.frame} with the results
 }
 \description{
-Title
+PCA for genotype data on the study server
+}
+\details{
+Pooled method implemented using block method ("Parallel Algorithms for the Singular Value Decomposition." Berry et al. 2005). 
+The \code{snp_subset} option uses gene regions that have been linked to ethnic groupings, it is suggested to use this option to optimize 
+the computing time and get noise-less principal components.
 }

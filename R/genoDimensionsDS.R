@@ -1,11 +1,12 @@
-#' Title
+#' @title Get main dimensions of Genotype data
+#' 
+#' @description Get the number of SNPs, number of scans and number of chromosomes on the genotype file
 #'
-#' @param x 
+#' @param x \code{GenotypeData} or \code{GdsGenotypeReader} object
 #'
-#' @return
+#' @return \code{list} with results
 #' @export
-#'
-#' @examples
+
 genoDimensionsDS <- function(x){
   if(inherits(x, c("GenotypeData", "GdsGenotypeReader"))){
     snp_number <- GWASTools::nsnp(x)

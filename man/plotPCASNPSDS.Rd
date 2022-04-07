@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotPCASNPSDS.R
 \name{plotPCASNPSDS}
 \alias{plotPCASNPSDS}
-\title{Title}
+\title{Grouping to plot PCA}
 \usage{
 plotPCASNPSDS(x, group)
 }
@@ -17,5 +17,5 @@ plotPCASNPSDS(x, group)
 
 }
 \description{
-Title
+Function used by \code{dsOmicsClient::plotPCASNPS} to get the groupings
 }

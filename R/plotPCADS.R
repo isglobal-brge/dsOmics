@@ -1,13 +1,15 @@
-#' Title
+#' @title Grouping to plot PCA
+#' 
+#' @description Function used by \code{dsOmicsClient::plotPCA} to get the groupings
 #'
-#' @param object 
-#' @param group 
+#' @param geno \code{GenotypeData} object
+#' @param group \code{character} Grouping variable
 #'
 #' @return
 #' @export
 #'
 #' @examples
-plotPCADS <- function(object, geno, group){
+plotPCADS <- function(geno, group){
 
   if(inherits(geno, "GdsGenotypeReader") & !missing(group)){
     stop("Grouping is not available for the dataset used to perform the PCA, make sure to perform the PCA with an object created by the function ds.GenotypeData() if grouping is desired on the plot.")

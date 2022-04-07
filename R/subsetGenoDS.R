@@ -1,12 +1,13 @@
-#' Title
+#' @title Subset genotype
+#' 
+#' @description Subset genotype by SNPs linked with ethcity differences from 
 #'
-#' @param genoData 
-#' @param snp_list 
+#' @param genoData \code{GenotypeData} or \code{GdsGenotypeReader} object
+#' @param snp_list \code{character} Use \code{"ethnic_snps"}
 #'
-#' @return
+#' @return \code{GenotypeData} or \code{GdsGenotypeReader} object
 #' @export
-#'
-#' @examples
+
 subsetGenoDS <- function(genoData, snp_list){
   
   genoData_og <- get(genoData, envir = parent.frame())
@@ -15,8 +16,7 @@ subsetGenoDS <- function(genoData, snp_list){
     data("ethnic_snps", package = "dsOmics")
     snp_subset <- ethnic_snps
   } else {
-    # TODO cas en que el usuari pase la seva llista de snps
-    # snp_subset <- ???
+    stop("Not implemented a differnt argument for `snp_list` other than: 'ethnic_snps'")
   }
 
   original_rs <- GWASTools::getVariable(genoData_og, "snp.rs.id")

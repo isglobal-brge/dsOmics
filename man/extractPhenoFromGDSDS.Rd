@@ -2,16 +2,16 @@
 % Please edit documentation in R/extractPhenoFromGDSDS.R
 \name{extractPhenoFromGDSDS}
 \alias{extractPhenoFromGDSDS}
-\title{Title}
+\title{Extract phenotype table from GenotypeData object}
 \usage{
 extractPhenoFromGDSDS(gds)
 }
 \arguments{
-\item{gds}{}
+\item{gds}{\code{GenotypeData} object}
 }
 \value{
-
+\code{data.table} of the phenotypes
 }
 \description{
-Title
+Extract phenotype table from GenotypeData object
 }

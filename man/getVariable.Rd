@@ -2,18 +2,19 @@
 % Please edit documentation in R/getVariable.R
 \name{getVariable}
 \alias{getVariable}
-\title{Title}
+\title{Get slot of GDS object}
 \usage{
 getVariable(x, slot)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{GenotypeData} or \code{GdsGenotypeReader} object}
 
-\item{slot}{}
+\item{slot}{\code{character} slot to retrieve}
 }
 \value{
-
+Vector of characters
 }
 \description{
-Title
+Available slots are limited to: \code{snp.id}, \code{snp.rs.id}, \code{snp.position}, 
+\code{snp.chromosome} and \code{snp.allele}
 }

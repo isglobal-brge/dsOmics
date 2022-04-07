@@ -9,7 +9,7 @@ geno_pca_pooled_addPCDS(geno, pca, ncomp)
 \arguments{
 \item{pca}{\code{raw} Serialized PCA object}
 
-\item{object}{\code{geno} to add the PCA results}
+\item{object}{\code{GenotypeData} object}
 }
 \value{
 \code{dt}

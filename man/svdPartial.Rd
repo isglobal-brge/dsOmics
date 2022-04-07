@@ -2,16 +2,16 @@
 % Please edit documentation in R/PCADS.R
 \name{svdPartial}
 \alias{svdPartial}
-\title{Title}
+\title{Partial singular value decomposition}
 \usage{
 svdPartial(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{\code{matrix} Block of data}
 }
 \value{
-
+\code{matrix} With block step
 }
 \description{
-Title
+Block SVD of the SVD block method
 }

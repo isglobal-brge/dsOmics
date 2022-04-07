@@ -1,4 +1,6 @@
-#' Title
+#' @title Grouping to plot PCA
+#' 
+#' @description Function used by \code{dsOmicsClient::plotPCASNPS} to get the groupings
 #'
 #' @param x 
 #' @param group 

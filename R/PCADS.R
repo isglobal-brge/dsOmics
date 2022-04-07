@@ -1,19 +1,22 @@
-#' Title
+#' @title Principal Component Analysis (PCA) on SNP genotype data
+#' 
+#' @description PCA for genotype data on the study server
+#' 
+#' @details Pooled method implemented using block method ("Parallel Algorithms for the Singular Value Decomposition." Berry et al. 2005). 
+#' The \code{snp_subset} option uses gene regions that have been linked to ethnic groupings, it is suggested to use this option to optimize 
+#' the computing time and get noise-less principal components. 
 #'
-#' @param genoData 
-#' @param rs 
-#' @param means 
-#' @param sd_hw 
+#' @param genoData \code{GenotypeData} object
+#' @param pca_rs \code{vector of strings} SNPs included on the standardization. Obtained with dsBaseClient::standardizeGenoData
+#' @param pca_means \code{vector of numerics} Means. Obtained with dsBaseClient::standardizeGenoData
+#' @param pca_sd_hw \code{vector of numerics} Standar deviations. Obtained with dsBaseClient::standardizeGenoData
 #'
-#' @return
+#' @return \code{data.frame} with the results
 #' @export
-#'
-#' @examples
-PCADS <- function(genoData, pca_rs, pca_means, pca_sd_hw, snpBlock){
+
+PCADS <- function(genoData, pca_rs, pca_means, pca_sd_hw){
   
-  # TODO passar el snpBlock com un argument!!!!!!
   # TODO what do we do with the missing values of the genotype??? if set to NA, sva(x) fails!!!
-  # TODO format error messages of the disclosure check!
   
   if(!is.null(pca_rs)){
     dt <- tibble(rs = strsplit(pca_rs, split=",")[[1]], 
@@ -77,13 +80,14 @@ PCADS <- function(genoData, pca_rs, pca_means, pca_sd_hw, snpBlock){
   
 }
 
-#' Title
+#' @title Partial singular value decomposition
+#' 
+#' @description Block SVD of the SVD block method
 #'
-#' @param x 
+#' @param x \code{matrix} Block of data
 #'
-#' @return
-#'
-#' @examples
+#' @return \code{matrix} With block step
+
 svdPartial <- function(x){
   
   ss <- svd(x)
@@ -96,7 +100,7 @@ svdPartial <- function(x){
 #' 
 #' @description Adds the results of the block method to the geno, creating a new dt
 #'
-#' @param object \code{geno} to add the PCA results
+#' @param object \code{GenotypeData} object
 #' @param pca \code{raw} Serialized PCA object
 #'
 #' @return \code{dt}
@@ -124,15 +128,16 @@ geno_pca_pooled_addPCDS <- function(geno, pca, ncomp){
   
 }
 
-#' Title
+#' @title Add PCA results to the phenotype slot
+#' 
+#' @description Add the PCA results to be used on an association analysis as covariates
 #'
-#' @param geno 
-#' @param pca 
+#' @param geno \code{GenotypeData} object
+#' @param pca \code{data.frame} of the PCA results
 #'
-#' @return
+#' @return \code{GenotypeData} object
 #' @export
-#'
-#' @examples
+
 geno_pca_pooled_addPC2GenoDS <- function(geno, pca){
   # Get old scan annotation (phenotypes)
   old_scanAnnot <- geno@scanAnnot

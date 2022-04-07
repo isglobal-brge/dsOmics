@@ -2,18 +2,18 @@
 % Please edit documentation in R/plotPCADS.R
 \name{plotPCADS}
 \alias{plotPCADS}
-\title{Title}
+\title{Grouping to plot PCA}
 \usage{
-plotPCADS(object, geno, group)
+plotPCADS(geno, group)
 }
 \arguments{
-\item{object}{}
-
 \item{group}{}
+
+\item{object}{}
 }
 \value{
 
 }
 \description{
-Title
+Function used by \code{dsOmicsClient::plotPCA} to get the groupings
 }

@@ -1,11 +1,10 @@
-#' Title
+#' @title Extract phenotype table from GenotypeData object
 #'
-#' @param gds 
+#' @param gds \code{GenotypeData} object
 #'
-#' @return
+#' @return \code{data.table} of the phenotypes
 #' @export
-#'
-#' @examples
+
 extractPhenoFromGDSDS <- function(gds){
   if(GWASTools::hasScanAnnotation(gds)){
     pheno <- GWASTools::getScanAnnotation(gds)@data

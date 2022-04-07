@@ -1,20 +1,21 @@
-#' Title
-#'
-#' @param parent.gds 
-#' @param sub.gds 
-#' @param sample.include 
-#' @param snp.include 
-#' @param sub.storage 
-#' @param compress 
-#' @param block.size 
-#' @param verbose 
-#' @param allow.fork 
-#'
-#' @return
-#'
-#' @examples
+#' @title Write a subset of data in a GDS file to a new GDS file
 #' 
-#' ## ADAPTED FROM GWASTools::gdsSubset
+#' @description Function addapted from GWASTools::gdsSubset. Changed the line 31 (of the source file) to have the argument 
+#' \code{allow.duplicate = TRUE}
+#' 
+#' @author Adrienne Stilp
+#'
+#' @param parent.gds Name of the parent GDS file
+#' @param sub.gds Name of the subset GDS file
+#' @param sample.include Vector of sampleIDs to include in sub.gds
+#' @param snp.include Vector of snpIDs to include in sub.gds
+#' @param sub.storage storage type for the subset file; defaults to original storage type
+#' @param compress The compression level for variables in a GDS file (see \link{GWASTools::add.gdsn} for options)
+#' @param block.size for GDS files stored with scan,snp dimensions, the number of SNPs to read from the parent 
+#' file at a time. Ignored for snp,scan dimensions.
+#' @param verbose Logical value specifying whether to show progress information.
+#' @param allow.fork Logical value specifying whether to enable multiple forks to access the gds file simultaneously.
+
 gdsSubset2 <- function(parent.gds,
                       sub.gds,
                       sample.include=NULL,
