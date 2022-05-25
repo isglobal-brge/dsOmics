@@ -121,7 +121,7 @@ fastGWAS_getFitted.values <- function(x, covars, mod_names, output_family, mod_v
   covars_to_recode <- covars[!(covars %in% mod_names)]
   
   # Recode dummies
-  x_dummies <- dummies::dummy.data.frame(x, names = covars_to_recode, sep = "")
+  x_dummies <- .one_hot_encoding(x, covars_to_recode)
   
   if(output_family == "gaussian"){
     fitted.values <- .fittedValues_linear(mod_values, mod_names, x_dummies)
