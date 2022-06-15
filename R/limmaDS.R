@@ -28,7 +28,7 @@
 #' 
 limmaDS <- function(Set, variable_names, covariable_names, type, contrasts, 
                     levels, coef, sva, annotCols, method, robust, normalization,
-                    voomQualityWeights, big){
+                    voomQualityWeights, big, sort.by){
   
   
   Set <- eval(parse(text=Set), envir = parent.frame())
@@ -91,7 +91,7 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
                            covariable_names = covariable_names,
                            sva=sva, method = method, big = big)
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, 
-                                contrast = contrasts, robust = robust)
+                                contrast = contrasts, robust = robust, sort.by = sort.by)
   if(any(class(temp) == 'simpleError')){stop(paste(temp))}
   if(type == 1){
     if(inherits(Set, "ExpressionSet")){
