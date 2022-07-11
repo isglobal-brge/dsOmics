@@ -22,8 +22,6 @@ removeOutliersDS <- function(x, pct){
   maskU<- probes > rows[,2]
   probes[maskL] <- NA
   probes[maskU] <- NA
-
-  data.frame(outliers.lower, outliers.upper, n)
   
   if(inherits(x, "ExpressionSet")){
     Biobase::exprs(x) <- probes

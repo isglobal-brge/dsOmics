@@ -1,7 +1,7 @@
 Package: dsOmics
 Type: Package
 Title: DataSHIELD server site Omic functions
-Version: 1.0.13
+Version: 1.0.14
 Date: 2021-07-08
 Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Xavier", "Esriba-Montagut", , "xavier.escriba@isglobal.org", role = "aut"),
@@ -79,7 +79,8 @@ AssignMethods:
 Options:
     default.nfilter.diffP.epsilon=3,
     default.nfilter.diffP.resampleN=3,
-    default.nfilter.MAF=0.05
+    default.nfilter.MAF=0.05,
+    nfilter.subset=3
 License: MIT + file LICENSE
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
