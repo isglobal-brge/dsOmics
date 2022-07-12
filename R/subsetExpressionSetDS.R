@@ -33,6 +33,8 @@ subsetExpressionSetDS <- function(eSet, objective_variable, objective_value, com
     
     # Get the resulting subset size
     subset_indexes <- objective_variable_asCharacter == objective_value
+    # The missings of the objective_variable turn out as NAs, we want them to be FALSE
+    subset_indexes[is.na(subset_indexes)] <- FALSE
   } else if (!is.null(objective_variable) & is.null(objective_value) | is.null(objective_variable) & !is.null(objective_value)) {
     stop("If a subset by a phenotype is desired, make sure to introduce both arguments `objective_variable` and `objective_value`")
   }
