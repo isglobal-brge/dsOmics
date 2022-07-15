@@ -4,7 +4,7 @@
 \alias{addPhenoDataDS}
 \title{Add Phenotype data to ExpressionSet}
 \usage{
-addPhenoDataDS(x, pheno, identifier, alternate_eset_id, complete_cases)
+addPhenoDataDS(x, pheno, identifier, alternate_eset_id, complete_cases, force)
 }
 \arguments{
 \item{x}{\code{ExpressionSet} ExpressionSet to which add phenotype information}
@@ -20,6 +20,9 @@ Input NULL for the standard behaviour of using the rownames of the pheno data as
 \item{complete_cases}{\code{bool} If \code{TRUE} only the matching individuals 
 between the ExpressionSet and the phenotypes table will be included on the resulting ExpressionSet. If 
 \code{FALSE} all the individuals on the input ExpressionSet will be on the output ExpressionSet}
+
+\item{force}{\code{bool} (default \code{FALSE}). If set to \code{TRUE}, existing columns will be overwritten 
+with the new phenotype data}
 }
 \value{
 
