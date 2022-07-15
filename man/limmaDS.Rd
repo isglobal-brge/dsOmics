@@ -18,7 +18,8 @@ limmaDS(
   robust,
   normalization,
   voomQualityWeights,
-  big
+  big,
+  sort.by
 )
 }
 \arguments{

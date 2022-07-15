@@ -1,7 +1,7 @@
 Package: dsOmics
 Type: Package
 Title: DataSHIELD server site Omic functions
-Version: 1.0.15
+Version: 1.0.16
 Date: 2021-07-08
 Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Xavier", "Esriba-Montagut", , "xavier.escriba@isglobal.org", role = "aut"),
@@ -75,7 +75,8 @@ AssignMethods:
    subsetExpressionSetDS,
    subsetGenoDS,
    geno_pca_pooled_addPCDS,
-   geno_pca_pooled_addPC2GenoDS
+   geno_pca_pooled_addPC2GenoDS,
+   pDataDS
 Options:
     default.nfilter.diffP.epsilon=3,
     default.nfilter.diffP.resampleN=3,

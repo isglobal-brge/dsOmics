@@ -7,9 +7,9 @@
 plotPCADS(geno, group)
 }
 \arguments{
-\item{group}{}
+\item{geno}{\code{GenotypeData} object}
 
-\item{object}{}
+\item{group}{\code{character} Grouping variable}
 }
 \value{
 
