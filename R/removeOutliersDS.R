@@ -17,11 +17,18 @@ removeOutliersDS <- function(x, pct){
     probes <- SummarizedExperiment::assay(x)
   }
   
-  rows <- matrixStats::rowQuantiles(probes, probs = c(pct, 1-pct), na.rm = T)
-  maskL<- probes < rows[,1]
-  maskU<- probes > rows[,2]
-  probes[maskL] <- NA
-  probes[maskU] <- NA
+  quantiles <- matrixStats::rowQuantiles(probes, probs=c(pct,1-pct), na.rm=T)
+  low <- quantiles[,1]
+  upper <- quantiles[,2]
+  
+  outliers.lower <- rowSums(probes < low, na.rm=T)
+  outliers.upper <- rowSums(probes > upper, na.rm=T)
+  
+  idx <- which(probes < low, arr.ind=T)
+  probes[idx] <- low[idx[,1]]
+  
+  idx <- which(probes > upper, arr.ind=T)
+  probes[idx] <- upper[idx[,1]]
   
   if(inherits(x, "ExpressionSet")){
     Biobase::exprs(x) <- probes
