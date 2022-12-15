@@ -53,7 +53,7 @@ subsetExpressionSetDS <- function(eSet, objective_variable, objective_value, com
   # Disclosure control adapted from dsBase::dataFrameSubsetDS1 to ensure the resulting subset is not potentially disclosive
   #########################################################################
   # DataSHIELD MODULE: CAPTURE THE nfilter SETTINGS
-  nfilter.subset <- as.numeric(getOption("nfilter.subset"))
+  nfilter.subset <- as.numeric(getOption("default.nfilter.subset"))
   #########################################################################
   
   # CHECK SUBSET LENGTH IS CONSISTENT WITH nfilter FOR MINIMUM SUBSET SIZE
