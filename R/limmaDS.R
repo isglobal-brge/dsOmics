@@ -30,6 +30,16 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
                     levels, coef, sva, annotCols, method, robust, normalization,
                     voomQualityWeights, big, sort.by){
   
+  ###############
+  
+  files <- dir(tempdir())
+  files2remove <- stringr::str_detect(files, "HDF5")
+  file.remove(
+    paste0(tempdir(), "/", files[files2remove])
+  )
+  
+  ###############
+  
   
   Set <- eval(parse(text=Set), envir = parent.frame())
   
