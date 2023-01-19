@@ -12,9 +12,6 @@ fastAlleleFrequencyDS(genoData, snpBlock)
 \item{snpBlock}{\code{integer} number of SNPs to read at each iteration, 
 tune this parameter to improve performance.}
 }
-\value{
-
-}
 \description{
 Calculates the frequency of the A allele on a server side GenotypeData object.
 }

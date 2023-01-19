@@ -17,21 +17,21 @@ EGA valid credentials, pointing to a VCF or BAM file to be converted into a GDS 
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-isFor}{\code{EGAhtsgetResourceResolver$isFor()}}
-\item \href{#method-newClient}{\code{EGAhtsgetResourceResolver$newClient()}}
-\item \href{#method-clone}{\code{EGAhtsgetResourceResolver$clone()}}
+\item \href{#method-EGAhtsgetResourceResolver-isFor}{\code{EGAhtsgetResourceResolver$isFor()}}
+\item \href{#method-EGAhtsgetResourceResolver-newClient}{\code{EGAhtsgetResourceResolver$newClient()}}
+\item \href{#method-EGAhtsgetResourceResolver-clone}{\code{EGAhtsgetResourceResolver$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceResolver" data-id="initialize">}\href{../../resourcer/html/ResourceResolver.html#method-initialize}{\code{resourcer::ResourceResolver$initialize()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="ResourceResolver" data-id="initialize"><a href='../../resourcer/html/ResourceResolver.html#method-ResourceResolver-initialize'><code>resourcer::ResourceResolver$initialize()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-isFor"></a>}}
-\if{latex}{\out{\hypertarget{method-isFor}{}}}
+\if{html}{\out{<a id="method-EGAhtsgetResourceResolver-isFor"></a>}}
+\if{latex}{\out{\hypertarget{method-EGAhtsgetResourceResolver-isFor}{}}}
 \subsection{Method \code{isFor()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EGAhtsgetResourceResolver$isFor(x)}\if{html}{\out{</div>}}
@@ -39,8 +39,8 @@ EGA valid credentials, pointing to a VCF or BAM file to be converted into a GDS 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-newClient"></a>}}
-\if{latex}{\out{\hypertarget{method-newClient}{}}}
+\if{html}{\out{<a id="method-EGAhtsgetResourceResolver-newClient"></a>}}
+\if{latex}{\out{\hypertarget{method-EGAhtsgetResourceResolver-newClient}{}}}
 \subsection{Method \code{newClient()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EGAhtsgetResourceResolver$newClient(x)}\if{html}{\out{</div>}}
@@ -48,8 +48,8 @@ EGA valid credentials, pointing to a VCF or BAM file to be converted into a GDS 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-EGAhtsgetResourceResolver-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EGAhtsgetResourceResolver-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

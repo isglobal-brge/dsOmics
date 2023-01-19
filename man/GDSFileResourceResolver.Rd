@@ -17,21 +17,21 @@ GDS file or a VCF file to be converted into a GDS file.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-isFor}{\code{GDSFileResourceResolver$isFor()}}
-\item \href{#method-newClient}{\code{GDSFileResourceResolver$newClient()}}
-\item \href{#method-clone}{\code{GDSFileResourceResolver$clone()}}
+\item \href{#method-GDSFileResourceResolver-isFor}{\code{GDSFileResourceResolver$isFor()}}
+\item \href{#method-GDSFileResourceResolver-newClient}{\code{GDSFileResourceResolver$newClient()}}
+\item \href{#method-GDSFileResourceResolver-clone}{\code{GDSFileResourceResolver$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceResolver" data-id="initialize">}\href{../../resourcer/html/ResourceResolver.html#method-initialize}{\code{resourcer::ResourceResolver$initialize()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="ResourceResolver" data-id="initialize"><a href='../../resourcer/html/ResourceResolver.html#method-ResourceResolver-initialize'><code>resourcer::ResourceResolver$initialize()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-isFor"></a>}}
-\if{latex}{\out{\hypertarget{method-isFor}{}}}
+\if{html}{\out{<a id="method-GDSFileResourceResolver-isFor"></a>}}
+\if{latex}{\out{\hypertarget{method-GDSFileResourceResolver-isFor}{}}}
 \subsection{Method \code{isFor()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceResolver$isFor(x)}\if{html}{\out{</div>}}
@@ -39,8 +39,8 @@ GDS file or a VCF file to be converted into a GDS file.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-newClient"></a>}}
-\if{latex}{\out{\hypertarget{method-newClient}{}}}
+\if{html}{\out{<a id="method-GDSFileResourceResolver-newClient"></a>}}
+\if{latex}{\out{\hypertarget{method-GDSFileResourceResolver-newClient}{}}}
 \subsection{Method \code{newClient()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GDSFileResourceResolver$newClient(x)}\if{html}{\out{</div>}}
@@ -48,8 +48,8 @@ GDS file or a VCF file to be converted into a GDS file.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-GDSFileResourceResolver-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-GDSFileResourceResolver-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

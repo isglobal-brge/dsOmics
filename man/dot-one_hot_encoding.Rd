@@ -11,9 +11,6 @@
 
 \item{columns}{Columns to create dummies}
 }
-\value{
-
-}
 \description{
 Create dummy variables
 }

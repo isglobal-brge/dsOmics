@@ -17,21 +17,21 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-isFor}{\code{GA4GHResourceResolver$isFor()}}
-\item \href{#method-newClient}{\code{GA4GHResourceResolver$newClient()}}
-\item \href{#method-clone}{\code{GA4GHResourceResolver$clone()}}
+\item \href{#method-GA4GHResourceResolver-isFor}{\code{GA4GHResourceResolver$isFor()}}
+\item \href{#method-GA4GHResourceResolver-newClient}{\code{GA4GHResourceResolver$newClient()}}
+\item \href{#method-GA4GHResourceResolver-clone}{\code{GA4GHResourceResolver$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceResolver" data-id="initialize">}\href{../../resourcer/html/ResourceResolver.html#method-initialize}{\code{resourcer::ResourceResolver$initialize()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="ResourceResolver" data-id="initialize"><a href='../../resourcer/html/ResourceResolver.html#method-ResourceResolver-initialize'><code>resourcer::ResourceResolver$initialize()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-isFor"></a>}}
-\if{latex}{\out{\hypertarget{method-isFor}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceResolver-isFor"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceResolver-isFor}{}}}
 \subsection{Method \code{isFor()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GA4GHResourceResolver$isFor(x)}\if{html}{\out{</div>}}
@@ -39,8 +39,8 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-newClient"></a>}}
-\if{latex}{\out{\hypertarget{method-newClient}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceResolver-newClient"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceResolver-newClient}{}}}
 \subsection{Method \code{newClient()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GA4GHResourceResolver$newClient(x)}\if{html}{\out{</div>}}
@@ -48,8 +48,8 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceResolver-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceResolver-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

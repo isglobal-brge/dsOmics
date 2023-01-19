@@ -13,9 +13,6 @@ plotPCASNPSDS(x, group)
 
 \item{geno}{}
 }
-\value{
-
-}
 \description{
 Function used by \code{dsOmicsClient::plotPCASNPS} to get the groupings
 }

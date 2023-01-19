@@ -27,9 +27,6 @@ exactHWEDS(
 \item{controls_column}{\code{character} If specified, the control individuals found on this column 
 (specified by the encoding \code{1}) will be excluded when calculating the HWE.}
 }
-\value{
-
-}
 \description{
 This function performs exact Hardy-Weinberg Equilibrium testing (using Fisher's Test) 
 over a selection of SNPs. It also counts genotype, calculates allele frequencies, 

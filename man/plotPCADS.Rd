@@ -11,9 +11,6 @@ plotPCADS(geno, group)
 
 \item{group}{\code{character} Grouping variable}
 }
-\value{
-
-}
 \description{
 Function used by \code{dsOmicsClient::plotPCA} to get the groupings
 }

@@ -21,9 +21,6 @@ Input NULL for the standard behaviour of using the rownames of the pheno data as
 between the ExpressionSet and the phenotypes table will be included on the resulting ExpressionSet. If 
 \code{FALSE} all the individuals on the input ExpressionSet will be on the output ExpressionSet}
 }
-\value{
-
-}
 \description{
 Add Phenotype data to ExpressionSet
 }

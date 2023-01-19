@@ -17,27 +17,27 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{GA4GHResourceClient$new()}}
-\item \href{#method-getConnection}{\code{GA4GHResourceClient$getConnection()}}
-\item \href{#method-getValue}{\code{GA4GHResourceClient$getValue()}}
-\item \href{#method-close}{\code{GA4GHResourceClient$close()}}
-\item \href{#method-clone}{\code{GA4GHResourceClient$clone()}}
+\item \href{#method-GA4GHResourceClient-new}{\code{GA4GHResourceClient$new()}}
+\item \href{#method-GA4GHResourceClient-getConnection}{\code{GA4GHResourceClient$getConnection()}}
+\item \href{#method-GA4GHResourceClient-getValue}{\code{GA4GHResourceClient$getValue()}}
+\item \href{#method-GA4GHResourceClient-close}{\code{GA4GHResourceClient$close()}}
+\item \href{#method-GA4GHResourceClient-clone}{\code{GA4GHResourceClient$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="asDataFrame">}\href{../../resourcer/html/ResourceClient.html#method-asDataFrame}{\code{resourcer::ResourceClient$asDataFrame()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="asTbl">}\href{../../resourcer/html/ResourceClient.html#method-asTbl}{\code{resourcer::ResourceClient$asTbl()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="exec">}\href{../../resourcer/html/ResourceClient.html#method-exec}{\code{resourcer::ResourceClient$exec()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="getResource">}\href{../../resourcer/html/ResourceClient.html#method-getResource}{\code{resourcer::ResourceClient$getResource()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="resourcer" data-topic="FileResourceClient" data-id="downloadFile">}\href{../../resourcer/html/FileResourceClient.html#method-downloadFile}{\code{resourcer::FileResourceClient$downloadFile()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="asDataFrame"><a href='../../resourcer/html/ResourceClient.html#method-ResourceClient-asDataFrame'><code>resourcer::ResourceClient$asDataFrame()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="asTbl"><a href='../../resourcer/html/ResourceClient.html#method-ResourceClient-asTbl'><code>resourcer::ResourceClient$asTbl()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="exec"><a href='../../resourcer/html/ResourceClient.html#method-ResourceClient-exec'><code>resourcer::ResourceClient$exec()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="ResourceClient" data-id="getResource"><a href='../../resourcer/html/ResourceClient.html#method-ResourceClient-getResource'><code>resourcer::ResourceClient$getResource()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="resourcer" data-topic="FileResourceClient" data-id="downloadFile"><a href='../../resourcer/html/FileResourceClient.html#method-FileResourceClient-downloadFile'><code>resourcer::FileResourceClient$downloadFile()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceClient-new"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceClient-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GA4GHResourceClient$new(resource)}\if{html}{\out{</div>}}
@@ -45,8 +45,8 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getConnection"></a>}}
-\if{latex}{\out{\hypertarget{method-getConnection}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceClient-getConnection"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceClient-getConnection}{}}}
 \subsection{Method \code{getConnection()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GA4GHResourceClient$getConnection()}\if{html}{\out{</div>}}
@@ -54,8 +54,8 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getValue"></a>}}
-\if{latex}{\out{\hypertarget{method-getValue}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceClient-getValue"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceClient-getValue}{}}}
 \subsection{Method \code{getValue()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GA4GHResourceClient$getValue()}\if{html}{\out{</div>}}
@@ -63,8 +63,8 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-close"></a>}}
-\if{latex}{\out{\hypertarget{method-close}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceClient-close"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceClient-close}{}}}
 \subsection{Method \code{close()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GA4GHResourceClient$close()}\if{html}{\out{</div>}}
@@ -72,8 +72,8 @@ GA4GH htsget enabled server, pointing to a VCF or BAM file to be converted into 
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-GA4GHResourceClient-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-GA4GHResourceClient-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
