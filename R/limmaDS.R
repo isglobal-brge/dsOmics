@@ -100,21 +100,22 @@ limmaDS <- function(Set, variable_names, covariable_names, type, contrasts,
                            variable_names = variable_names,
                            covariable_names = covariable_names,
                            sva=sva, method = method, big = big)
-  temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, 
-                                contrast = contrasts, robust = robust, sort.by = sort.by)
-  if(any(class(temp) == 'simpleError')){stop(paste(temp))}
-  if(type == 1){
-    if(inherits(Set, "ExpressionSet")){
-      Set.counts <- Biobase::exprs(Set)
-    }
-    else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment"))){
-      Set.counts <- SummarizedExperiment::assay(Set)
-    }
-  }
-  n <- apply(Set.counts, 1, function(x) sum(!is.na(x)))
-  ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
-    tibble::add_column(.after = 1, n=n) %>% dplyr::rename("beta" = "logFC") %>%
-    dplyr::select(id, tail(names(.), length(annotCols)), everything()) %>%
-    dplyr::select(id, n, beta, SE, t, P.Value, adj.P.Val, annotCols)
-  return(ans)
+  return(res)
+  # temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, 
+  #                               contrast = contrasts, robust = robust, sort.by = sort.by)
+  # if(any(class(temp) == 'simpleError')){stop(paste(temp))}
+  # if(type == 1){
+  #   if(inherits(Set, "ExpressionSet")){
+  #     Set.counts <- Biobase::exprs(Set)
+  #   }
+  #   else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment"))){
+  #     Set.counts <- SummarizedExperiment::assay(Set)
+  #   }
+  # }
+  # n <- apply(Set.counts, 1, function(x) sum(!is.na(x)))
+  # ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
+  #   tibble::add_column(.after = 1, n=n) %>% dplyr::rename("beta" = "logFC") %>%
+  #   dplyr::select(id, tail(names(.), length(annotCols)), everything()) %>%
+  #   dplyr::select(id, n, beta, SE, t, P.Value, adj.P.Val, annotCols)
+  # return(ans)
 }
