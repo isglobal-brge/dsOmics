@@ -1,7 +1,7 @@
 Package: dsOmics
 Type: Package
 Title: DataSHIELD server site Omic functions
-Version: 1.0.18
+Version: 1.0.18-2
 Date: 2021-07-08
 Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Xavier", "Esriba-Montagut", , "xavier.escriba@isglobal.org", role = "aut"),
@@ -78,7 +78,8 @@ AssignMethods:
    subsetGenoDS,
    geno_pca_pooled_addPCDS,
    geno_pca_pooled_addPC2GenoDS,
-   pDataDS
+   pDataDS,
+   methylation_array_convertDS
 Options:
     default.nfilter.diffP.epsilon=3,
     default.nfilter.diffP.resampleN=3,
@@ -88,5 +89,5 @@ License: MIT + file LICENSE
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.2.2.9000
+RoxygenNote: 7.2.3
 Encoding: UTF-8
