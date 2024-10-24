@@ -32,13 +32,11 @@ limmaDS2 <- function(Set, res, type, contrasts,
   temp <- MEAL::getProbeResults(res, fNames=annotCols, coef = coef, 
                                 contrast = contrasts, robust = robust, sort.by = sort.by)
   if(any(class(temp) == 'simpleError')){stop(paste(temp))}
-  if(type == 1){
-    if(inherits(Set, "ExpressionSet")){
-      Set.counts <- Biobase::exprs(Set)
-    }
-    else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment"))){
-      Set.counts <- SummarizedExperiment::assay(Set)
-    }
+  if(inherits(Set, "ExpressionSet")){
+    Set.counts <- Biobase::exprs(Set)
+  }
+  else if (inherits(Set, c("SummarizedExperiment","RangedSummarizedExperiment"))){
+    Set.counts <- SummarizedExperiment::assay(Set)
   }
   n <- apply(Set.counts, 1, function(x) sum(!is.na(x)))
   ans <- tibble::as_tibble(temp) %>% tibble::add_column(.before=1, id=rownames(temp)) %>%
