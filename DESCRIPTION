@@ -1,8 +1,8 @@
 Package: dsOmics
 Type: Package
 Title: DataSHIELD server site Omic functions
-Version: 1.0.18-3 
-Date: 2021-07-08
+Version: 1.0.18-4
+Date: 2024-11-04
 Authors@R: c(person("Yannick", "Marcon", , "yannick.marcon@obiba.org", role = "aut"),
   person("Xavier", "Esriba-Montagut", , "xavier.escriba@isglobal.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = c("aut", "cre")))
@@ -82,12 +82,12 @@ AssignMethods:
    methylation_array_convertDS
 Options:
     default.nfilter.diffP.epsilon=3,
-    default.nfilter.diffP.resampleN=3,
+    default.nfilter.diffP.gamma=0.1,
     default.nfilter.MAF=0.05,
     nfilter.subset=3
 License: MIT + file LICENSE
 biocViews: DNAMethylation, Microarray, Software, WholeGenome, GWAS, Non-disclosive
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Encoding: UTF-8

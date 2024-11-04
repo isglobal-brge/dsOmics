@@ -37,12 +37,13 @@ alleleFrequencyDS <- function(genoData){
     #############################################################
     # CAPTURE THE diffP SETTINGS
     nfilter.diffP.epsilon <- getOption("default.nfilter.diffP.epsilon")
-    nfilter.diffP.resampleN <- getOption("default.nfilter.diffP.resampleN")
+    default.nfilter.diffP.gamma <- getOption("default.nfilter.diffP.gamma")
     #############################################################
     
-    if(!is.null(nfilter.diffP.epsilon) & !is.null(nfilter.diffP.resampleN)){
-      # Resample `nfilter.diffP.resampleN` times the alleleFreq (removing a random ID each time)
-      resamp <- do.call(rbind, lapply(1:nfilter.diffP.resampleN, function(x){
+    if(!is.null(nfilter.diffP.epsilon) & !is.null(nfilter.diffP.gamma)){
+      resampleN <- computeN(default.nfilter.diffP.gamma)
+      # Resample N times the alleleFreq (removing a random ID each time)
+      resamp <- do.call(rbind, lapply(1:resampleN, function(x){
         # Select resample individuals
         individuals <- GWASTools::getVariable(genoData, "sample.id")
         individuals_resample <- individuals[-sample(1:length(individuals), 1)]
