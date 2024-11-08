@@ -1,0 +1,17 @@
+#
+# Rock R Server Dockerfile with DataSHIELD dsOmics
+#
+# Based on https://github.com/datashield/docker-rock
+#
+
+FROM datashield/rock-base:6.3-R4.3
+
+ENV DSOMICS_VERSION v1.0.18-4
+
+ENV ROCK_LIB /var/lib/rock/R/library
+
+# Install new R packages
+RUN Rscript -e "BiocManager::install(c('Biobase', 'SNPRelate', 'GENESIS', 'GWASTools', 'GenomicRanges', 'SummarizedExperiment', 'DESeq2', 'edgeR', 'MEAL'), update = FALSE, ask = FALSE, lib = '$ROCK_LIB')" \
+ && Rscript -e "remotes::install_github('isglobal-brge/dsOmics', ref = '$DSOMICS_VERSION', upgrade = FALSE, lib = '$ROCK_LIB')"
+
+RUN chown -R rock $ROCK_LIB
