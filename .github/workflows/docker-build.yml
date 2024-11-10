@@ -1,0 +1,38 @@
+name: Build and Tag Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Extract version from DESCRIPTION
+        id: get_version
+        run: |
+          # Extract version from DESCRIPTION file
+          version=$(grep '^Version:' /DESCRIPTION | awk '{print $2}')
+          echo "package_version=$version" >> $GITHUB_ENV
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t brgelab/rock-omics:${{ env.package_version }} -f docker/Dockerfile_dsOmics .
+
+      - name: Tag Docker image as latest
+        run: |
+          docker tag brgelab/rock-omics:${{ env.package_version }} brgelab/rock-omics:latest
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push brgelab/rock-omics:${{ env.package_version }}
+          docker push brgelab/rock-omics:latest
