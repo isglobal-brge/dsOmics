@@ -15,7 +15,7 @@ jobs:
         id: get_version
         run: |
           # Extract version from DESCRIPTION file
-          version=$(grep '^Version:' /DESCRIPTION | awk '{print $2}')
+          version=$(grep '^Version:' DESCRIPTION | awk '{print $2}')
           echo "package_version=$version" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
