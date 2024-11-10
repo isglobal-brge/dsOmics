@@ -6,7 +6,7 @@
 
 FROM datashield/rock-base:6.3-R4.4
 
-ENV DSOMICS_VERSION v1.0.18-4
+ENV DSOMICS_VERSION v1.0.19
 
 ENV ROCK_LIB /var/lib/rock/R/library
 
