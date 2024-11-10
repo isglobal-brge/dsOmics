@@ -1,7 +1,7 @@
 # Variables
 DOCKERFILE_NAME := Dockerfile_dsOmics
 IMAGE_NAME := brgelab/rock-omics
-DSOMICS_VERSION := 1.0.18
+DSOMICS_VERSION := 1.0.19
 R_VERSION := 4.4
 
 # Build and push the image to Docker Hub
