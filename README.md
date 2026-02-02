@@ -48,6 +48,12 @@ devtools::install_github('isglobal-brge/dsOmics@v1.0.5')
 
 We acknowledge the help and support of Yannick Marcon and the DataSHIELD technical team.
 
+This project **(PID2021-122855OB-I00)** has received funding from **MCIN /AEI /10.13039/501100011033 / FEDER, UE**.
+
+<p align="center">
+  <img src="man/figures/ciencia.png" alt="MCIN/AEI/FEDER" height="80">
+</p>
+
 # Contact
 
 * Juan R. Gonzalez, Xavier Escriba-Montagut and Yannick Marcon
